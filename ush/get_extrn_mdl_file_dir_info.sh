@@ -706,7 +706,8 @@ has not been specified for this external model:
         arcv_fns=""
       else
         arcv_dir="/NCEPPROD/hpssprod/runhistory/rh${yyyy}/${yyyy}${mm}/${yyyymmdd}"
-        arcv_fns="gpfs_dell1_nco_ops_com_gfs_prod_gfs.${yyyymmdd}_${hh}."
+   #     arcv_fns="gpfs_dell1_nco_ops_com_gfs_prod_gfs.${yyyymmdd}_${hh}."
+        arcv_fns="com_gfs_prod_gfs.${yyyymmdd}_${hh}."
       fi
       arcv_fmt="tar"
       if [ "${anl_or_fcst}" = "ANL" ]; then
