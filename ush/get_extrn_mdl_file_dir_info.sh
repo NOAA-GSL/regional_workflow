@@ -704,9 +704,11 @@ has not been specified for this external model:
       if [ "${cdate_FV3LAM}" -le "2019061206" ]; then
         arcv_dir="/NCEPDEV/emc-global/5year/emc.glopara/WCOSS_C/Q2FY19/prfv3rt3/${cdate_FV3LAM}"
         arcv_fns=""
+      else if [ "${cdate_FV3LAM}" -le "2020022518" ]; then
+        arcv_dir="/NCEPPROD/hpssprod/runhistory/rh${yyyy}/${yyyy}${mm}/${yyyymmdd}"
+        arcv_fns="gpfs_dell1_nco_ops_com_gfs_prod_gfs.${yyyymmdd}_${hh}."
       else
         arcv_dir="/NCEPPROD/hpssprod/runhistory/rh${yyyy}/${yyyy}${mm}/${yyyymmdd}"
-   #     arcv_fns="gpfs_dell1_nco_ops_com_gfs_prod_gfs.${yyyymmdd}_${hh}."
         arcv_fns="com_gfs_prod_gfs.${yyyymmdd}_${hh}."
       fi
       arcv_fmt="tar"
