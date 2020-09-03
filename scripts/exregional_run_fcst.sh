@@ -253,7 +253,8 @@ Cannot create symlink because target does not exist:
 fi
 
 # two files for drag_suite scheme
-if [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ]; then
+if [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ] || \
+   [  "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ]; then
     # Symlink to orographic statistics fields file with "${CRES}_" and "halo0" stripped from name.
     target="${FIXLAM}/${CRES}${DOT_OR_USCORE}oro_data_ls.tile${TILE_RGNL}.halo${NH0}.nc"
     symlink="oro_data_ls.nc"
@@ -438,6 +439,7 @@ if [ "${USE_CCPP}" = "TRUE" ]; then
      [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR_v1" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v0" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ] || \
+     [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR" ]; then
     ln_vrfy -sf ${relative_or_null} $EXPTDIR/CCN_ACTIVATE.BIN ${run_dir}
   fi

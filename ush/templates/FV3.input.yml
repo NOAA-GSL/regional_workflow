@@ -38,6 +38,23 @@ FV3_GSD_SAR_v1:
     lsm: 1
     lsoil_lsm: 4
 
+FV3_HRRR:
+  fv_core_nml:
+    regional_bcs_from_gsi: false
+    write_restart_with_bcs: false
+    nrows_blend: 10
+  gfs_physics_nml:
+    <<: *gsd_sar_phys
+    cdmbgwd: [3.5, 1.0]
+    cnvcld: true
+    cnvgwd: true
+    do_mynnsfclay: true
+    gwd_opt: 3
+    imfshalcnv: -1
+    imfdeepcnv: -1
+    shal_cnv: true
+
+
 FV3_RRFS_v0:
   gfs_physics_nml:
     <<: *gsd_sar_phys
