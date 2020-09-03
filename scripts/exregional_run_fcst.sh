@@ -298,6 +298,32 @@ Cannot create symlink because target does not exist:
   target = \"$target\""
 fi
 
+#
+# Symlink to halo-0 orography files for GWD scheme
+#
+target="${FIXLAM}/${CRES}${DOT_OR_USCORE}oro_data_ls.tile${TILE_RGNL}.halo${NH0}.nc"
+#symlink="oro_data_ls.tile${TILE_RGNL}.halo${NH0}.nc"
+#symlink="oro_data_ls.tile${TILE_RGNL}.nc"
+symlink="oro_data_ls.nc"
+if [ -f "${target}" ]; then
+  ln_vrfy -sf ${relative_or_null} $target $symlink
+else
+  print_err_msg_exit "\
+Cannot create symlink because target does not exist:
+  target = \"$target}\""
+fi
+target="${FIXLAM}/${CRES}${DOT_OR_USCORE}oro_data_ss.tile${TILE_RGNL}.halo${NH0}.nc"
+# symlink="oro_data_ss.tile${TILE_RGNL}.halo${NH0}.nc"
+#symlink="oro_data_ss.tile${TILE_RGNL}.nc"
+symlink="oro_data_ss.nc"
+if [ -f "${target}" ]; then
+  ln_vrfy -sf ${relative_or_null} $target $symlink
+else
+  print_err_msg_exit "\
+Cannot create symlink because target does not exist:
+  target = \"$target}\""
+fi
+
 
 #
 #-----------------------------------------------------------------------

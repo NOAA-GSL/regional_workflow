@@ -201,8 +201,8 @@ EXPT_SUBDIR=""
 COMINgfs="/base/path/of/directory/containing/gfs/input/files"
 STMP="/base/path/of/directory/containing/model/input/and/raw/output/files"
 NET="rrfs"
-envir="para"
-RUN="experiment_name"
+envir="experiment_name"
+RUN="rrfs"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
 #
 #-----------------------------------------------------------------------
