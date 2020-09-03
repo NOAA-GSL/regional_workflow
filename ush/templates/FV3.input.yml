@@ -54,7 +54,6 @@ FV3_HRRR:
     imfdeepcnv: -1
     shal_cnv: true
 
-
 FV3_RRFS_v0:
   gfs_physics_nml:
     <<: *gsd_sar_phys
