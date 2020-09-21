@@ -632,7 +632,8 @@ npy=$((NY+1))
 # lsoil according to the external models used to obtain ICs and LBCs.
 #
 if [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_v0" ] || \
-   [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR" ]; then
+   [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR" ] || \
+   [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ]; then
 
   if [ "${EXTRN_MDL_NAME_ICS}" = "GSMGFS" -o \
        "${EXTRN_MDL_NAME_ICS}" = "FV3GFS" ] && \
