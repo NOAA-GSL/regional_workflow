@@ -515,8 +515,6 @@ the forecast model directory sturcture to the experiment directory..."
 # Thompson microphysics parameterization to the experiment directory.
 #
   if [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_v0" ] || \
-     [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR_v1" ] || \
-     [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v0" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ] || \
      [ "${CCPP_PHYS_SUITE}" = "FV3_GSD_SAR" ]; then
@@ -673,6 +671,7 @@ settings="\
 'fv_core_nml': {
     'target_lon': ${LON_CTR},
     'target_lat': ${LAT_CTR},
+    'nrows_blend': ${HALO_BLEND},
 #
 # Question:
 # For a ESGgrid type grid, what should stretch_fac be set to?  This depends
@@ -1039,6 +1038,13 @@ periment/workflow generation script in the file specified by log_fp:
 Stopping.
 "
   exit 1
+fi
+source $exptdir/var_defns.sh
+if [ "${NOMADS}" = "TRUE" ]; then
+  echo "Getting NOMADS online data"
+  echo "NOMADS_file_type=" $NOMADS_file_type
+cd $exptdir
+$ushdir/NOMADS_get_extrn_mdl_files.sh $DATE_FIRST_CYCL $CYCL_HRS $NOMADS_file_type $FCST_LEN_HRS $LBC_SPEC_INTVL_HRS
 fi
 
 

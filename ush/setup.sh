@@ -244,10 +244,10 @@ check_var_valid_value "DO_SHUM" "valid_vals_DO_SHUM"
 DO_SHUM=${DO_SHUM^^}
 if [ "${DO_SHUM}" = "TRUE" ] || \
    [ "${DO_SHUM}" = "YES" ]; then
-  DO_SHUM="true"
+  DO_SHUM="TRUE"
 elif [ "${DO_SHUM}" = "FALSE" ] || \
      [ "${DO_SHUM}" = "NO" ]; then
-  DO_SHUM="false"
+  DO_SHUM="FALSE"
 fi
 #
 #-----------------------------------------------------------------------
@@ -264,10 +264,10 @@ check_var_valid_value "DO_SPPT" "valid_vals_DO_SPPT"
 DO_SPPT=${DO_SPPT^^}
 if [ "${DO_SPPT}" = "TRUE" ] || \
    [ "${DO_SPPT}" = "YES" ]; then
-  DO_SPPT="true"
+  DO_SPPT="TRUE"
 elif [ "${DO_SPPT}" = "FALSE" ] || \
      [ "${DO_SPPT}" = "NO" ]; then
-  DO_SPPT="false"
+  DO_SPPT="FALSE"
 fi
 #
 #-----------------------------------------------------------------------
@@ -284,11 +284,32 @@ check_var_valid_value "DO_SKEB" "valid_vals_DO_SKEB"
 DO_SKEB=${DO_SKEB^^}
 if [ "${DO_SKEB}" = "TRUE" ] || \
    [ "${DO_SKEB}" = "YES" ]; then
-  DO_SKEB="true"
+  DO_SKEB="TRUE"
 elif [ "${DO_SKEB}" = "FALSE" ] || \
      [ "${DO_SKEB}" = "NO" ]; then
-  DO_SKEB="false"
+  DO_SKEB="FALSE"
 fi
+#
+#-----------------------------------------------------------------------
+#
+# Set magnitude of stochastic ad-hoc schemes to -999.0 if they are not
+# being used. This is required at the moment, since "do_shum/sppt/skeb"
+# does not override the use of the scheme unless the magnitude is also
+# specifically set to -999.0.  If all "do_shum/sppt/skeb" are set to
+# "false," then none will run, regardless of the magnitude values. 
+#
+#-----------------------------------------------------------------------
+#
+if [ "${DO_SHUM}" = "FALSE" ]; then
+  SHUM_MAG=-999.0
+fi
+if [ "${DO_SKEB}" = "FALSE" ]; then
+  SKEB_MAG=-999.0
+fi
+if [ "${DO_SPPT}" = "FALSE" ]; then
+  SPPT_MAG=-999.0
+fi
+
 #
 #-----------------------------------------------------------------------
 #
@@ -344,7 +365,7 @@ case $MACHINE in
   SCHED="${SCHED:-slurm}"
   QUEUE_DEFAULT=${QUEUE_DEFAULT:-"batch"}
   QUEUE_HPSS=${QUEUE_HPSS:-"service"}
-  QUEUE_FCST=${QUEUE_FCST:-""}
+  QUEUE_FCST=${QUEUE_FCST:-"batch"}
   ;;
 #
 "JET")
@@ -459,10 +480,10 @@ case "${EMC_GRID_NAME}" in
   "conus_c96")
     PREDEF_GRID_NAME="EMC_CONUS_coarse"
     ;;
-  "GSD_HRRR3km" | "GSD_HRRR25km")
+  "GSD_HRRR25km" | "GSD_HRRR13km" | "GSD_HRRR3km" | "GSD_SUBCONUS3km")
     PREDEF_GRID_NAME="${EMC_GRID_NAME}"
     ;;
-  "conus_orig"|"guam"|"hi"|"pr")
+  "conus_orig" | "guam" | "hi" | "pr")
     print_err_msg_exit "\
 A predefined grid (PREDEF_GRID_NAME) has not yet been defined for this
 EMC grid (EMC_GRID_NAME):
@@ -932,6 +953,39 @@ fi
 #
 #-----------------------------------------------------------------------
 #
+# If using the FV3_RRFS_v1beta physics suite, make sure that the directory
+# from which certain fixed orography files will be copied to the experiment 
+# directory actually exists.  Note that this is temporary code.  It should
+# be removed once there is a script that will create these orography files
+# for any grid.
+#
+#-----------------------------------------------------------------------
+#
+GWD_RRFS_v1beta_DIR="${GWD_RRFS_v1beta_BASEDIR}/${PREDEF_GRID_NAME}"
+if [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ]; then
+  if [ -z "${PREDEF_GRID_NAME}" ]; then
+    print_err_msg_exit "\
+A predefined grid name (PREDEF_GRID_NAME) must be specified when using 
+the FV3_RRFS_v1beta physic suite:
+  CCPP_PHYS_SUITE = \"${CCPP_PHYS_SUITE}\"
+  PREDEF_GRID_NAME = \"${PREDEF_GRID_NAME}\""
+  else        
+    if [ ! -d "${GWD_RRFS_v1beta_DIR}" ]; then
+      print_err_msg_exit "\
+The directory (GWD_RRFS_v1beta_DIR) that should contain the gravity wave 
+drag-related orography files for the FV3_RRFS_v1beta does not exist:
+  GWD_RRFS_v1beta_DIR = \"${GWD_RRFS_v1beta_DIR}\""
+    elif [ ! "$( ls -A ${GWD_RRFS_v1beta_DIR} )" ]; then
+      print_err_msg_exit "\
+The directory (GWD_RRFS_v1beta_DIR) that should contain the gravity wave 
+drag related orography files for the FV3_RRFS_v1beta is empty:
+  GWD_RRFS_v1beta_DIR = \"${GWD_RRFS_v1beta_DIR}\""
+    fi      
+  fi
+fi
+#
+#-----------------------------------------------------------------------
+#
 # If the base directory (EXPT_BASEDIR) in which the experiment subdirec-
 # tory (EXPT_SUBDIR) will be located is not set or is set to an empty 
 # string, set it to a default location that is at the same level as the
@@ -1070,7 +1124,7 @@ the experiment generation script."
 
   COMOUT_BASEDIR="$COMROOT/$NET/$envir"
   check_for_preexist_dir_file "${COMOUT_BASEDIR}" "${PREEXISTING_DIR_METHOD}"
-  
+
 else
 
   FIXam="${EXPTDIR}/fix_am"
@@ -1170,6 +1224,12 @@ if [ "${USE_CCPP}" = "TRUE" ]; then
   CCPP_PHYS_SUITE_FN="suite_${CCPP_PHYS_SUITE}.xml"
   CCPP_PHYS_SUITE_IN_CCPP_FP="${UFS_WTHR_MDL_DIR}/FV3/ccpp/suites/${CCPP_PHYS_SUITE_FN}"
   CCPP_PHYS_SUITE_FP="${EXPTDIR}/${CCPP_PHYS_SUITE_FN}"
+  if [ ! -f "${CCPP_PHYS_SUITE_IN_CCPP_FP}" ]; then
+    print_err_msg_exit "\
+The CCPP suite definition file (CCPP_PHYS_SUITE_IN_CCPP_FP) does not exist
+in the local clone of the ufs-weather-model:
+  CCPP_PHYS_SUITE_IN_CCPP_FP = \"${CCPP_PHYS_SUITE_IN_CCPP_FP}\""
+  fi
 fi
 #
 #-----------------------------------------------------------------------
@@ -2476,6 +2536,7 @@ CYCLE_BASEDIR="${CYCLE_BASEDIR}"
 GRID_DIR="${GRID_DIR}"
 OROG_DIR="${OROG_DIR}"
 SFC_CLIMO_DIR="${SFC_CLIMO_DIR}"
+GWD_RRFS_v1beta_DIR="${GWD_RRFS_v1beta_DIR}"
 
 NDIGITS_ENSMEM_NAMES="${NDIGITS_ENSMEM_NAMES}"
 ENSMEM_NAMES=( $( printf "\"%s\" " "${ENSMEM_NAMES[@]}" ))

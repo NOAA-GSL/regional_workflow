@@ -342,8 +342,22 @@ raw_orog_fn="${raw_orog_fn_prefix}.${fn_suffix_with_halo}"
 raw_orog_fp="${raw_dir}/${raw_orog_fn}"
 mv_vrfy "${raw_orog_fp_orig}" "${raw_orog_fp}"
 
-# copy two files for drag_suite to the orog directory (temporary)
-cp_vrfy /scratch2/BMC/gsd-fv3-test/she/orog/* ${OROG_DIR}    # temporary code
+#
+#-----------------------------------------------------------------------
+#
+# Copy the two orography files needed for the drag suite in the FV3_RRFS_v1beta
+# physics suite.
+# 
+# Note that the following is a temporary fix. We need a long-term solution 
+# that calls a script or program to generates the necessary files (instead 
+# of copying them).
+#
+#-----------------------------------------------------------------------
+#
+if [ "${CCPP_PHYS_SUITE}" = "FV3_RRFS_v1beta" ]; then
+  cp_vrfy ${GWD_RRFS_v1beta_DIR}/*_ls*.nc ${OROG_DIR}
+  cp_vrfy ${GWD_RRFS_v1beta_DIR}/*_ss*.nc ${OROG_DIR}
+fi
 
 print_info_msg "$VERBOSE" "
 Orography file generation complete."
