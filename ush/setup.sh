@@ -1066,7 +1066,7 @@ check_for_preexist_dir_file "$EXPTDIR" "${PREEXISTING_DIR_METHOD}"
 #
 #-----------------------------------------------------------------------
 #
-LOGDIR="${EXPTDIR}/log"
+LOGDIR="${EXPTDIR}/log/@Y@m@d/@H"
 
 if [ "${RUN_ENVIR}" = "nco" ]; then
 
@@ -2529,6 +2529,12 @@ EMC_POST_DIR="${EMC_POST_DIR}"
 CHGRES_DIR="${CHGRES_DIR}"
 SFC_CLIMO_INPUT_DIR="${SFC_CLIMO_INPUT_DIR}"
 TOPO_DIR=${TOPO_DIR}
+
+ARCHIVEDIR=${ARCHIVEDIR}
+NCARG_ROOT=${NCARG_ROOT}
+NCL_HOME=${NCL_HOME}
+NCL_REGION=${NCL_REGION}
+MODEL=${MODEL}
 
 EXPTDIR="$EXPTDIR"
 LOGDIR="$LOGDIR"

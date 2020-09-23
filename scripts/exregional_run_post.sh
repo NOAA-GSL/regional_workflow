@@ -230,6 +230,7 @@ fi
 
 mv_vrfy BGDAWP.GrbF${post_fhr} ${postprd_dir}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
 mv_vrfy BGRD3D.GrbF${post_fhr} ${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
+wgrib2 -match "APCP|REFC" ${postprd_dir}/${NET}.t${cyc}z.bgrd3d${fhr}.${tmmark} -grib ${postprd_dir}/${NET}.t${cyc}z.bgsfc${fhr}.${tmmark}
 
 #Link output for transfer to Jet
 # Should the following be done only if on jet??
@@ -244,6 +245,8 @@ ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 \
             ${postprd_dir}/BGDAWP_${basetime}f${fhr}00
 ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 \
             ${postprd_dir}/BGRD3D_${basetime}f${fhr}00
+ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgsfc${fhr}.${tmmark}.grib2 \
+            ${postprd_dir}/BGSFC_${basetime}f${fhr}00
 
 rm_vrfy -rf ${fhr_dir}
 #
