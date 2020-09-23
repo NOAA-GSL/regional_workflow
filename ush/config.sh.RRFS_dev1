@@ -1,6 +1,8 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
-EXPT_SUBDIR="dev1_FV3_GSD_SAR"
+EXPT_BASEDIR="/home/rtrr/RRFS"
+EXPT_BASEDIR="/lfs1/BMC/wrfruc/cholt/rtrr/RRFS/"
+EXPT_SUBDIR="RRFS_dev1"
 
 QUEUE_DEFAULT="batch"
 QUEUE_HPSS="service"
@@ -22,12 +24,13 @@ LBC_SPEC_INTVL_HRS="6"
 
 DATE_FIRST_CYCL="20200923"
 DATE_LAST_CYCL="20210923"
-CYCL_HRS=( "00 12" )
+CYCL_HRS=( "00" "12" )
 
 EXTRN_MDL_NAME_ICS="HRRRX"
 EXTRN_MDL_NAME_LBCS="RAPX"
 
 envir="para"
+
 NET="RRFS_CONUS"
 
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
@@ -45,14 +48,13 @@ MODEL="RRFS (HRRRX/FV3_GSD_SAR)"
 #RUN_TASK_MAKE_OROG="FALSE"
 #RUN_TASK_MAKE_SFC_CLIMO="FALSE"
 
-RUN="RRFS_${EXPT_SUBDIR}"
+RUN="RRFS_dev1"
 COMINgfs="/scratch1/NCEPDEV/hwrf/noscrub/hafs-input/COMGFS"     # Path to directory containing files from the external model (FV3GFS).
-#STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM/UFS_CAM/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-#PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM/UFS_CAM/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
-STMP="/lfs1/BMC/wrfruc/cholt/FV3LAM/UFS_CAM/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/lfs1/BMC/wrfruc/cholt/FV3LAM/UFS_CAM/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
-#STMP="/mnt/lfs4/BMC/nrtrr/RRFS/UFS_CAM/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-#PTMP="/mnt/lfs4/BMC/nrtrr/RRFS/UFS_CAM/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
+STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+
+STMP="/lfs1/BMC/wrfruc/cholt/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs1/BMC/wrfruc/cholt/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)

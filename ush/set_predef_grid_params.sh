@@ -499,7 +499,7 @@ predefined domain:
 
     LAYOUT_X="18"
     LAYOUT_Y="12"
-    BLOCKSIZE="27"
+    BLOCKSIZE="48"
 
     if [ "$QUILTING" = "TRUE" ]; then
       WRTCMP_write_groups="1"
