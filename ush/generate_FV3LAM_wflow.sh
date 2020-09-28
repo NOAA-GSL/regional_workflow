@@ -48,7 +48,6 @@ ushdir="${scrfunc_dir}"
 . $ushdir/source_util_funcs.sh
 . $ushdir/set_FV3nml_sfc_climo_filenames.sh
 . $ushdir/set_FV3nml_stoch_params.sh
-. $ushdir/create_diag_table_files.sh
 #
 #-----------------------------------------------------------------------
 #
@@ -256,8 +255,11 @@ settings="\
   'date_first_cycl': ${DATE_FIRST_CYCL}
   'date_last_cycl': ${DATE_LAST_CYCL}
   'cdate_first_cycl': !datetime ${DATE_FIRST_CYCL}${CYCL_HRS[0]}
+  'cdate_last_cycl': !datetime ${DATE_LAST_CYCL}${CYCL_HRS[0]}
+  'cdate_first_arch': !datetime ${DATE_FIRST_CYCL}07
+  'cdate_last_arch': !datetime ${DATE_LAST_CYCL}07
   'cycl_hrs': [ $( printf "\'%s\', " "${CYCL_HRS[@]}" ) ]
-  'cycl_freq': !!str 24:00:00
+  'cycl_freq': !!str 12:00:00
 #
 # Forecast length (same for all cycles).
 #
@@ -301,21 +303,7 @@ are:
   Namelist settings specified on command line:
     settings =
 $settings"
-#
-#-----------------------------------------------------------------------
-#
-# Create the cycle directories.
-#
-#-----------------------------------------------------------------------
-#
-print_info_msg "$VERBOSE" "
-Creating the cycle directories..."
 
-for (( i=0; i<${NUM_CYCLES}; i++ )); do
-  cdate="${ALL_CDATES[$i]}"
-  cycle_dir="${CYCLE_BASEDIR}/$cdate"
-  mkdir_vrfy -p "${cycle_dir}"
-done
 #
 #-----------------------------------------------------------------------
 #
@@ -824,10 +812,6 @@ file failed."
 Call to function to set stochastic parameters in the FV3 namelist files
 for the various ensemble members failed."
   fi
-
-  create_diag_table_files || print_err_msg_exit "\
-Call to function to create a diagnostics table file under each cycle 
-directory failed."
 
 fi
 #

@@ -89,16 +89,11 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 
 ]>
 
-<workflow realtime="F" scheduler="&SCHED;" cyclethrottle="20">
+<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="3" cyclelifespan="01:00:00:00">
 {# Double quotes are required inside the strftime! Expect an error from reading the template if using single quotes. #}
   <cycledef group="at_start">{{ cdate_first_cycl.strftime("%M %H %d %m %Y *") }}</cycledef>
-{% for c in cycl_hrs %}
-  <cycledef group="forecast">
-  {%- set cdate_first=date_first_cycl ~ c ~ "00" -%}
-  {%- set cdate_last=date_last_cycl ~ c ~ "00" -%}
-  {{- cdate_first ~ " " ~ cdate_last ~ " " ~ cycl_freq -}}
-  </cycledef>
-{%- endfor %}
+  <cycledef group="forecast">{{ cdate_first_cycl.strftime("%Y%m%d%H%M") }} {{ cdate_last_cycl.strftime("%Y%m%d%H%M") }} {{ cycl_freq }}</cycledef>
+  <cycledef group="archive">{{ cdate_first_arch.strftime("%Y%m%d%H%M") }} {{ cdate_last_arch.strftime("%Y%m%d%H%M") }} 24:00:00</cycledef> 
 
   <log>
     <cyclestr>&LOGDIR;/../../FV3LAM_wflow.log</cyclestr>
@@ -218,7 +213,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&GET_EXTRN_ICS_TN;" maxtries="1">
+  <task name="&GET_EXTRN_ICS_TN;" cycledefs="forecast" maxtries="1">
 
     &RSRV_HPSS;
     &WALL_LIMIT_PRE;
@@ -237,12 +232,16 @@ MODULES_RUN_TASK_FP script.
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_ics }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>ICS</value></envar>
 
+    <dependency>
+      <datadep age="00:00:05:00"><cyclestr>/misc/whome/rtrr/hrrr/@Y@m@d@H/postprd/wrfnat_hrconus_00.grib2</cyclestr></datadep>
+    </dependency>
+
   </task>
 <!--
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&GET_EXTRN_LBCS_TN;" maxtries="1">
+  <task name="&GET_EXTRN_LBCS_TN;" cycledefs="forecast" maxtries="1">
 
     &RSRV_HPSS;
     &WALL_LIMIT_PRE;
@@ -261,6 +260,16 @@ MODULES_RUN_TASK_FP script.
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_lbcs }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>LBCS</value></envar>
 
+    <dependency>
+      <!-- Files through fhr 39 exist. -->
+      <sh>
+        test $(find <cyclestr offset="-3:00:00">/misc/whome/rtrr/rap/@Y@m@d@H/postprd</cyclestr> \
+               -name wrfnat_130_[0-3][0-9].grib2 -mmin +5 | wc -l) \
+        == 40
+      </sh>
+    </dependency>
+
+    
   </task>
 <!--
 ************************************************************************
@@ -276,7 +285,7 @@ MODULES_RUN_TASK_FP script.
 {%- endfor %} </var>
 {%- endif %}
 
-  <task name="&MAKE_ICS_TN;{{ uscore_ensmem_name }}" maxtries="1">
+  <task name="&MAKE_ICS_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
 
     &RSRV_DEFAULT;
     &WALL_LIMIT_PRE;
@@ -320,7 +329,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&MAKE_LBCS_TN;{{ uscore_ensmem_name }}" maxtries="1">
+  <task name="&MAKE_LBCS_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
 
     &RSRV_DEFAULT;
     &WALL_LIMIT_PRE;
@@ -364,7 +373,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" maxtries="1">
+  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
 
     &RSRV_FCST;
     &WALL_LIMIT_FCST;
@@ -407,7 +416,7 @@ MODULES_RUN_TASK_FP script.
 
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
-    <task name="&RUN_POST_TN;{{ uscore_ensmem_name }}_f#fhr#" maxtries="1">
+    <task name="&RUN_POST_TN;{{ uscore_ensmem_name }}_f#fhr#" cycledefs="forecast" maxtries="1">
 
       &RSRV_DEFAULT;
       &WALL_LIMIT_POST;
@@ -450,14 +459,16 @@ MODULES_RUN_TASK_FP script.
 -->
   <metatask mode="serial" name="&RUN_NCL_TN;">
 
-    <var name="fhr">&FHR;</var>
+    <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
-    <task name="&RUN_NCL_TN;_#fhr#" cycledefs="12hr" maxtries="2">
+    <task name="&RUN_NCL_TN;_#fhr#" cycledefs="forecast" maxtries="2">
 
       &RSRV_DEFAULT;
       &WALL_LIMIT_GRAPHICS;
 
       <command>&JOBSDIR;/../scripts/exregional_run_ncl.ksh</command>
+      <walltime>00:30:00</walltime>
+      <memory>24G</memory>
       <cores>16</cores>
       <jobname>&RUN_NCL_TN;_#fhr#</jobname>
       <join><cyclestr>&LOGDIR;/&RUN_NCL_TN;_#fhr#_@Y@m@d@H.log</cyclestr></join>
@@ -480,9 +491,9 @@ MODULES_RUN_TASK_FP script.
 -->
    <metatask mode="serial" name="&RUN_NCL_ZIP_TN;">
 
-    <var name="fhr">&FHR;</var>
+    <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
-    <task name="&RUN_NCL_ZIP_TN;_#fhr#" cycledefs="12hr" maxtries="2">
+    <task name="&RUN_NCL_ZIP_TN;_#fhr#" cycledefs="forecast" maxtries="2">
 
       &RSRV_DEFAULT;
       &WALL_LIMIT_GRAPHICS;
@@ -513,7 +524,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&CLEAN_TN;" cycledefs="12hr" maxtries="1">
+  <task name="&CLEAN_TN;" cycledefs="forecast" maxtries="1">
 
     &RSRV_DEFAULT;
 
