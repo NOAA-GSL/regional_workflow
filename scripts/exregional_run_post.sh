@@ -228,9 +228,13 @@ The \${fhr} variable contains too few or too many characters:
   fhr = \"$fhr\""
 fi
 
-mv_vrfy BGDAWP.GrbF${post_fhr} ${postprd_dir}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
-mv_vrfy BGRD3D.GrbF${post_fhr} ${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
-wgrib2 -match "APCP|REFC" ${postprd_dir}/${NET}.t${cyc}z.bgrd3d${fhr}.${tmmark} -grib ${postprd_dir}/${NET}.t${cyc}z.bgsfc${fhr}.${tmmark}
+
+bgdawp=${postprd_dir}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
+bgrd3d=${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
+bgsfc=${postprd_dir}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
+mv_vrfy BGDAWP.GrbF${post_fhr} ${bgdawp}
+mv_vrfy BGRD3D.GrbF${post_fhr} ${bgrd3d}
+wgrib2 -match "APCP|REFC" ${bgrd3d} -grib ${bgsfc}
 
 #Link output for transfer to Jet
 # Should the following be done only if on jet??
@@ -241,12 +245,9 @@ wgrib2 -match "APCP|REFC" ${postprd_dir}/${NET}.t${cyc}z.bgrd3d${fhr}.${tmmark} 
 # instead of calling sed.
 start_date=$( echo "${cdate}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/' )
 basetime=$( date +%y%j%H%M -d "${start_date}" )
-ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 \
-            ${postprd_dir}/BGDAWP_${basetime}f${fhr}00
-ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 \
-            ${postprd_dir}/BGRD3D_${basetime}f${fhr}00
-ln_vrfy -fs ${postprd_dir}/${NET}.t${cyc}z.bgsfc${fhr}.${tmmark}.grib2 \
-            ${postprd_dir}/BGSFC_${basetime}f${fhr}00
+ln_vrfy -fs ${bgdawp} ${postprd_dir}/BGDAWP_${basetime}f${fhr}00
+ln_vrfy -fs ${bgrd3d} ${postprd_dir}/BGRD3D_${basetime}f${fhr}00
+ln_vrfy -fs ${bgsfc} ${postprd_dir}/BGSFC_${basetime}f${fhr}00
 
 rm_vrfy -rf ${fhr_dir}
 #
