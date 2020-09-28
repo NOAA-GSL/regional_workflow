@@ -2532,11 +2532,11 @@ CHGRES_DIR="${CHGRES_DIR}"
 SFC_CLIMO_INPUT_DIR="${SFC_CLIMO_INPUT_DIR}"
 TOPO_DIR=${TOPO_DIR}
 
-ARCHIVEDIR=${ARCHIVEDIR}
-NCARG_ROOT=${NCARG_ROOT}
-NCL_HOME=${NCL_HOME}
-NCL_REGION=${NCL_REGION}
-MODEL=${MODEL}
+ARCHIVEDIR="${ARCHIVEDIR}"
+NCARG_ROOT="${NCARG_ROOT}"
+NCL_HOME="${NCL_HOME}"
+NCL_REGION="${NCL_REGION}"
+MODEL="${MODEL}"
 
 EXPTDIR="$EXPTDIR"
 LOGDIR="$LOGDIR"
@@ -2741,18 +2741,6 @@ EXTRN_MDL_LBCS_OFFSET_HRS="${EXTRN_MDL_LBCS_OFFSET_HRS}"
 #-----------------------------------------------------------------------
 #
 LBC_SPEC_FCST_HRS=(${LBC_SPEC_FCST_HRS[@]})
-#
-#-----------------------------------------------------------------------
-#
-# The number of cycles for which to make forecasts and the list of starting
-# dates/hours of these cycles.
-#
-#-----------------------------------------------------------------------
-#
-NUM_CYCLES="${NUM_CYCLES}"
-ALL_CDATES=( \\
-$( printf "\"%s\" \\\\\n" "${ALL_CDATES[@]}" )
-)
 #
 #-----------------------------------------------------------------------
 #
