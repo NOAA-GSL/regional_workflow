@@ -478,7 +478,7 @@ MODULES_RUN_TASK_FP script.
       <envar><name>FCST_TIME</name><value>#fhr#</value></envar>
 
       <dependency>
-          <taskdep task="&RUN_POST_TN;_#fhr#"/>
+          <taskdep task="&RUN_POST_TN;_f#fhr#"/>
       </dependency>
 
     </task>

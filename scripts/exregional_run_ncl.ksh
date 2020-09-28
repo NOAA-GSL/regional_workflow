@@ -3,8 +3,8 @@
 . ${GLOBAL_VAR_DEFNS_FP}
 
 DATAROOT=${EXPTDIR}
-DATAHOME=${DATAROOT}/${START_TIME}
-POST_PREFIX=${NAT}
+DATAHOME=${COMOUT_BASEDIR}/${RUN}.${START_TIME:0:8}/${START_TIME:8:2}
+POST_PREFIX=${NET}
 
 if [ "${PBS_NODEFILE:-unset}" != "unset" ]; then
         THREADS=$(cat $PBS_NODEFILE | wc -l)
@@ -29,6 +29,7 @@ module load ncl
 # Make sure we are using GMT time zone for time computations
 export TZ="GMT"
 export UDUNITS2_XML_PATH=${NCARG_ROOT}/lib/ncarg/udunits/udunits2.xml
+export NCL_HOME=${NCL_HOME}
 export NCL_EXE_ROOT=${NCL_HOME}/scripts
 export NCL_CONFIG=${NCL_HOME}/config
 export SUBDOMAINS=${NCL_CONFIG}/${NCL_REGION}_subdomains.ncl
@@ -108,7 +109,7 @@ cd ${workdir}
 pwd
 
 # Link to input file
-${LN} -s ${DATAHOME}/postprd/${POST_PREFIX}.t${INIT_HOUR}z.bgdawp${FCST_TIME}.tm${INIT_HOUR} rrfsfile.grb
+${LN} -s ${DATAHOME}/${POST_PREFIX}.t${INIT_HOUR}z.bgdawpf${FCST_TIME}.tm${INIT_HOUR}.grib2 rrfsfile.grb
 
 ${ECHO} "rrfsfile.grb" > rrfs_file.txt
 
