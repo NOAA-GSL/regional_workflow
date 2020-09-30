@@ -8,8 +8,8 @@ year=`date -u "+%Y" -d "-1 day"`
 
 . ${GLOBAL_VAR_DEFNS_FP}
 
-cd ${EXPTDIR}
-set -A XX `ls -d $year$month$day* | sort -r`
+cd ${COMOUT_BASEDIR}
+set -A XX `ls -d ${RUN}.$year$month$day/* | sort -r`
 runcount=${#XX[*]}
 if [[ $runcount -gt 0 ]];then
 
@@ -20,25 +20,25 @@ if [[ $runcount -gt 0 ]];then
   for onerun in ${XX[*]};do
 
     echo "Archive files from ${onerun}"
-    hour=`echo $onerun | cut -c 9-10`
+    hour=${onerun##*/}
 
-    if [[ -e ${EXPTDIR}/${onerun}/nclprd/full/files.zip ]];then
+    if [[ -e ${COMOUT_BASEDIR}/${onerun}/nclprd/full/files.zip ]];then
       echo "Graphics..."
-      mkdir -p $EXPTDIR/stage/$year$month$day$hour/nclprd
-      cp -rv ${EXPTDIR}/${onerun}/nclprd/* $EXPTDIR/stage/$year$month$day$hour/nclprd 
+      mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/nclprd
+      cp -rv ${COMOUT_BASEDIR}/${onerun}/nclprd/* $COMOUT_BASEDIR/stage/$year$month$day$hour/nclprd
     fi
 
-    set -A YY `ls -d ${EXPTDIR}/${onerun}/postprd/*bg*tm*`
+    set -A YY `ls -d ${COMOUT_BASEDIR}/${onerun}/*bg*tm*`
     postcount=${#YY[*]}
     echo $postcount
     if [[ $postcount -gt 0 ]];then
       echo "GRIB-2..."
-      mkdir -p $EXPTDIR/stage/$year$month$day$hour/postprd
-      cp -rv ${EXPTDIR}/${onerun}/postprd/*bg*tm* $EXPTDIR/stage/$year$month$day$hour/postprd 
+      mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/postprd
+      cp -rv ${COMOUT_BASEDIR}/${onerun}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/postprd 
     fi
 
-    if [[ -e ${EXPTDIR}/stage/$year$month$day$hour ]];then
-      cd ${EXPTDIR}/stage
+    if [[ -e ${COMOUT_BASEDIR}/stage/$year$month$day$hour ]];then
+      cd ${COMOUT_BASEDIR}/stage
       tar -zcvf $year$month$day$hour.tar.gz $year$month$day$hour
       rm -rf $year$month$day$hour
       hsi put $year$month$day$hour.tar.gz : $ARCHIVEDIR/$year/$month/$day/$year$month$day$hour.tar.gz
@@ -48,7 +48,7 @@ if [[ $runcount -gt 0 ]];then
   done
 fi
 
-rmdir $EXPTDIR/stage
+rmdir $COMOUT_BASEDIR/stage
 
 dateval=`date`
 echo "Completed archive at "$dateval
