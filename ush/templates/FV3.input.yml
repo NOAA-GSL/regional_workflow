@@ -13,6 +13,11 @@
 FV3_GSD_v0:
 
 FV3_GSD_SAR: 
+  fv_core_nml:
+    hord_dp: -5
+    hord_mt: 5
+    hord_tm: 5
+    hord_vt: 5
   gfs_physics_nml: &gsd_sar_phys
     cnvcld: false
     cnvgwd: false
