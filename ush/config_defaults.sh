@@ -1110,9 +1110,6 @@ CYCLEDIR_LINKS_TO_FIXam_FILES_MAPPING=( \
 "sfc_emissivity_idx.txt     | global_sfc_emissivity_idx.txt" \
 "solarconstant_noaa_an.txt  | global_solarconstant_noaa_an.txt" \
 "global_o3prdlos.f77        | " \
-"freezeH2O.dat              | " \
-"qr_acr_qg.dat              | " \
-"qr_acr_qs.dat              | " \
 )
 #
 #-----------------------------------------------------------------------
