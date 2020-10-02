@@ -57,8 +57,6 @@ COMINgfs=""
 STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
-LOGDIR=
-
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
 # create the symlink "${FIXrrfs}/fix_sar" that points to EMC's FIXLAM
