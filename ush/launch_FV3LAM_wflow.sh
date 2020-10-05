@@ -207,7 +207,7 @@ rocotostat_cmd="rocotostat -w \"${WFLOW_XML_FN}\" -d \"${rocoto_database_fn}\" -
 
 #rocotostat_output=$( pwd; rocotostat -w "${WFLOW_XML_FN}" -d "${rocoto_database_fn}" -v 10 2>&1 )
 #rocotostat_output=$( rocotostat -w "${WFLOW_XML_FN}" -d "${rocoto_database_fn}" -v 10 2>&1 )
-rocotostat_output=$( eval ${rocotostat_cmd} 2>&1 )
+#rocotostat_output=$( eval ${rocotostat_cmd} 2>&1 )
 #rocotostat_output=$( ${rocotostat_cmd} 2>&1 )
 #rocotostat_output=$( { pwd; ls -alF; } 2>&1 )
 error_msg="DEAD"
