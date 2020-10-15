@@ -14,6 +14,7 @@ FV3_GSD_v0:
 
 FV3_GSD_SAR: 
   fv_core_nml:
+    fv_sg_adj: 0
     hord_dp: -5
     hord_mt: 5
     hord_tm: 5

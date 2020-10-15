@@ -1,7 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
 EXPT_BASEDIR="/home/rtrr/RRFS"
-EXPT_SUBDIR="RRFS_dev1"
+EXPT_SUBDIR="RRFS_dev4"
 
 QUEUE_DEFAULT="batch"
 QUEUE_HPSS="service"
@@ -36,7 +36,7 @@ envir="para"
 
 NET="RRFS_CONUS"
 
-ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev4"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
 NCL_REGION="conus"
@@ -51,7 +51,7 @@ MODEL="RRFS (HRRRX/FV3_GSD_SAR)"
 #RUN_TASK_MAKE_OROG="FALSE"
 #RUN_TASK_MAKE_SFC_CLIMO="FALSE"
 
-RUN="RRFS_dev1"
+RUN="RRFS_dev4"
 COMINgfs=""
 
 STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
