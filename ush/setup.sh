@@ -922,7 +922,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-LBC_SPEC_FCST_HRS=($( seq ${LBC_SPEC_INTVL_HRS} ${LBC_SPEC_INTVL_HRS} \
+LBC_SPEC_FCST_HRS=($( seq 0 ${LBC_SPEC_INTVL_HRS} \
                           ${FCST_LEN_HRS} ))
 #
 #-----------------------------------------------------------------------
@@ -1268,6 +1268,7 @@ DATA_TABLE_FP="${EXPTDIR}/${DATA_TABLE_FN}"
 FIELD_TABLE_FP="${EXPTDIR}/${FIELD_TABLE_FN}"
 FV3_NML_FN="${FV3_NML_BASE_SUITE_FN%.*}"
 FV3_NML_FP="${EXPTDIR}/${FV3_NML_FN}"
+FV3_NML_RESTART_FP="${EXPTDIR}/${FV3_NML_FN}_restart"
 NEMS_CONFIG_FP="${EXPTDIR}/${NEMS_CONFIG_FN}"
 #
 #-----------------------------------------------------------------------
@@ -2548,6 +2549,17 @@ GWD_RRFS_v1beta_DIR="${GWD_RRFS_v1beta_DIR}"
 NDIGITS_ENSMEM_NAMES="${NDIGITS_ENSMEM_NAMES}"
 ENSMEM_NAMES=( $( printf "\"%s\" " "${ENSMEM_NAMES[@]}" ))
 FV3_NML_ENSMEM_FPS=( $( printf "\"%s\" " "${FV3_NML_ENSMEM_FPS[@]}" ))
+
+# for data assimilation
+OBSPATH="/public/data/grids/rap/obs"
+OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
+ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm_v15"
+
+FIXgsi="${FIXrrfs}/fix_gsi"
+FIXcrtm="${FIXrrfs}/fix_crtm"
+AIRCRAFT_REJECT="${FIXrrfs}/fix_gsi"
+SFCOBS_USELIST="${FIXrrfs}/fix_gsi"
+
 #
 #-----------------------------------------------------------------------
 #
@@ -2583,6 +2595,7 @@ DATA_TABLE_FP="${DATA_TABLE_FP}"
 FIELD_TABLE_FP="${FIELD_TABLE_FP}"
 FV3_NML_FN="${FV3_NML_FN}"   # This may not be necessary...
 FV3_NML_FP="${FV3_NML_FP}"
+FV3_NML_RESTART_FP="${FV3_NML_RESTART_FP}"
 NEMS_CONFIG_FP="${NEMS_CONFIG_FP}"
 
 FV3_EXEC_FP="${FV3_EXEC_FP}"

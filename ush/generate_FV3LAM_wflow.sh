@@ -797,6 +797,10 @@ failed.  Parameters passed to this script are:
   Namelist settings specified on command line:
     settings =
 $settings"
+
+# need to generate a namelist for da cycle
+cp_vrfy ${FV3_NML_FP} ${FV3_NML_RESTART_FP}
+
 #
 # If not running the MAKE_GRID_TN task (which implies the workflow will
 # use pregenerated grid files), set the namelist variables specifying
