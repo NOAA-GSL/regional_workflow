@@ -118,6 +118,7 @@ run directory (run_dir):
   set_file_param "${model_config_fp}" "quilting" "${dot_quilting_dot}"
   set_file_param "${model_config_fp}" "print_esmf" "${dot_print_esmf_dot}"
   set_file_param "${model_config_fp}" "atmos_nthreads" "${nthreads:-1}"
+  set_file_param "${model_config_fp}" "restart_interval" "${restart_interval:0}"
 #
 #-----------------------------------------------------------------------
 #

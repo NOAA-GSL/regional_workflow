@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 #
 #-----------------------------------------------------------------------
 #
@@ -277,6 +277,10 @@ settings="\
   'ensmem_indx_name': ${ensmem_indx_name}
   'uscore_ensmem_name': ${uscore_ensmem_name}
   'slash_ensmem_subdir': ${slash_ensmem_subdir}
+#
+# data assimilation related parameters.
+#
+  'do_dacycle': ${DO_DACYCLE}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "

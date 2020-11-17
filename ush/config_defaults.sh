@@ -205,7 +205,7 @@ envir="para"
 RUN="experiment_name"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
 
-ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev2"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
 NCL_REGION="conus"
@@ -357,7 +357,7 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 DATE_FIRST_CYCL="YYYYMMDD"
 DATE_LAST_CYCL="YYYYMMDD"
 CYCL_HRS=( "HH1" "HH2" )
-FCST_LEN_HRS="24"
+FCST_LEN_HRS="12"
 #
 #-----------------------------------------------------------------------
 #
@@ -1197,6 +1197,15 @@ WTIME_RUN_POST="00:15:00"
 #
 DO_ENSEMBLE="FALSE"
 NUM_ENS_MEMBERS="1"
+#
+#-----------------------------------------------------------------------
+#
+# Set parameters associated with running data assimilation.  Definitions:
+#
+# DO_DACYCLE:
+# Flag that determines whether to run a data assimilation cycle.
+#
+DO_DACYCLE="FALSE"
 #
 #-----------------------------------------------------------------------
 #

@@ -32,6 +32,11 @@ Workflow task names.
 <!ENTITY RUN_FCST_TN       "{{ run_fcst_tn }}">
 <!ENTITY RUN_POST_TN       "{{ run_post_tn }}">
 
+<!ENTITY ANAL_GSI_INPUT_TN    "anal_gsi_input">
+<!ENTITY ANAL_GSI_RESTA_TN    "anal_gsi_resta">
+<!ENTITY PROCESS_RADAR_REF_TN "process_radarref">
+<!ENTITY RADAR_REFL2TTEN_TN   "radar_refl2tten">
+
 <!ENTITY RUN_BUFR_TN       "run_bufr">
 <!ENTITY RUN_NCL_TN        "run_ncl">
 <!ENTITY RUN_NCL_ZIP_TN    "run_ncl_zip">
@@ -75,11 +80,15 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><{{ queue_fcst_tag }}>&QUEUE_FCST;</{{ queue_fcst_tag }}>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
+<!ENTITY DEADLINE_ANAL     "16:00:00">
 <!ENTITY DEADLINE_FCST     "23:30:00">
 <!ENTITY DEADLINE_POST     "24:00:00">
 <!ENTITY DEADLINE_GRAPHICS "24:00:00">
 
+<!ENTITY START_TIME_CONVENTIONAL "00:37:00">
+
 <!ENTITY WALL_LIMIT_PRE '<deadline><cyclestr offset="&DEADLINE_PRE;">@Y@m@d@H@M</cyclestr></deadline>'>
+<!ENTITY WALL_LIMIT_ANAL '<deadline><cyclestr offset="&DEADLINE_ANAL;">@Y@m@d@H@M</cyclestr></deadline>'>
 <!ENTITY WALL_LIMIT_FCST '<deadline><cyclestr offset="&DEADLINE_FCST;">@Y@m@d@H@M</cyclestr></deadline>'>
 <!ENTITY WALL_LIMIT_POST '<deadline><cyclestr offset="&DEADLINE_POST;">@Y@m@d@H@M</cyclestr></deadline>'>
 <!ENTITY WALL_LIMIT_BUFR '<deadline><cyclestr offset="&DEADLINE_POST;">@Y@m@d@H@M</cyclestr></deadline>'>
@@ -89,10 +98,13 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 
 ]>
 
-<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="3" cyclelifespan="01:00:00:00">
+<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="30" cyclelifespan="01:00:00:00">
 {# Double quotes are required inside the strftime! Expect an error from reading the template if using single quotes. #}
   <cycledef group="at_start">{{ cdate_first_cycl.strftime("%M %H %d %m %Y *") }}</cycledef>
   <cycledef group="forecast">{{ cdate_first_cycl.strftime("%Y%m%d%H%M") }} {{ cdate_last_cycl.strftime("%Y%m%d%H%M") }} {{ cycl_freq }}</cycledef>
+{%- if do_dacycle %}
+  <cycledef group="dacycle">00 03,06,09,15,18,21 {{cdate_first_cycl.strftime("%d") }}-{{ cdate_last_cycl.strftime("%d") }} {{ cdate_first_cycl.strftime("%m") }} 2020 *</cycledef>
+{% endif %}
   <cycledef group="archive">{{ cdate_first_arch.strftime("%Y%m%d%H%M") }} {{ cdate_last_arch.strftime("%Y%m%d%H%M") }} 24:00:00</cycledef> 
 
   <log>
@@ -241,7 +253,11 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
+  {%- if do_dacycle %}
+  <task name="&GET_EXTRN_LBCS_TN;" cycledefs="forecast,dacycle" maxtries="1">
+  {% else %}
   <task name="&GET_EXTRN_LBCS_TN;" cycledefs="forecast" maxtries="1">
+  {% endif %}
 
     &RSRV_DEFAULT;
     &WALL_LIMIT_PRE;
@@ -328,8 +344,12 @@ MODULES_RUN_TASK_FP script.
 <!--
 ************************************************************************
 ************************************************************************
--->
+--> 
+  {%- if do_dacycle %}
+  <task name="&MAKE_LBCS_TN;{{ uscore_ensmem_name }}" cycledefs="forecast,dacycle" maxtries="1">
+  {% else %}
   <task name="&MAKE_LBCS_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
+  {% endif %}
 
     &RSRV_DEFAULT;
     &WALL_LIMIT_PRE;
@@ -369,11 +389,84 @@ MODULES_RUN_TASK_FP script.
     </dependency>
 
   </task>
+
+{%- if do_dacycle %}
 <!--
 ************************************************************************
 ************************************************************************
 -->
+  <task name="&ANAL_GSI_INPUT_TN;" cycledefs="forecast" maxtries="2">
+
+    &RSRV_DEFAULT;
+    &WALL_LIMIT_ANAL;
+    <!--&WALL_LIMIT_WHOLE;-->
+
+    <command>&LOAD_MODULES_RUN_TASK_FP; "&ANAL_GSI_INPUT_TN;" "&JOBSDIR;/JREGIONAL_RUN_ANAL"</command>
+
+    <nodes>16:ppn=24</nodes>
+    <walltime>00:30:00</walltime>
+    <nodesize>&NCORES_PER_NODE;</nodesize>
+    <jobname>&ANAL_GSI_INPUT_TN;</jobname>
+    <join><cyclestr>&LOGDIR;/&ANAL_GSI_INPUT_TN;_@Y@m@d@H.log</cyclestr></join>
+
+    <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>CYCLE_ROOT</name><value><cyclestr>&CYCLE_BASEDIR;</cyclestr></value></envar>
+    <envar><name>BKTYPE</name><value><cyclestr>1</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <taskdep task="&MAKE_ICS_TN;"/>
+         <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
+      </and>
+    </dependency>
+
+  </task>
+<!--
+************************************************************************
+************************************************************************
+-->
+  <task name="&ANAL_GSI_RESTA_TN;" cycledefs="dacycle" maxtries="2">
+
+    &RSRV_DEFAULT;
+    &WALL_LIMIT_ANAL;
+    <!--&WALL_LIMIT_WHOLE;-->
+
+    <command>&LOAD_MODULES_RUN_TASK_FP; "&ANAL_GSI_RESTA_TN;" "&JOBSDIR;/JREGIONAL_RUN_ANAL"</command>
+    <nodes>16:ppn=24</nodes>
+    <walltime>00:30:00</walltime>
+    <nodesize>&NCORES_PER_NODE;</nodesize>
+    <jobname>&ANAL_GSI_RESTA_TN;</jobname>
+    <join><cyclestr>&LOGDIR;/&ANAL_GSI_RESTA_TN;_@Y@m@d@H.log</cyclestr></join>
+
+    <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>CYCLE_ROOT</name><value><cyclestr>&CYCLE_BASEDIR;</cyclestr></value></envar>
+    <envar><name>BKTYPE</name><value><cyclestr>0</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <taskdep task="&MAKE_LBCS_TN;"/>
+        <datadep age="00:00:05:00"><cyclestr offset="-3:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf003.nc</cyclestr></datadep>
+        <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
+      </and>
+    </dependency>
+
+  </task>
+{%- endif %}
+<!--
+************************************************************************
+************************************************************************
+-->
+{%- if do_dacycle %}
+  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast,dacycle" maxtries="1">
+{% else %}
   <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
+{% endif %}
 
     &RSRV_FCST;
     &WALL_LIMIT_FCST;
@@ -402,8 +495,16 @@ MODULES_RUN_TASK_FP script.
   
     <dependency>
       <and>
+        <or>
+  {%- if do_dacycle %}
+           <taskdep task="&ANAL_GSI_INPUT_TN;"/>
+           <taskdep task="&ANAL_GSI_RESTA_TN;"/>
+        </or>
+        <taskdep task="&MAKE_LBCS_TN;"/>
+  {% else %}
         <taskdep task="&MAKE_ICS_TN;{{ uscore_ensmem_name }}"/>
         <taskdep task="&MAKE_LBCS_TN;{{ uscore_ensmem_name }}"/>
+  {% endif %}
       </and>
     </dependency>
 
@@ -416,7 +517,11 @@ MODULES_RUN_TASK_FP script.
 
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
+{%- if do_dacycle %}
+    <task name="&RUN_POST_TN;{{ uscore_ensmem_name }}_f#fhr#" cycledefs="forecast,dacycle" maxtries="1">
+{% else %}
     <task name="&RUN_POST_TN;{{ uscore_ensmem_name }}_f#fhr#" cycledefs="forecast" maxtries="1">
+{% endif %}
 
       &RSRV_DEFAULT;
       &WALL_LIMIT_POST;
@@ -489,6 +594,8 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
+
+<!--
    <metatask mode="serial" name="&RUN_NCL_ZIP_TN;">
 
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
@@ -511,7 +618,6 @@ MODULES_RUN_TASK_FP script.
 
       <dependency>
         <or>
-        <!--  <taskdep state="Dead" task="&RUN_POST_TN;_#fhr#"/> -->
           <taskdep task="&RUN_NCL_TN;_#fhr#"/>
         </or>
       </dependency>
@@ -519,6 +625,7 @@ MODULES_RUN_TASK_FP script.
     </task>
 
    </metatask>
+-->
 
 <!--
 ************************************************************************
@@ -543,6 +650,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
+<!--
   <task name="&ARCHIVE_TN;" cycledefs="archive" maxtries="1">
 
     &RSRV_HPSS;
@@ -558,5 +666,6 @@ MODULES_RUN_TASK_FP script.
 
   </task>
 
+-->
 
 </workflow>
