@@ -798,9 +798,6 @@ failed.  Parameters passed to this script are:
     settings =
 $settings"
 
-# need to generate a namelist for da cycle
-cp_vrfy ${FV3_NML_FP} ${FV3_NML_RESTART_FP}
-
 #
 # If not running the MAKE_GRID_TN task (which implies the workflow will
 # use pregenerated grid files), set the namelist variables specifying
@@ -826,6 +823,33 @@ for the various ensemble members failed."
   fi
 
 fi
+
+# need to generate a namelist for da cycle
+settings="\
+'fv_core_nml': {
+    'external_ic': false,
+    'make_nh'    : false,
+    'na_init'    : 0,
+    'nggps_ic'   : false,
+    'no_dycore'  : true,
+    'warm_start' : true,
+  }"
+
+$USHDIR/set_namelist.py -q \
+                        -n ${FV3_NML_FP} \
+                        -u "$settings" \
+                        -o ${FV3_NML_RESTART_FP} || \
+  print_err_msg_exit "\
+Call to python script set_namelist.py to generate an FV3 namelist file
+failed.  Parameters passed to this script are:
+  Full path to base namelist file:
+    FV3_NML_BASE_SUITE_FP = \"${FV3_NML_BASE_SUITE_FP}\"
+  Full path to output namelist file for DA:
+    FV3_NML_RESTART_FP = \"${FV3_NML_RESTART_FP}\"
+  Namelist settings specified on command line:
+    settings =
+$settings"
+
 #
 #-----------------------------------------------------------------------
 #

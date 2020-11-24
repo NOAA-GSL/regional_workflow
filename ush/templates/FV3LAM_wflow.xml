@@ -279,9 +279,9 @@ MODULES_RUN_TASK_FP script.
     <dependency>
       <!-- Files through fhr 39 exist. -->
       <sh>
-        test $(find <cyclestr offset="-{{ extrn_mdl_lbcs_offset_hrs }}:00:00">{{ extrn_mdl_sysbasedir_lbcs }}/@Y@m@d@H/postprd</cyclestr> \
-               -name wrfnat_rr_[0-3][0-9].grib2 -mmin +5 | wc -l) \
-        == 40
+        test $(find <cyclestr offset="-{{ extrn_mdl_lbcs_offset_hrs }}:00:00">{{ extrn_mdl_sysbasedir_lbcs }}/@Y@m@d@H/postprd/</cyclestr> \
+               -name wrfnat_rr_[0-1][0-8].grib2 -mmin +5 | wc -l) \
+        == 18
       </sh>
     </dependency>
 
