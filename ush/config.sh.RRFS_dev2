@@ -1,6 +1,6 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
-EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2"
+EXPT_BASEDIR="/misc/whome/rtrr/RRFS"
 EXPT_SUBDIR="RRFS_dev2"
 
 QUEUE_DEFAULT="batch"
@@ -24,6 +24,7 @@ LBC_SPEC_INTVL_HRS="3"
 HALO_BLEND=10
 
 WTIME_RUN_FCST="02:15:00"
+WTIME_RUN_ANAL="00:25:00"
 
 DATE_FIRST_CYCL="20201120"
 DATE_LAST_CYCL="20201125"
@@ -56,8 +57,8 @@ MODEL="RRFS_dev2"
 RUN="RRFS_dev2"
 COMINgfs=""
 
-STMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/run/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/run/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)

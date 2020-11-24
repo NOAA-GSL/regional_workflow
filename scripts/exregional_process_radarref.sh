@@ -187,7 +187,6 @@ cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 #
 #-----------------------------------------------------------------------
 
-#HH=17
 NSSL=${OBSPATH_NSSLMOSIAC}
 mrms="MRMS_EXP_MergedReflectivityQC"
 echo "${MM0} ${MM1} ${MM2} ${MM3}"
@@ -286,9 +285,6 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-export KMP_AFFINITY=scatter
-export OMP_NUM_THREADS=1 #Needs to be 1 for dynamic build of CCPP with GFDL fast physics, was 2 before.
-export OMP_STACKSIZE=1024m
 #
 #-----------------------------------------------------------------------
 #
