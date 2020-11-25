@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 #
 #-----------------------------------------------------------------------
 #
@@ -843,10 +842,10 @@ $USHDIR/set_namelist.py -q \
                         -u "$settings" \
                         -o ${FV3_NML_RESTART_FP} || \
   print_err_msg_exit "\
-Call to python script set_namelist.py to generate an FV3 namelist file
+Call to python script set_namelist.py to generate an restart FV3 namelist file
 failed.  Parameters passed to this script are:
   Full path to base namelist file:
-    FV3_NML_BASE_SUITE_FP = \"${FV3_NML_BASE_SUITE_FP}\"
+    FV3_NML_FP = \"${FV3_NML_FP}\"
   Full path to output namelist file for DA:
     FV3_NML_RESTART_FP = \"${FV3_NML_RESTART_FP}\"
   Namelist settings specified on command line:

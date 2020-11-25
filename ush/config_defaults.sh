@@ -205,7 +205,7 @@ envir="para"
 RUN="experiment_name"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
 
-ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev2"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
 NCL_REGION="conus"
@@ -352,15 +352,20 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 # FCST_LEN_HRS:
 # The length of each forecast, in integer hours.
 #
+# DA_CYCLE_INTERV:
+# Data assimilation cycle interval
+#
+# RESTART_INTERVAL:
+# Set up how often or which forecast hours the restart files should be
+# generated. This need to match with DA_CYCLE_INTERV.
 #-----------------------------------------------------------------------
 #
 DATE_FIRST_CYCL="YYYYMMDD"
 DATE_LAST_CYCL="YYYYMMDD"
 CYCL_HRS=( "HH1" "HH2" )
-FCST_LEN_HRS="12"
-RESTA_INTERV="3,6"  # check this
+FCST_LEN_HRS="24"
 DA_CYCLE_INTERV="3"
-restart_interval="3,6"
+RESTART_INTERVAL="3,6"
 #
 #-----------------------------------------------------------------------
 #

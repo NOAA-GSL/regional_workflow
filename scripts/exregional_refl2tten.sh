@@ -112,14 +112,12 @@ case $MACHINE in
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
-#  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "JET")
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
-#  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "ODIN")
@@ -153,13 +151,13 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the subdirectory of the current cycle's run di-
+# Create a subdirectory in the current cycle's run di-
 # rectory for radar reflectivity process.
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating links in the subdirectory of the current cycle's run di-
+Creating a subdirectory in the current cycle's run di-
 rectory for radar reflectivity process ..."
 
 
@@ -187,7 +185,7 @@ if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # Use background from INPUT
   ln_vrfy -s ${bkpath}/sfc_data.tile7.halo0.nc      fv3_sfcdata
   ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_dynvars
   ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_tracer
-else
+else                                               # Use background from RESTART
   ln_vrfy -s ${bkpath}/fv_core.res.tile1.nc         fv3_dynvars
   ln_vrfy -s ${bkpath}/fv_tracer.res.tile1.nc       fv3_tracer
   ln_vrfy -s ${bkpath}/sfc_data.nc                  fv3_sfcdata
@@ -217,9 +215,7 @@ ln -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_01
 
 #-----------------------------------------------------------------------
 #
-# Create links to fix files in the FIXgsi directory.
-# Set fixed files
-#   BUFR_TABLE= bufr table for sst ONLY needed for sst retrieval (retrieval=.true.)
+# Create links to BUFR table, which needed for generate the BUFR file
 #
 #-----------------------------------------------------------------------
 BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
@@ -236,7 +232,7 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 #-----------------------------------------------------------------------
 #
-# Copy the GSI executable to the run directory.
+# Copy the executable to the run directory.
 #
 #-----------------------------------------------------------------------
 #
@@ -248,7 +244,7 @@ Copying the radar refl tten  executable to the run directory..."
   cp_vrfy ${EXEC} ${workdir}/ref2ttenfv3sar.exe
 else
   print_err_msg_exit "\
-The GSI executable specified in EXEC does not exist:
+The radar refl tten executable specified in EXEC does not exist:
   EXEC = \"$EXEC\"
 Build radar refl tten and rerun."
 fi
@@ -262,9 +258,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# Run the GSI.  Note that we have to launch the forecast from
-# the current cycle's run directory because the GSI executable will look
-# for input files in the current directory.
+# Run the application.  
 #
 #-----------------------------------------------------------------------
 #
