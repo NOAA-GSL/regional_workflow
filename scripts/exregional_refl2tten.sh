@@ -166,7 +166,7 @@ rectory for radar reflectivity process ..."
 workdir=${WORKDIR}
 cd_vrfy ${workdir}
 
-fixdir=$FIXgsi/$PREDEF_GRID_NAME
+fixdir=$FIXgsi
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
 pwd
 
@@ -236,7 +236,7 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/ref2ttenfv3sar.exe"
+EXEC="${EXECDIR}/ref2tten.exe"
 
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "

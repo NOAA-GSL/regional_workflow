@@ -167,7 +167,7 @@ rectory for radar reflectivity process ..."
 
 cd ${WORKDIR}
 
-fixdir=$FIXgsi/$PREDEF_GRID_NAME
+fixdir=$FIXgsi/
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
 
@@ -181,6 +181,7 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 FV3SARPATH=${CYCLE_DIR}
 cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 
+
 #
 # link observation files
 # copy observation files to working directory 
@@ -188,7 +189,8 @@ cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 #-----------------------------------------------------------------------
 
 NSSL=${OBSPATH_NSSLMOSIAC}
-mrms="MRMS_EXP_MergedReflectivityQC"
+## mrms="MRMS_EXP_MergedReflectivityQC"
+mrms="MRMS_MergedReflectivityQC"
 echo "${MM0} ${MM1} ${MM2} ${MM3}"
 
 # Link to the MRMS operational data

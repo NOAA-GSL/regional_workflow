@@ -195,6 +195,8 @@ settings="\
   'nnodes_run_fcst': ${NNODES_RUN_FCST}
   'nnodes_run_anal': ${NNODES_RUN_ANAL}
   'nnodes_run_post': ${NNODES_RUN_POST}
+  'nnodes_proc_radar': ${NNODES_PROC_RADAR}
+  'nnodes_run_ref2tten': ${NNODES_RUN_REF2TTEN}
 #
 # Number of cores used for a task
 #
@@ -215,6 +217,8 @@ settings="\
   'ppn_run_fcst': ${PPN_RUN_FCST}
   'ppn_run_anal': ${PPN_RUN_ANAL}
   'ppn_run_post': ${PPN_RUN_POST}
+  'ppn_proc_radar': ${PPN_PROC_RADAR}
+  'ppn_run_ref2tten': ${PPN_RUN_REF2TTEN}
 #
 # Maximum wallclock time for each task.
 #
@@ -228,6 +232,12 @@ settings="\
   'wtime_run_fcst': ${WTIME_RUN_FCST}
   'wtime_run_anal': ${WTIME_RUN_ANAL}
   'wtime_run_post': ${WTIME_RUN_POST}
+  'wtime_proc_radar': ${WTIME_PROC_RADAR}
+  'wtime_run_ref2tten': ${WTIME_RUN_REF2TTEN}
+#
+# Maximum memory for each task.
+#
+  'memo_run_ref2tten': ${MEMO_RUN_REF2TTEN}
 #
 # Flags that specify whether to run the preprocessing tasks.
 #
