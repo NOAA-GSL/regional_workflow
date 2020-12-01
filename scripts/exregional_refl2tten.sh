@@ -152,13 +152,13 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #-----------------------------------------------------------------------
 #
 # Create a subdirectory in the current cycle's run di-
-# rectory for radar reflectivity process.
+# rectory for radar tten process.
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
 Creating a subdirectory in the current cycle's run di-
-rectory for radar reflectivity process ..."
+rectory for radar tten process ..."
 
 
 # Create directory.
@@ -201,16 +201,6 @@ fi
 
 # Link to the radar binary data
 PROCESS_RADARREF_PATH=${CYCLE_DIR}/PROCESS_RADARREF
-#subhtimes="15 30 45 60"
-#count=1
-#for subhtime in ${subhtimes}; do
-#  if [ -r "${PROCESS_RADARREF_PATH}/RefInGSI3D.dat" ]; then
-#    ${LN} -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_0${count}
-#  else
-#    ${ECHO} "Warning ${PROCESS_RADARREF_PATH}/${subhtime}/RefInGSI3D.dat does not exist!"
-#  fi
-#  count=$((count + 1))
-#done
 ln -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_01
 
 #-----------------------------------------------------------------------
@@ -222,12 +212,6 @@ BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
 
 # Fixed fields
 cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
-
-#-----------------------------------------------------------------------
-#
-# Build namelist and run GSI
-#
-#-----------------------------------------------------------------------
 
 #
 #-----------------------------------------------------------------------
@@ -249,16 +233,11 @@ The radar refl tten executable specified in EXEC does not exist:
 Build radar refl tten and rerun."
 fi
 #
-#-----------------------------------------------------------------------
-#
-# Set and export variables.
-#
-#-----------------------------------------------------------------------
 #
 #
 #-----------------------------------------------------------------------
 #
-# Run the application.  
+# Run the radar to tten application.  
 #
 #-----------------------------------------------------------------------
 #
