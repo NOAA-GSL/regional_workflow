@@ -154,7 +154,6 @@ case $MACHINE in
   ulimit -a
   APRUN="srun"
   LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-#  NCKS=/apps/nco/4.9.1/intel/18.0.5.274/bin/ncks
   NCKS=/apps/nco/4.1.0-intel/bin/ncks
   ;;
 #
@@ -192,21 +191,13 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the INPUT subdirectory of the current cycle's run di-
-# rectory to the grid and (filtered) orography files.
+# go to working directory.
+# define fix and background path
 #
 #-----------------------------------------------------------------------
-#
-print_info_msg "$VERBOSE" "
-Creating links in the INPUT subdirectory of the current cycle's run di-
-rectory to the grid and (filtered) orography files ..."
-
-
-# Create directory.
 
 cd_vrfy ${ANALWORKDIR}
 
-#fixdir=$FIXgsi/$PREDEF_GRID_NAME
 fixdir=$FIXgsi
 if [ ${BKTYPE} -eq 1 ]; then  # Use background from INPUT
   bkpath=${CYCLE_DIR}/INPUT
@@ -218,7 +209,11 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 print_info_msg "$VERBOSE" "bkpath is $bkpath"
 
 
+#-----------------------------------------------------------------------
+#
 # Make a list of the latest GFS EnKF ensemble
+#
+#-----------------------------------------------------------------------
 
 stampcycle=`date -d "${START_DATE}" +%s`
 minHourDiff=100
@@ -248,13 +243,6 @@ for loop in $loops; do
     fi
   done
 done
-
-#EYYYYMMDD=$(echo ${availtime} | cut -c1-8)
-#EHH=$(echo ${availtime} | cut -c9-10)
-#${LS} ${ENKF_FCST}/${enkfcstname}.mem???.nemsio > filelist03
-
-# Check GDAS file size before creating file list
-#typeset -RZ3 n=002
 
 size=`du --apparent-size --block-size=1 --dereference ${ENKF_FCST}/${enkfcstname}.mem001.nemsio | grep -o '..........' | sed -n '1 p'`
 ls ${ENKF_FCST}/${enkfcstname}.mem001.nemsio > filelist03
@@ -293,8 +281,6 @@ ifsatbufr=.false.
 ifsoilnudge=.false.
 beta1_inv=1.0
 ifhyb=.false.
-#nummem=80
-#fv3sar_bg_type=0
 
 # Determine if hybrid option is available
 memname='atmf009'
@@ -339,7 +325,7 @@ else
 Restart hour should not larger than forecast hour:
     Restart Hour = \"${DA_CYCLE_INTERV}\"
     Forecast Hour = \"${FCST_LEN_HRS}\""    
-    exit
+    exit 1
   fi
 
   cp_vrfy  ${bkpath}/${restart_prefix}.fv_core.res.tile1.nc             fv3_dynvars
@@ -370,10 +356,6 @@ rm coupler.res.newY coupler.res.newM coupler.res.newD
 #
 #-----------------------------------------------------------------------
 
-#obsdir=${OBSPATH}/gfs.${YYYYMMDD}/${HH}
-#obs_file=${obsdir}/gfs.t${HH}z.prepbufr.nr
-#obs_file=${OBSPATH}/${YYYY}${JJJ}${HH}00.rap.t${HH}z.prepbufr.tm00.${YYYYMMDD}
-
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
 print_info_msg "$VERBOSE" "obsfile is $obs_file"
 if [ -r "${obs_file}" ]; then
@@ -382,7 +364,6 @@ else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
 
-#obs_file=${OBSPATH}/../satwnd/${YYYY}${JJJ}${HH}00.rap_e.t${HH}z.satwnd.tm00.bufr_d
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.satwnd.tm00.bufr_d
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "satwndbufr"
@@ -390,13 +371,12 @@ else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
 
-#obs_file=${OBSPATH}/../nexrad/${YYYY}${JJJ}${HH}00.rap.t${HH}z.nexrad.tm00.bufr_d
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.nexrad.tm00.bufr_d
-#if [ -r "${obs_file}" ]; then
-#  ln -s ${obs_file} l2rwbufr
-#else
-#   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-#fi
+if [ -r "${obs_file}" ]; then
+  ln -s ${obs_file} l2rwbufr
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
 
 #-----------------------------------------------------------------------
 #
@@ -439,10 +419,8 @@ cp_vrfy $OBERROR  errtable
 cp_vrfy $ATMS_BEAMWIDTH atms_beamwidth.txt
 
 # Get aircraft reject list and surface uselist
-#cp ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
 cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
 
-#sfcuselists=current_mesonet_uselist.txt
 sfcuselists=gsd_sfcobs_uselist.txt
 sfcuselists_path=${SFCOBS_USELIST}
 cp_vrfy ${sfcuselists_path}/${sfcuselists} gsd_sfcobs_uselist.txt
@@ -554,9 +532,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-export KMP_AFFINITY=scatter
-export OMP_NUM_THREADS=1 #Needs to be 1 for dynamic build of CCPP with GFDL fast physics, was 2 before.
-export OMP_STACKSIZE=1024m
+
 #
 #-----------------------------------------------------------------------
 #
