@@ -233,9 +233,7 @@ fi
 
 #-----------------------------------------------------------------------
 #
-# Create links to fix files in the FIXgsi directory.
-# Set fixed files
-#   BUFR_TABLE= bufr table for sst ONLY needed for sst retrieval (retrieval=.true.)
+# copy bufr table
 #
 #-----------------------------------------------------------------------
 BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
@@ -245,7 +243,7 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 
 #-----------------------------------------------------------------------
 #
-# Build namelist and run GSI
+# Build namelist and run executable 
 #
 #-----------------------------------------------------------------------
 
@@ -262,7 +260,7 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-# Copy the GSI executable to the run directory.
+# Copy the executable to the run directory.
 #
 #-----------------------------------------------------------------------
 #
@@ -274,23 +272,15 @@ Copying the radar process  executable to the run directory..."
   cp_vrfy ${EXEC} ${WORKDIR}/process_NSSL_mosaic.exe
 else
   print_err_msg_exit "\
-The GSI executable specified in GSI_EXEC does not exist:
-  GSI_EXEC = \"$EXEC\"
+The executable specified in GSI_EXEC does not exist:
+  EXEC = \"$EXEC\"
 Build radar process and rerun."
 fi
 #
-#-----------------------------------------------------------------------
-#
-# Set and export variables.
 #
 #-----------------------------------------------------------------------
 #
-#
-#-----------------------------------------------------------------------
-#
-# Run the GSI.  Note that we have to launch the forecast from
-# the current cycle's run directory because the GSI executable will look
-# for input files in the current directory.
+# Run the process.
 #
 #-----------------------------------------------------------------------
 #
