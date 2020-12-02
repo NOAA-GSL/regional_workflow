@@ -353,11 +353,11 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 # The length of each forecast, in integer hours.
 #
 # DA_CYCLE_INTERV:
-# Data assimilation cycle interval
+# Data assimilation cycle interval, in integer hours for now.
 #
 # RESTART_INTERVAL:
-# Set up how often or which forecast hours the restart files should be
-# generated. This need to match with DA_CYCLE_INTERV.
+# Set up frequenency or list of the forecast hours that FV3 should
+# generate the restart files. The numbers need to match with DA_CYCLE_INTERV.
 #-----------------------------------------------------------------------
 #
 DATE_FIRST_CYCL="YYYYMMDD"

@@ -153,17 +153,12 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the subdirectory of the current cycle's run di-
-# rectory for radar reflectivity process.
+# Get into working directory
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating links in the subdirectory of the current cycle's run di-
-rectory for radar reflectivity process ..."
-
-
-# Create directory.
+Getting into working directory for radar reflectivity process ..."
 
 cd ${WORKDIR}
 
@@ -182,8 +177,9 @@ FV3SARPATH=${CYCLE_DIR}
 cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 
 #
-# link observation files
-# copy observation files to working directory 
+#-----------------------------------------------------------------------
+#
+# link/copy observation files to working directory 
 #
 #-----------------------------------------------------------------------
 
@@ -233,12 +229,11 @@ fi
 
 #-----------------------------------------------------------------------
 #
-# copy bufr table
+# copy bufr table from fix directory
 #
 #-----------------------------------------------------------------------
 BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
 
-# Fixed fields
 cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 
 #-----------------------------------------------------------------------

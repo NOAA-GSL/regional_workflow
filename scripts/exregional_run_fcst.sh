@@ -329,12 +329,12 @@ of the current run directory (run_dir), where
   run_dir = \"${run_dir}\"
 ..."
 
-BKTYPE=1    # use INPUT
+BKTYPE=1    # cold start using INPUT
 if [ -r ${CYCLE_DIR}/INPUT/fv_tracer.res.tile1.nc ]; then
-  BKTYPE=0  # use RESTART
+  BKTYPE=0  # cycling using RESTART
 fi
 print_info_msg "$VERBOSE" "
-The forecast has BKTYPE $BKTYPE (1:cold start ; 2 cycling)"
+The forecast has BKTYPE $BKTYPE (1:cold start ; 0 cycling)"
 
 cd_vrfy ${run_dir}/INPUT
 #ln_vrfy -sf gfs_data.tile${TILE_RGNL}.halo${NH0}.nc gfs_data.nc
@@ -454,9 +454,11 @@ ln_vrfy -sf ${relative_or_null} ${NEMS_CONFIG_FP} ${run_dir}
 if [ "${DO_ENSEMBLE}" = TRUE ]; then
   ln_vrfy -sf ${relative_or_null} "${FV3_NML_ENSMEM_FPS[$(( 10#${ensmem_indx}-1 ))]}" ${run_dir}/${FV3_NML_FN}
 else
-  if [ ${BKTYPE} -eq 0 ]; then  # RESTART
+  if [ ${BKTYPE} -eq 0 ]; then 
+# cycling, using namelist for cycling forecast
     ln_vrfy -sf ${relative_or_null} ${FV3_NML_RESTART_FP} ${run_dir}/input.nml
   else
+# cold start, using namelist for cold start
     ln_vrfy -sf ${relative_or_null} ${FV3_NML_FP} ${run_dir}
   fi
 fi

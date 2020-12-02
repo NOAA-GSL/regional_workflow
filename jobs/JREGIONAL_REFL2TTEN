@@ -1,14 +1,11 @@
 #!/bin/bash
 
-#
 #-----------------------------------------------------------------------
 #
-# This script copies files from various directories into the experiment
-# directory, creates links to some of them, and modifies others (e.g. 
-# templates) to customize them for the current experiment setup.
+# This J-JOB script runs the ref2tten (reflectivity to temperature tendency)
+#      for the FV3-LAM model
 #
 #-----------------------------------------------------------------------
-#
 
 #
 #-----------------------------------------------------------------------
@@ -52,13 +49,13 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the J-job script for the task that runs a analysis with FV3 for 
+This is the J-job script for the task that runs a ref2tten with FV3 for 
 the specified cycle.
 ========================================================================"
 #
 #-----------------------------------------------------------------------
 #
-# Create the INPUT and RESTART directories under the cycle directory.
+# Create the working directory under the cycle directory.
 #
 #-----------------------------------------------------------------------
 #

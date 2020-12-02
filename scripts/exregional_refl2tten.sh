@@ -151,17 +151,12 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #
 #-----------------------------------------------------------------------
 #
-# Create a subdirectory in the current cycle's run di-
-# rectory for radar tten process.
+# Get into working directory and define fix directory
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating a subdirectory in the current cycle's run di-
-rectory for radar tten process ..."
-
-
-# Create directory.
+Getting into working directory for radar tten process ..."
 
 workdir=${WORKDIR}
 cd_vrfy ${workdir}
@@ -173,7 +168,7 @@ pwd
 #
 #-----------------------------------------------------------------------
 #
-# link or copy background files
+# link or copy background and grid configuration files
 #
 #-----------------------------------------------------------------------
 

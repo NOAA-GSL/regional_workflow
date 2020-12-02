@@ -3,12 +3,10 @@
 #
 #-----------------------------------------------------------------------
 #
-# This script copies files from various directories into the experiment
-# directory, creates links to some of them, and modifies others (e.g. 
-# templates) to customize them for the current experiment setup.
+# This J-JOB script runs the GSI analysis 
+#      for the FV3-LAM model
 #
 #-----------------------------------------------------------------------
-#
 
 #
 #-----------------------------------------------------------------------
@@ -58,7 +56,7 @@ the specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-# Create the INPUT and RESTART directories under the cycle directory.
+# Create the working directory under the cycle directory.
 #
 #-----------------------------------------------------------------------
 #

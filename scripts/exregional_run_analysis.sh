@@ -199,10 +199,10 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 cd_vrfy ${ANALWORKDIR}
 
 fixdir=$FIXgsi
-if [ ${BKTYPE} -eq 1 ]; then  # Use background from INPUT
+if [ ${BKTYPE} -eq 1 ]; then  # cold start, use background from INPUT
   bkpath=${CYCLE_DIR}/INPUT
 else
-  bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/RESTART
+  bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/RESTART  # cycling, use background from RESTART
 fi
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
@@ -297,7 +297,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# link or copy background files
+# link or copy background and grib configuration files
 #
 #-----------------------------------------------------------------------
 
@@ -335,7 +335,7 @@ Restart hour should not larger than forecast hour:
   fv3sar_bg_type=0
 fi
 
-# analysis time
+# update times in coupler.res to current cycle time
 cp_vrfy ${fixdir}/fv3_coupler.res                        coupler.res.tmp
 cat coupler.res.tmp  | sed "s/yyyy/${YYYY}/" > coupler.res.newY
 cat coupler.res.newY | sed "s/mm/${MM}/"     > coupler.res.newM
@@ -344,7 +344,7 @@ cat coupler.res.newD | sed "s/hh/${HH}/"     > coupler.res.newH
 mv coupler.res.newH coupler.res
 rm coupler.res.newY coupler.res.newM coupler.res.newD
 
-# add radar tten array
+# This is how to add radar tten array in the first time:
 #cp_vrfy ${USHDIR}/addtten.py                        addtten.py 
 #/scratch1/BMC/wrfruc/Samuel.Trahan/soft/anaconda2-5.3.1/bin/python3.7 addtten.py fv3_tracer
 #python addtten.py fv3_tracer
@@ -460,8 +460,6 @@ ln -s $cldcoef  ./CloudCoeff.bin
 
 # Copy CRTM coefficient files based on entries in satinfo file
 for file in `awk '{if($1!~"!"){print $1}}' ./satinfo | sort | uniq` ;do
-#   ln_vrfy -sf -t ${CRTMFIX}/${file}.SpcCoeff.bin  .
-#   ln_vrfy -sf -t ${CRTMFIX}/${file}.TauCoeff.bin  .
    ln -s ${CRTMFIX}/${file}.SpcCoeff.bin ./
    ln -s ${CRTMFIX}/${file}.TauCoeff.bin ./
 done
@@ -554,10 +552,10 @@ Call to executable to run GSI returned with nonzero exit code."
 #-----------------------------------------------------------------------
 #
 
-if [ ${BKTYPE} -eq 1 ]; then  # INPUT 
+if [ ${BKTYPE} -eq 1 ]; then  # cold start, put analysis back to current INPUT 
   cp ${ANALWORKDIR}/fv3_dynvars ${CYCLE_DIR}/INPUT/gfs_data.tile7.halo0.nc
   cp ${ANALWORKDIR}/fv3_sfcdata ${CYCLE_DIR}/INPUT/sfc_data.tile7.halo0.nc
-else                          # RESTART
+else                          # cycling, generate INPUT from previous cycle RESTART and GSI analysis
   cp_vrfy ${bkpath}/${restart_prefix}.coupler.res               ${CYCLE_DIR}/INPUT/coupler.res
   cp_vrfy ${bkpath}/${restart_prefix}.fv_core.res.nc            ${CYCLE_DIR}/INPUT/fv_core.res.nc
   cp_vrfy ${bkpath}/${restart_prefix}.fv_srf_wnd.res.tile1.nc   ${CYCLE_DIR}/INPUT/fv_srf_wnd.res.tile1.nc
