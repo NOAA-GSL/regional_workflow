@@ -1145,6 +1145,8 @@ RUN_POST_TN="run_post"
 ANAL_GSI_INPUT_TN="anal_gsi_input"
 ANAL_GSI_RESTA_TN="anal_gsi_resta"
 PROCESS_RADAR_REF_TN="process_radarref"
+PROCESS_LIGHTNING_TN="process_lightning"
+PROCESS_BUFR_TN="process_bufr"
 RADAR_REFL2TTEN_TN="radar_refl2tten"
 #
 # Number of nodes.
@@ -1160,6 +1162,8 @@ NNODES_RUN_FCST=""  # This is calculated in the workflow generation scripts, so 
 NNODES_RUN_POST="2"
 NNODES_RUN_ANAL="16"
 NNODES_PROC_RADAR="2"
+NNODES_PROC_LIGHTNING="1"
+NNODES_PROC_BUFR="1"
 NNODES_RUN_REF2TTEN="1"
 #
 # Number of MPI processes per node.
@@ -1175,6 +1179,8 @@ PPN_RUN_FCST="24"  # This may have to be changed depending on the number of thre
 PPN_RUN_POST="24"
 PPN_RUN_ANAL="24"
 PPN_PROC_RADAR="24"
+PPN_PROC_LIGHTNING="1"
+PPN_PROC_BUFR="1"
 PPN_RUN_REF2TTEN="1"
 #
 # Walltimes.
@@ -1190,6 +1196,8 @@ WTIME_RUN_FCST="04:30:00"
 WTIME_RUN_POST="00:15:00"
 WTIME_RUN_ANAL="00:30:00"
 WTIME_PROC_RADAR="00:10:00"
+WTIME_PROC_LIGHTNING="00:10:00"
+WTIME_PROC_BUFR="00:10:00"
 WTIME_RUN_REF2TTEN="00:10:00"
 #
 # Memory.

@@ -42,7 +42,7 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the ex-script for the task that runs lightning preprocess
+This is the ex-script for the task that runs bufr (cloud, metar, lightning) preprocess
 with FV3 for the specified cycle.
 ========================================================================"
 #
@@ -186,62 +186,6 @@ cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
 
 
-#
-# Link to the NLDN data
-#
-#-----------------------------------------------------------------------
-filenum=0
-LIGHTNING_FILE=${LIGHTNING_ROOT}/vaisala/netcdf
-if [ -r "${LIGHTNING_FILE}/${YYJJJHH}050005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${YYJJJHH}050005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${YYJJJHH}050005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${YYJJJHH}000005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${YYJJJHH}000005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${YYJJJHH}000005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}550005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}550005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}550005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}500005r" ]; then
-  ((filenum += 1 ))
-  ls ${LIGHTNING_FILE}/${PREYYJJJHH}500005r
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}500005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}500005r does not exist"
-fi
-if [ ! 0 ] ; then
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}450005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}450005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}450005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}400005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}400005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}400005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}350005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}350005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}350005r does not exist"
-fi
-fi
-
-echo "found GLD360 files: ${filenum}"
-
-
-
 #-----------------------------------------------------------------------
 #
 #   copy bufr table
@@ -254,15 +198,30 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 
 #-----------------------------------------------------------------------
 #
+# Link to the observation bufr files
+#
+#-----------------------------------------------------------------------
+
+obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lghtng.tm00.bufr_d
+print_info_msg "$VERBOSE" "obsfile is $obs_file"
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "lghtngbufr"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
+
+#-----------------------------------------------------------------------
+#
 # Build namelist and run executable
 #
 #-----------------------------------------------------------------------
 
-cat << EOF > lightning.namelist
+cat << EOF > lightning_bufr.namelist
  &setup
   analysis_time = ${YYYYMMDDHH},
-  NLDN_filenum  = ${filenum},
-  IfAlaska    = false,
+  minute=00,
+  trange_start=-10,
+  trange_end=10,
   bkversion=1,
  /
 
@@ -275,12 +234,12 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_Lightning_nc.exe"
+EXEC="${EXECDIR}/process_Lightning_bufr.exe"
 
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_nc.exe
+  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_bufr.exe
 else
   print_err_msg_exit "\
 The executable specified in EXEC does not exist:
@@ -295,8 +254,8 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_Lightning_nc.exe < lightning.namelist > stdout 2>&1 || print_err_msg_exit "\
-Call to executable to run radar refl process returned with nonzero exit code."
+$APRUN ./process_Lightning_bufr.exe > stdout 2>&1 || print_err_msg_exit "\
+Call to executable to run lightning process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------
 #
@@ -306,7 +265,7 @@ Call to executable to run radar refl process returned with nonzero exit code."
 #
 print_info_msg "
 ========================================================================
-LIGHTNING PROCESS completed successfully!!!
+BUFR PROCESS completed successfully!!!
 
 Exiting script:  \"${scrfunc_fn}\"
 In directory:    \"${scrfunc_dir}\"

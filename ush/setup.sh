@@ -2553,6 +2553,7 @@ FV3_NML_ENSMEM_FPS=( $( printf "\"%s\" " "${FV3_NML_ENSMEM_FPS[@]}" ))
 # for data assimilation
 OBSPATH="/public/data/grids/rap/obs"
 OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
+LIGHTNING_ROOT="/public/data/lightning"
 ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm_v15"
 
 FIXgsi="${FIXrrfs}/fix_gsi"
