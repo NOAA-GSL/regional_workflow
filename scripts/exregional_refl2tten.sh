@@ -202,6 +202,7 @@ fi
 # Link to the radar binary data
 PROCESS_RADARREF_PATH=${CYCLE_DIR}/PROCESS_RADARREF
 ln -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_01
+PROCESS_LIGHTNING_PATH=${CYCLE_DIR}/process_lightning
 ln -s ${PROCESS_LIGHTNING_PATH}/LightningInFV3LAM.dat ./LightningInGSI.dat_01
 
 #-----------------------------------------------------------------------
