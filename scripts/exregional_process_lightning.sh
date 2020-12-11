@@ -157,17 +157,12 @@ PREYYJJJHH=`date +"%y%j%H" -d "${START_DATE} 1 hours ago"`
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the subdirectory of the current cycle's run di-
-# rectory for radar reflectivity process.
+# Get into working directory
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating links in the subdirectory of the current cycle's run di-
-rectory for lightning  process ..."
-
-
-# Create directory.
+Getting into working directory for lightning process ..."
 
 cd ${WORKDIR}
 
@@ -244,12 +239,11 @@ echo "found GLD360 files: ${filenum}"
 
 #-----------------------------------------------------------------------
 #
-#   copy bufr table
+# copy bufr table from fix directory
 #
 #-----------------------------------------------------------------------
 BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
 
-# Fixed fields
 cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 
 #-----------------------------------------------------------------------
