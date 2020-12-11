@@ -42,7 +42,7 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the ex-script for the task that generates radar reflectivity tten
+This is the ex-script for the task that runs bufr (cloud, metar, lightning) preprocess
 with FV3 for the specified cycle.
 ========================================================================"
 #
@@ -112,12 +112,14 @@ case $MACHINE in
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
+  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "JET")
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
+  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "ODIN")
@@ -140,75 +142,90 @@ esac
 #
 set -x
 START_DATE=`echo "${CDATE}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
-YYYYMMDDHH=`date +%Y%m%d%H -d "${START_DATE}"`
-JJJ=`date +%j -d "${START_DATE}"`
+  YYYYMMDDHH=`date +%Y%m%d%H -d "${START_DATE}"`
+  JJJ=`date +%j -d "${START_DATE}"`
 
 YYYY=${YYYYMMDDHH:0:4}
 MM=${YYYYMMDDHH:4:2}
 DD=${YYYYMMDDHH:6:2}
 HH=${YYYYMMDDHH:8:2}
 YYYYMMDD=${YYYYMMDDHH:0:8}
+
+YYJJJHH=`date +"%y%j%H" -d "${START_DATE}"`
+PREYYJJJHH=`date +"%y%j%H" -d "${START_DATE} 1 hours ago"`
+
 #
 #-----------------------------------------------------------------------
 #
-# Get into working directory and define fix directory
+# Create links in the subdirectory of the current cycle's run di-
+# rectory for radar reflectivity process.
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Getting into working directory for radar tten process ..."
+Creating links in the subdirectory of the current cycle's run di-
+rectory for lightning  process ..."
 
-workdir=${WORKDIR}
-cd_vrfy ${workdir}
 
-fixdir=$FIXgsi
+# Create directory.
+
+cd ${WORKDIR}
+
+fixdir=$FIXgsi/
+
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
-pwd
 
 #
 #-----------------------------------------------------------------------
 #
-# link or copy background and grid configuration files
+# link or copy background files
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_akbk                               fv3_akbk
-cp_vrfy ${fixdir}/fv3_grid_spec                          fv3_grid_spec
+cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
+cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
 
-bkpath=${CYCLE_DIR}/INPUT
-if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # Use background from INPUT
-  ln_vrfy -s ${bkpath}/sfc_data.tile7.halo0.nc      fv3_sfcdata
-  ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_dynvars
-  ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_tracer
-else                                               # Use background from RESTART
-  ln_vrfy -s ${bkpath}/fv_core.res.tile1.nc         fv3_dynvars
-  ln_vrfy -s ${bkpath}/fv_tracer.res.tile1.nc       fv3_tracer
-  ln_vrfy -s ${bkpath}/sfc_data.nc                  fv3_sfcdata
-fi
-
-#
-#-----------------------------------------------------------------------
-#
-# link observation files
-# copy observation files to working directory 
-#
-#-----------------------------------------------------------------------
-
-# Link to the radar binary data
-PROCESS_RADARREF_PATH=${CYCLE_DIR}/PROCESS_RADARREF
-ln -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_01
-PROCESS_LIGHTNING_PATH=${CYCLE_DIR}/process_lightning
-ln -s ${PROCESS_LIGHTNING_PATH}/LightningInFV3LAM.dat ./LightningInGSI.dat_01
 
 #-----------------------------------------------------------------------
 #
-# Create links to BUFR table, which needed for generate the BUFR file
+#   copy bufr table
 #
 #-----------------------------------------------------------------------
 BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
 
 # Fixed fields
 cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
+
+#-----------------------------------------------------------------------
+#
+# Link to the observation bufr files
+#
+#-----------------------------------------------------------------------
+
+obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lghtng.tm00.bufr_d
+print_info_msg "$VERBOSE" "obsfile is $obs_file"
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "lghtngbufr"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
+
+#-----------------------------------------------------------------------
+#
+# Build namelist and run executable
+#
+#-----------------------------------------------------------------------
+
+cat << EOF > lightning_bufr.namelist
+ &setup
+  analysis_time = ${YYYYMMDDHH},
+  minute=00,
+  trange_start=-10,
+  trange_end=10,
+  bkversion=1,
+ /
+
+EOF
 
 #
 #-----------------------------------------------------------------------
@@ -217,30 +234,28 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/ref2tten.exe"
+EXEC="${EXECDIR}/process_Lightning_bufr.exe"
 
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
-Copying the radar refl tten  executable to the run directory..."
-  cp_vrfy ${EXEC} ${workdir}/ref2ttenfv3sar.exe
+Copying the lightning process  executable to the run directory..."
+  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_bufr.exe
 else
   print_err_msg_exit "\
-The radar refl tten executable specified in EXEC does not exist:
+The executable specified in EXEC does not exist:
   EXEC = \"$EXEC\"
-Build radar refl tten and rerun."
+Build lightning process and rerun."
 fi
 #
 #
+#-----------------------------------------------------------------------
+#
+# Run the process
 #
 #-----------------------------------------------------------------------
 #
-# Run the radar to tten application.  
-#
-#-----------------------------------------------------------------------
-#
-$APRUN ./ref2ttenfv3sar.exe > stdout 2>&1 || print_err_msg_exit "\
-Call to executable to run radar refl tten returned with nonzero exit code."
-
+$APRUN ./process_Lightning_bufr.exe > stdout 2>&1 || print_err_msg_exit "\
+Call to executable to run lightning process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------
 #
@@ -250,7 +265,7 @@ Call to executable to run radar refl tten returned with nonzero exit code."
 #
 print_info_msg "
 ========================================================================
-RADAR REFL TTEN PROCESS completed successfully!!!
+BUFR PROCESS completed successfully!!!
 
 Exiting script:  \"${scrfunc_fn}\"
 In directory:    \"${scrfunc_dir}\"
