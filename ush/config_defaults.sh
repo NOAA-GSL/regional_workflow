@@ -1148,6 +1148,7 @@ PROCESS_RADAR_REF_TN="process_radarref"
 PROCESS_LIGHTNING_TN="process_lightning"
 PROCESS_BUFR_TN="process_bufr"
 RADAR_REFL2TTEN_TN="radar_refl2tten"
+CLDANA_NOVAR_TN="cldana_novar"
 #
 # Number of nodes.
 #
@@ -1165,6 +1166,7 @@ NNODES_PROC_RADAR="2"
 NNODES_PROC_LIGHTNING="1"
 NNODES_PROC_BUFR="1"
 NNODES_RUN_REF2TTEN="1"
+NNODES_RUN_NOVARCLDANA="1"
 #
 # Number of MPI processes per node.
 #
@@ -1182,6 +1184,7 @@ PPN_PROC_RADAR="24"
 PPN_PROC_LIGHTNING="1"
 PPN_PROC_BUFR="1"
 PPN_RUN_REF2TTEN="1"
+PPN_RUN_NOVARCLDANA="1"
 #
 # Walltimes.
 #
@@ -1199,10 +1202,12 @@ WTIME_PROC_RADAR="00:10:00"
 WTIME_PROC_LIGHTNING="00:10:00"
 WTIME_PROC_BUFR="00:10:00"
 WTIME_RUN_REF2TTEN="00:10:00"
+WTIME_RUN_NOVARCLDANA="00:20:00"
 #
 # Memory.
 #
 MEMO_RUN_REF2TTEN="10G"
+MEMO_RUN_NOVARCLDANA="15G"
 
 #
 #-----------------------------------------------------------------------

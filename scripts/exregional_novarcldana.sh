@@ -42,7 +42,7 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the ex-script for the task that runs bufr (cloud, metar, lightning) preprocess
+This is the ex-script for the task that generates radar reflectivity tten
 with FV3 for the specified cycle.
 ========================================================================"
 #
@@ -112,14 +112,12 @@ case $MACHINE in
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
-  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "JET")
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
-  LD_LIBRARY_PATH="${UFS_WTHR_MDL_DIR}/FV3/ccpp/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   ;;
 #
 "ODIN")
@@ -142,92 +140,123 @@ esac
 #
 set -x
 START_DATE=`echo "${CDATE}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
-  YYYYMMDDHH=`date +%Y%m%d%H -d "${START_DATE}"`
-  JJJ=`date +%j -d "${START_DATE}"`
+YYYYMMDDHH=`date +%Y%m%d%H -d "${START_DATE}"`
+JJJ=`date +%j -d "${START_DATE}"`
 
 YYYY=${YYYYMMDDHH:0:4}
 MM=${YYYYMMDDHH:4:2}
 DD=${YYYYMMDDHH:6:2}
 HH=${YYYYMMDDHH:8:2}
 YYYYMMDD=${YYYYMMDDHH:0:8}
-
-YYJJJHH=`date +"%y%j%H" -d "${START_DATE}"`
-PREYYJJJHH=`date +"%y%j%H" -d "${START_DATE} 1 hours ago"`
-
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the subdirectory of the current cycle's run di-
-# rectory for radar reflectivity process.
+# Get into working directory and define fix directory
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating links in the subdirectory of the current cycle's run di-
-rectory for lightning  process ..."
+Getting into working directory for radar tten process ..."
 
+workdir=${WORKDIR}
+cd_vrfy ${workdir}
 
-# Create directory.
-
-cd ${WORKDIR}
-
-fixdir=$FIXgsi/
-
+fixdir=$FIXgsi
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+pwd
 
 #
 #-----------------------------------------------------------------------
 #
-# link or copy background files
+# link or copy background and grid configuration files
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
-cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
+cp_vrfy ${fixdir}/fv3_akbk                               fv3_akbk
+cp_vrfy ${fixdir}/fv3_grid_spec                          fv3_grid_spec
 
+bkpath=${CYCLE_DIR}/INPUT
+if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # Use background from INPUT
+  ln_vrfy -s ${bkpath}/sfc_data.tile7.halo0.nc      fv3_sfcdata
+  ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_dynvars
+  ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_tracer
+else                                               # Use background from RESTART
+  ln_vrfy -s ${bkpath}/fv_core.res.tile1.nc         fv3_dynvars
+  ln_vrfy -s ${bkpath}/fv_tracer.res.tile1.nc       fv3_tracer
+  ln_vrfy -s ${bkpath}/sfc_data.nc                  fv3_sfcdata
+fi
 
-#-----------------------------------------------------------------------
-#
-#   copy bufr table
-#
-#-----------------------------------------------------------------------
-BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
-
-# Fixed fields
-cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
-
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#
-# Link to the observation lightning bufr files
 #
 #-----------------------------------------------------------------------
+#
+# link/copy observation files to working directory
+#
+#-----------------------------------------------------------------------
 
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lghtng.tm00.bufr_d
-print_info_msg "$VERBOSE" "obsfile is $obs_file"
+PROCESS_BUFR_PATH=${CYCLE_DIR}/process_bufr
+
+obs_file=${PROCESS_BUFR_PATH}/LightningInFV3LAM.dat
 if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "lghtngbufr"
+   cp_vrfy "${obs_file}" "LightningInFV3LAM.dat"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
+
+obs_file=${PROCESS_BUFR_PATH}/NASALaRC_cloud4fv3.bin
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "NASALaRC_cloud4fv3.bin"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
+
+obs_file=${PROCESS_BUFR_PATH}/fv3_metarcloud.bin
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "fv3_metarcloud.bin"
 else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
 
 #-----------------------------------------------------------------------
 #
-# Build namelist and run executable for lightning
+# Build namelist 
 #
 #-----------------------------------------------------------------------
 
-cat << EOF > lightning_bufr.namelist
- &setup
-  analysis_time = ${YYYYMMDDHH},
-  minute=00,
-  trange_start=-10,
-  trange_end=10,
-  bkversion=1,
- /
+cat << EOF > gsiparm.anl
 
+ &SETUP
+  iyear=${YYYY},
+  imonth=${MM},
+  iday=${DD},
+  ihour=${HH},
+  iminute=00,
+ /
+ &RAPIDREFRESH_CLDSURF
+   dfi_radar_latent_heat_time_period=20.0,
+   metar_impact_radius=10.0,
+   metar_impact_radius_lowCloud=4.0,
+   l_pw_hgt_adjust=.true.,
+   l_limit_pw_innov=.true.,
+   max_innov_pct=0.1,
+   l_cleanSnow_WarmTs=.true.,
+   r_cleanSnow_WarmTs_threshold=5.0,
+   l_conserve_thetaV=.true.,
+   i_conserve_thetaV_iternum=3,
+   l_cld_bld=.true.,
+   l_numconc=.true.,
+   cld_bld_hgt=1200.0,
+   build_cloud_frac_p=0.50,
+   clear_cloud_frac_p=0.10,
+   iclean_hydro_withRef_allcol=1,
+   i_gsdcldanal_type=6,
+   i_gsdsfc_uselist=1,
+   i_lightpcp=1,
+   i_gsdqc=2,
+   l_saturate_bkCloud=.true.,
+ /
 EOF
+
+
 
 #
 #-----------------------------------------------------------------------
@@ -236,155 +265,31 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_Lightning_bufr.exe"
+EXEC="${EXECDIR}/fv3sar_novarcldana.exe"
 
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
-Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_bufr.exe
+Copying the noVar Cloud Analysis executable to the run directory..."
+  cp_vrfy ${EXEC} ${workdir}/fv3sar_novarcldana.exe
 else
   print_err_msg_exit "\
 The executable specified in EXEC does not exist:
   EXEC = \"$EXEC\"
-Build lightning process and rerun."
+Build executable and rerun."
 fi
 #
 #
-#-----------------------------------------------------------------------
-#
-# Run the process for lightning bufr file 
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_Lightning_bufr.exe > stdout_lightning_bufr 2>&1 || print_err_msg_exit "\
-Call to executable to run lightning process returned with nonzero exit code."
-
-
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#
-# Link to the observation NASA LaRC cloud bufr file
+# Run the radar to tten application.  
 #
 #-----------------------------------------------------------------------
-
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lgycld.tm00.bufr_d
-print_info_msg "$VERBOSE" "obsfile is $obs_file"
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "NASA_LaRC_cloud.bufr"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
-
-#-----------------------------------------------------------------------
 #
-# Build namelist and run executable for NASA LaRC cloud
-#
-#-----------------------------------------------------------------------
-
-cat << EOF > namelist_nasalarc
- &setup
-  analysis_time = ${YYYYMMDDHH},
-  bufrfile='NASALaRCCloudInGSI_bufr.bufr',
-  npts_rad=1,
-  ioption = 2,
-  bkversion=1,
- /
-EOF
+$APRUN ./fv3sar_novarcldana.exe > stdout 2>&1 || print_err_msg_exit "\
+Call to executable to run No Var Cloud Analysis returned with nonzero exit code."
 
 #
-#-----------------------------------------------------------------------
-#
-# Copy the executable to the run directory.
-#
-#-----------------------------------------------------------------------
-#
-EXEC="${EXECDIR}/process_larccld.exe"
-
-if [ -f $EXEC ]; then
-  print_info_msg "$VERBOSE" "
-Copying the NASA LaRC cloud process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_larccld.exe
-else
-  print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
-Build lightning process and rerun."
-fi
-#
-#
-#-----------------------------------------------------------------------
-#
-# Run the process for NASA LaRc cloud  bufr file 
-#
-#-----------------------------------------------------------------------
-#
-$APRUN ./process_larccld.exe > stdout_nasalarc 2>&1 || print_err_msg_exit "\
-Call to executable to run NASA LaRC Cloud process returned with nonzero exit code."
-
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
-#
-# Link to the observation prepbufr bufr file for METAR cloud
-#
-#-----------------------------------------------------------------------
-
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00 
-print_info_msg "$VERBOSE" "obsfile is $obs_file"
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "prepbufr"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
-
-#-----------------------------------------------------------------------
-#
-# Build namelist for METAR cloud
-#
-#-----------------------------------------------------------------------
-
-cat << EOF > namelist_metarcld
- &setup
-  analysis_time = ${YYYYMMDDHH},
-  prepbufrfile='prepbufr',
-  twindin=0.5,
- /
-EOF
-
-#
-#-----------------------------------------------------------------------
-#
-# Copy the executable to the run directory.
-#
-#-----------------------------------------------------------------------
-#
-EXEC="${EXECDIR}/process_metarcld.exe"
-
-if [ -f $EXEC ]; then
-  print_info_msg "$VERBOSE" "
-Copying the METAR cloud process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_metarcld.exe
-else
-  print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
-Build lightning process and rerun."
-fi
-#
-#
-#-----------------------------------------------------------------------
-#
-# Run the process for METAR cloud bufr file 
-#
-#-----------------------------------------------------------------------
-#
-$APRUN ./process_metarcld.exe > stdout_metarcld 2>&1 || print_err_msg_exit "\
-Call to executable to run METAR cloud process returned with nonzero exit code."
-
-#
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #
 # Print message indicating successful completion of script.
@@ -393,7 +298,7 @@ Call to executable to run METAR cloud process returned with nonzero exit code."
 #
 print_info_msg "
 ========================================================================
-BUFR PROCESS completed successfully!!!
+RADAR REFL TTEN PROCESS completed successfully!!!
 
 Exiting script:  \"${scrfunc_fn}\"
 In directory:    \"${scrfunc_dir}\"

@@ -189,16 +189,25 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# link observation files
-# copy observation files to working directory 
+# link/copy observation files to working directory
 #
 #-----------------------------------------------------------------------
-
-# Link to the radar binary data
 PROCESS_RADARREF_PATH=${CYCLE_DIR}/PROCESS_RADARREF
-ln -s ${PROCESS_RADARREF_PATH}/RefInGSI3D.dat ./RefInGSI3D.dat_01
 PROCESS_LIGHTNING_PATH=${CYCLE_DIR}/process_lightning
-ln -s ${PROCESS_LIGHTNING_PATH}/LightningInFV3LAM.dat ./LightningInGSI.dat_01
+
+obs_file=${PROCESS_RADARREF_PATH}/RefInGSI3D.dat
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "RefInGSI3D.dat_01"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
+
+obs_file=${PROCESS_RADARREF_PATH}/LightningInFV3LAM.dat
+if [ -r "${obs_file}" ]; then
+   cp_vrfy "${obs_file}" "LightningInGSI.dat_01"
+else
+   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+fi
 
 #-----------------------------------------------------------------------
 #
