@@ -204,10 +204,12 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 #-----------------------------------------------------------------------
 
+run_lightning=false
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lghtng.tm00.bufr_d
 print_info_msg "$VERBOSE" "obsfile is $obs_file"
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "lghtngbufr"
+   run_lightning=true
 else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
@@ -256,8 +258,10 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_Lightning_bufr.exe > stdout_lightning_bufr 2>&1 || print_err_msg_exit "\
-Call to executable to run lightning process returned with nonzero exit code."
+if [ $run_lightning ]; then
+   $APRUN ./process_Lightning_bufr.exe > stdout_lightning_bufr 2>&1 || print_err_msg "\
+   Call to executable to run lightning process returned with nonzero exit code."
+fi
 
 
 #-----------------------------------------------------------------------
@@ -270,8 +274,10 @@ Call to executable to run lightning process returned with nonzero exit code."
 
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.lgycld.tm00.bufr_d
 print_info_msg "$VERBOSE" "obsfile is $obs_file"
+run_cloud=false
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "NASA_LaRC_cloud.bufr"
+   run_cloud=true
 else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
@@ -319,8 +325,10 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_larccld.exe > stdout_nasalarc 2>&1 || print_err_msg_exit "\
-Call to executable to run NASA LaRC Cloud process returned with nonzero exit code."
+if [ $run_cloud ]; then
+  $APRUN ./process_larccld.exe > stdout_nasalarc 2>&1 || print_err_msg "\
+  Call to executable to run NASA LaRC Cloud process returned with nonzero exit code."
+fi
 
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
@@ -332,8 +340,10 @@ Call to executable to run NASA LaRC Cloud process returned with nonzero exit cod
 
 obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00 
 print_info_msg "$VERBOSE" "obsfile is $obs_file"
+run_metar=false
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "prepbufr"
+   run_metar=true
 else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
@@ -379,8 +389,10 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_metarcld.exe > stdout_metarcld 2>&1 || print_err_msg_exit "\
-Call to executable to run METAR cloud process returned with nonzero exit code."
+if [ $run_metar ]; then
+  $APRUN ./process_metarcld.exe > stdout_metarcld 2>&1 || print_err_msg "\
+  Call to executable to run METAR cloud process returned with nonzero exit code."
+fi
 
 #
 #-----------------------------------------------------------------------

@@ -862,7 +862,7 @@ settings="\
     'make_nh'    : false,
     'na_init'    : 0,
     'nggps_ic'   : false,
-    'no_dycore'  : true,
+    'mountain'  : true,
     'warm_start' : true,
   }"
 
