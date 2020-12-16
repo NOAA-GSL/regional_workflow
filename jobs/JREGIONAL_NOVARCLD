@@ -2,7 +2,7 @@
 
 #-----------------------------------------------------------------------
 #
-# This J-JOB script runs the ref2tten (reflectivity to temperature tendency)
+# This J-JOB script runs the standalone No-Var Cloud Analysis
 #      for the FV3-LAM model
 #
 #-----------------------------------------------------------------------
@@ -49,8 +49,8 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the J-job script for the task that runs a ref2tten with FV3 for 
-the specified cycle.
+This is the J-job script for the task that runs a standalone No-Var cloud
+analysis with FV3 for the specified cycle.
 ========================================================================"
 #
 #-----------------------------------------------------------------------

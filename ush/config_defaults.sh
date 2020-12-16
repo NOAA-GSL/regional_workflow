@@ -1306,7 +1306,8 @@ GWD_RRFS_v1beta_BASEDIR=""
 #-----------------------------------------------------------------------
 #
 # Parameters for observation preprocess.
-# MM?: minute for radar data preprocess
+# MM?: minute from the hour that the NSSL mosaic files will be searched for 
+#      data preprocess
 #
 #-----------------------------------------------------------------------
 #

@@ -157,17 +157,12 @@ PREYYJJJHH=`date +"%y%j%H" -d "${START_DATE} 1 hours ago"`
 #
 #-----------------------------------------------------------------------
 #
-# Create links in the subdirectory of the current cycle's run di-
-# rectory for radar reflectivity process.
+# Get into working directory
 #
 #-----------------------------------------------------------------------
 #
 print_info_msg "$VERBOSE" "
-Creating links in the subdirectory of the current cycle's run di-
-rectory for lightning  process ..."
-
-
-# Create directory.
+Getting into working directory for BUFR obseration process ..."
 
 cd ${WORKDIR}
 
@@ -234,7 +229,7 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-# Copy the executable to the run directory.
+# link/copy observation files to working directory 
 #
 #-----------------------------------------------------------------------
 #

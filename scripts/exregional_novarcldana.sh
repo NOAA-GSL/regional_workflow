@@ -42,7 +42,7 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the ex-script for the task that generates radar reflectivity tten
+This is the ex-script for the task that conduct no-var cloud analysis
 with FV3 for the specified cycle.
 ========================================================================"
 #
@@ -282,7 +282,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# Run the radar to tten application.  
+# Run the novar cloud analysis application.  
 #
 #-----------------------------------------------------------------------
 #
