@@ -162,6 +162,7 @@ workdir=${WORKDIR}
 cd_vrfy ${workdir}
 
 fixdir=$FIXgsi
+
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
 pwd
 
@@ -209,6 +210,7 @@ else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
 
+
 #-----------------------------------------------------------------------
 #
 # Create links to BUFR table, which needed for generate the BUFR file
@@ -226,6 +228,7 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 #-----------------------------------------------------------------------
 #
+
 EXEC="${EXECDIR}/ref2tten.exe"
 
 if [ -f $EXEC ]; then
