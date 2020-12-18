@@ -63,9 +63,7 @@ preprocess with FV3 for the specified cycle.
 #-----------------------------------------------------------------------
 #
 WORKDIR=${CYCLE_DIR}/PROCESS_RADARREF
-if [ -r ${WORKDIR} ]; then
-  rm -fr ${WORKDIR}
-fi
+rm -fr ${WORKDIR}
 mkdir_vrfy -p ${WORKDIR}
 #
 #-----------------------------------------------------------------------

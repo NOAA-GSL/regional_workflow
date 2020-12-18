@@ -60,9 +60,7 @@ the specified cycle.
 #-----------------------------------------------------------------------
 #
 WORKDIR=${CYCLE_DIR}/REFL2TTEN
-if [ -r ${WORKDIR} ]; then
-  rm -fr ${WORKDIR}
-fi
+rm -fr ${WORKDIR}
 mkdir_vrfy -p ${WORKDIR}
 #
 #-----------------------------------------------------------------------

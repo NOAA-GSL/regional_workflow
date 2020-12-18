@@ -59,10 +59,8 @@ analysis with FV3 for the specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-WORKDIR=${CYCLE_DIR}/novar_cldana
-if [ -r ${WORKDIR} ]; then
-  rm -fr ${WORKDIR}
-fi
+WORKDIR=${CYCLE_DIR}/novar_cldanl
+rm -fr ${WORKDIR}
 mkdir_vrfy -p ${WORKDIR}
 #
 #-----------------------------------------------------------------------
@@ -72,7 +70,7 @@ mkdir_vrfy -p ${WORKDIR}
 #
 #-----------------------------------------------------------------------
 #
-$SCRIPTSDIR/exregional_novarcldana.sh \
+$SCRIPTSDIR/exregional_novarcldanl.sh \
   CYCLE_DIR="${CYCLE_DIR}" WORKDIR="${WORKDIR}" || \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."

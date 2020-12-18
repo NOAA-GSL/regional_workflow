@@ -190,7 +190,7 @@ settings="\
   'process_lightning': ${PROCESS_LIGHTNING_TN}
   'process_bufr': ${PROCESS_BUFR_TN}
   'radar_refl2tten': ${RADAR_REFL2TTEN_TN}
-  'cldana_novar': ${CLDANA_NOVAR_TN}
+  'cldanl_novar': ${CLDANL_NOVAR_TN}
 #
 # Number of nodes to use for each task.
 #
@@ -208,7 +208,7 @@ settings="\
   'nnodes_proc_lightning': ${NNODES_PROC_LIGHTNING}
   'nnodes_proc_bufr': ${NNODES_PROC_BUFR}
   'nnodes_run_ref2tten': ${NNODES_RUN_REF2TTEN}
-  'nnodes_run_novarcldana': ${NNODES_RUN_NOVARCLDANA}
+  'nnodes_run_novarcldanl: ${NNODES_RUN_NOVARCLDANL}
 #
 # Number of cores used for a task
 #
@@ -233,7 +233,7 @@ settings="\
   'ppn_proc_lightning': ${PPN_PROC_LIGHTNING}
   'ppn_proc_bufr': ${PPN_PROC_BUFR}
   'ppn_run_ref2tten': ${PPN_RUN_REF2TTEN}
-  'ppn_run_novarcldana': ${PPN_RUN_NOVARCLDANA}
+  'ppn_run_novarcldanl': ${PPN_RUN_NOVARCLDANL}
 #
 # Maximum wallclock time for each task.
 #
@@ -251,12 +251,12 @@ settings="\
   'wtime_proc_lightning': ${WTIME_PROC_LIGHTNING}
   'wtime_proc_bufr': ${WTIME_PROC_BUFR}
   'wtime_run_ref2tten': ${WTIME_RUN_REF2TTEN}
-  'wtime_run_novarcldana': ${WTIME_RUN_NOVARCLDANA}
+  'wtime_run_novarcldanl': ${WTIME_RUN_NOVARCLDANL}
 #
 # Maximum memory for each task.
 #
   'memo_run_ref2tten': ${MEMO_RUN_REF2TTEN}
-  'memo_run_novarcldana': ${MEMO_RUN_NOVARCLDANA}
+  'memo_run_novarcldanl': ${MEMO_RUN_NOVARCLDANL}
 #
 # Flags that specify whether to run the preprocessing tasks.
 #

@@ -173,7 +173,7 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 #
 #-----------------------------------------------------------------------
 #
-# link or copy background files
+# link or copy background and grid files
 #
 #-----------------------------------------------------------------------
 
@@ -181,61 +181,33 @@ cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
 cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
 
 
+#-----------------------------------------------------------------------
 #
 # Link to the NLDN data
 #
 #-----------------------------------------------------------------------
 filenum=0
 LIGHTNING_FILE=${LIGHTNING_ROOT}/vaisala/netcdf
-if [ -r "${LIGHTNING_FILE}/${YYJJJHH}050005r" ]; then
+for n in 00 05 ; do
+  filename=${LIGHTNING_FILE}/${YYJJJHH}${n}0005r
+  if [ -r ${filename} ]; then
   ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${YYJJJHH}050005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${YYJJJHH}050005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${YYJJJHH}000005r" ]; then
+    ln -sf ${filename} ./NLDN_lightning_${filenum}
+  else
+   echo " ${filename} does not exist"
+  fi
+done
+for n in 55 50 45 40 35 ; do
+  filename=${LIGHTNING_FILE}/${PREYYJJJHH}${n}0005r
+  if [ -r ${filename} ]; then
   ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${YYJJJHH}000005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${YYJJJHH}000005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}550005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}550005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}550005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}500005r" ]; then
-  ((filenum += 1 ))
-  ls ${LIGHTNING_FILE}/${PREYYJJJHH}500005r
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}500005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}500005r does not exist"
-fi
-if [ ! 0 ] ; then
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}450005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}450005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}450005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}400005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}400005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}400005r does not exist"
-fi
-if [ -r "${LIGHTNING_FILE}/${PREYYJJJHH}350005r" ]; then
-  ((filenum += 1 ))
-  ln -sf ${LIGHTNING_FILE}/${PREYYJJJHH}350005r ./NLDN_lightning_${filenum}
-else
-   echo " ${LIGHTNING_FILE}/${PREYYJJJHH}350005r does not exist"
-fi
-fi
+    ln -sf ${filename} ./NLDN_lightning_${filenum}
+  else
+   echo " ${filename} does not exist"
+  fi
+done
 
 echo "found GLD360 files: ${filenum}"
-
-
 
 #-----------------------------------------------------------------------
 #
@@ -290,7 +262,7 @@ fi
 #-----------------------------------------------------------------------
 #
 $APRUN ./process_Lightning_nc.exe < lightning.namelist > stdout 2>&1 || print_err_msg_exit "\
-Call to executable to run radar refl process returned with nonzero exit code."
+Call to executable to run lightning (nc) process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------
 #

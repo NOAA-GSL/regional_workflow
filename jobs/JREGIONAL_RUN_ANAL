@@ -61,9 +61,7 @@ the specified cycle.
 #-----------------------------------------------------------------------
 #
 ANALWORKDIR=${CYCLE_DIR}/ANAL_GSI
-if [ -r ${ANALWORKDIR} ]; then
-  rm -fr ${ANALWORKDIR}
-fi
+rm -fr ${ANALWORKDIR}
 mkdir_vrfy -p ${ANALWORKDIR}
 #
 #-----------------------------------------------------------------------
