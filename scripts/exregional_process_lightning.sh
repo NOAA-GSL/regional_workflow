@@ -222,6 +222,12 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 # Build namelist and run executable
 #
+#   analysis_time : process obs used for this analysis date (YYYYMMDDHH)
+#   NLDN_filenum  : number of NLDN lighting observation files 
+#   IfAlaska      : logic to decide if to process Alaska lightning obs
+#   bkversion     : grid type (background will be used in the analysis)
+#                   = 0 for ARW  (default)
+#                   = 1 for FV3LAM
 #-----------------------------------------------------------------------
 
 cat << EOF > lightning.namelist

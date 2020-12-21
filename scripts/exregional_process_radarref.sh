@@ -243,6 +243,16 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #
 # Build namelist and run executable 
 #
+#   tversion      : data source version
+#                   = 1 NSSL 1 tile grib2 for single level
+#                   = 4 NSSL 4 tiles binary
+#                   = 8 NSSL 8 tiles netcdf
+#   bkversion     : grid type (background will be used in the analysis)
+#                   0 for ARW  (default)
+#                   1 for FV3LAM
+#   analysis_time : process obs used for this analysis date (YYYYMMDDHH)
+#   dataPath      : path of the radar reflectivity mosaic files.
+#
 #-----------------------------------------------------------------------
 
 cat << EOF > mosaic.namelist

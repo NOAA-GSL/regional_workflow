@@ -211,6 +211,13 @@ fi
 #
 # Build namelist and run executable for lightning
 #
+#   analysis_time : process obs used for this analysis date (YYYYMMDDHH)
+#   minute        : process obs used for this analysis minute (integer)
+#   trange_start  : obs time window start (minutes before analysis time)
+#   trange_end    : obs time window end (minutes after analysis time)
+#   bkversion     : grid type (background will be used in the analysis)
+#                   0 for ARW  (default)
+#                   1 for FV3LAM
 #-----------------------------------------------------------------------
 
 cat << EOF > lightning_bufr.namelist
@@ -278,6 +285,15 @@ fi
 #
 # Build namelist and run executable for NASA LaRC cloud
 #
+#   analysis_time : process obs used for this analysis date (YYYYMMDDHH)
+#   bufrfile      : result BUFR file name
+#   npts_rad      : number of grid point to build search box (integer)
+#   ioption       : interpolation options
+#                   = 1 is nearest neighrhood
+#                   = 2 is median of cloudy fov
+#   bkversion     : grid type (background will be used in the analysis)
+#                   = 0 for ARW  (default)
+#                   = 1 for FV3LAM
 #-----------------------------------------------------------------------
 
 cat << EOF > namelist_nasalarc
@@ -344,6 +360,11 @@ fi
 #
 # Build namelist for METAR cloud
 #
+#   analysis_time   : process obs used for this analysis date (YYYYMMDDHH)
+#   analysis_minute : process obs used for this analysis minute (integer)
+#   prepbufrfile    : input prepbufr file name
+#   twindin         : observation time window (real: hours before and after analysis time)
+#
 #-----------------------------------------------------------------------
 
 cat << EOF > namelist_metarcld
@@ -387,8 +408,6 @@ if [ $run_metar ]; then
 fi
 
 #
-#-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 #
 # Print message indicating successful completion of script.
