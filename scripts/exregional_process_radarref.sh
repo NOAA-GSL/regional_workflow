@@ -292,7 +292,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_NSSL_mosaic.exe > stdout 2>&1 || print_err_msg_exit "\
+$APRUN ./process_NSSL_mosaic.exe > stdout 2>&1 || print_err_msg "\
 Call to executable to run radar refl process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------

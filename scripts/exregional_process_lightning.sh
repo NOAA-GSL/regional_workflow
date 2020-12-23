@@ -267,7 +267,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_Lightning_nc.exe < lightning.namelist > stdout 2>&1 || print_err_msg_exit "\
+$APRUN ./process_Lightning_nc.exe < lightning.namelist > stdout 2>&1 || print_err_msg "\
 Call to executable to run lightning (nc) process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------
