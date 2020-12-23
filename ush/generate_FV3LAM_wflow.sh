@@ -208,7 +208,7 @@ settings="\
   'nnodes_proc_lightning': ${NNODES_PROC_LIGHTNING}
   'nnodes_proc_bufr': ${NNODES_PROC_BUFR}
   'nnodes_run_ref2tten': ${NNODES_RUN_REF2TTEN}
-  'nnodes_run_novarcldanl: ${NNODES_RUN_NOVARCLDANL}
+  'nnodes_run_novarcldanl': ${NNODES_RUN_NOVARCLDANL}
 #
 # Number of cores used for a task
 #

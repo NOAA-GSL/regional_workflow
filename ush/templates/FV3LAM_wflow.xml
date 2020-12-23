@@ -90,6 +90,9 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY DEADLINE_GRAPHICS "24:00:00">
 
 <!ENTITY START_TIME_CONVENTIONAL "00:37:00">
+<!ENTITY START_TIME_NSSLMOSIAC   "00:25:00">
+<!ENTITY START_TIME_LIGHTNINGNC  "00:25:00">
+
 
 <!ENTITY WALL_LIMIT_PRE '<deadline><cyclestr offset="&DEADLINE_PRE;">@Y@m@d@H@M</cyclestr></deadline>'>
 <!ENTITY WALL_LIMIT_ANAL '<deadline><cyclestr offset="&DEADLINE_ANAL;">@Y@m@d@H@M</cyclestr></deadline>'>
@@ -419,7 +422,7 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
-        <taskdep task="&MAKE_LBCS_TN;"/>
+        <timedep><cyclestr offset="&START_TIME_NSSLMOSIAC;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
     </dependency>
 
@@ -449,7 +452,7 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
-        <taskdep task="&MAKE_LBCS_TN;"/>
+        <timedep><cyclestr offset="&START_TIME_LIGHTNINGNC;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
     </dependency>
 
@@ -479,7 +482,7 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
-        <taskdep task="&MAKE_LBCS_TN;"/>
+        <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
     </dependency>
 
@@ -512,7 +515,7 @@ MODULES_RUN_TASK_FP script.
     <dependency>
       <and>
         <taskdep task="&MAKE_ICS_TN;"/>
-         <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
+        <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
     </dependency>
 
@@ -521,7 +524,6 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-
   <task name="&ANAL_GSI_RESTA_TN;" cycledefs="dacycle" maxtries="2">
 
     &RSRV_DEFAULT;
@@ -612,9 +614,7 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
-        <or>
-          <taskdep task="&PROCESS_BUFR_TN;"/>
-        </or>
+        <taskdep task="&PROCESS_BUFR_TN;"/>
         <or>
           <taskdep task="&ANAL_GSI_INPUT_TN;"/>
           <taskdep task="&ANAL_GSI_RESTA_TN;"/>
@@ -663,10 +663,8 @@ MODULES_RUN_TASK_FP script.
     <dependency>
       <and>
   {%- if do_dacycle %}
-        <or>
-           <taskdep task="&ANAL_GSI_INPUT_TN;"/>
-           <taskdep task="&ANAL_GSI_RESTA_TN;"/>
-        </or>
+        <taskdep task="&CLDANL_NOVAR_TN;"/>
+        <taskdep task="&RADAR_REFL2TTEN_TN;"/>
         <taskdep task="&MAKE_LBCS_TN;"/>
   {% else %}
         <taskdep task="&MAKE_ICS_TN;{{ uscore_ensmem_name }}"/>
