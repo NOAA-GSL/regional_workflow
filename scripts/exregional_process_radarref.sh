@@ -163,8 +163,10 @@ Getting into working directory for radar reflectivity process ..."
 cd ${WORKDIR}
 
 fixdir=$FIXgsi/
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 
 #
 #-----------------------------------------------------------------------
@@ -174,7 +176,7 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 #-----------------------------------------------------------------------
 
 FV3SARPATH=${CYCLE_DIR}
-cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
+cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
 
 
 #

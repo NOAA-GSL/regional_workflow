@@ -166,9 +166,11 @@ Getting into working directory for BUFR obseration process ..."
 
 cd ${WORKDIR}
 
-fixdir=$FIXgsi/
+fixdir=$FIXgsi
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 
 #
 #-----------------------------------------------------------------------
@@ -177,8 +179,8 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
-cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
+cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
+cp_vrfy ${fixgriddir}/geo_em.d01.nc          geo_em.d01.nc
 
 
 #-----------------------------------------------------------------------
