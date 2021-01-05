@@ -254,7 +254,7 @@ EXEC="${EXECDIR}/process_Lightning_nc.exe"
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_nc.exe
+  cp_vrfy ${EXEC} ${WORKDIR}
 else
   print_err_msg_exit "\
 The executable specified in EXEC does not exist:

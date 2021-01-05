@@ -279,7 +279,7 @@ EXEC="${EXECDIR}/process_NSSL_mosaic.exe"
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the radar process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_NSSL_mosaic.exe
+  cp_vrfy ${EXEC} ${WORKDIR}
 else
   print_err_msg_exit "\
 The executable specified in GSI_EXEC does not exist:
