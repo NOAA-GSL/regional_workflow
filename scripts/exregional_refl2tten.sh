@@ -162,8 +162,10 @@ workdir=${WORKDIR}
 cd_vrfy ${workdir}
 
 fixdir=$FIXgsi
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 pwd
 
 #
@@ -173,15 +175,15 @@ pwd
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_akbk                               fv3_akbk
-cp_vrfy ${fixdir}/fv3_grid_spec                          fv3_grid_spec
+cp_vrfy ${fixgriddir}/fv3_akbk                               fv3_akbk
+cp_vrfy ${fixgriddir}/fv3_grid_spec                          fv3_grid_spec
 
 bkpath=${CYCLE_DIR}/INPUT
-if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # Use background from INPUT
+if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # cold start uses background from INPUT
   ln_vrfy -s ${bkpath}/sfc_data.tile7.halo0.nc      fv3_sfcdata
   ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_dynvars
   ln_vrfy -s ${bkpath}/gfs_data.tile7.halo0.nc      fv3_tracer
-else                                               # Use background from RESTART
+else                                               # cycle uses background from RESTART
   ln_vrfy -s ${bkpath}/fv_core.res.tile1.nc         fv3_dynvars
   ln_vrfy -s ${bkpath}/fv_tracer.res.tile1.nc       fv3_tracer
   ln_vrfy -s ${bkpath}/sfc_data.nc                  fv3_sfcdata

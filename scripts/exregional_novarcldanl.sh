@@ -162,7 +162,10 @@ workdir=${WORKDIR}
 cd_vrfy ${workdir}
 
 fixdir=$FIXgsi
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
+
 pwd
 
 #
@@ -172,8 +175,8 @@ pwd
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_akbk                               fv3_akbk
-cp_vrfy ${fixdir}/fv3_grid_spec                          fv3_grid_spec
+cp_vrfy ${fixgriddir}/fv3_akbk                               fv3_akbk
+cp_vrfy ${fixgriddir}/fv3_grid_spec                          fv3_grid_spec
 
 bkpath=${CYCLE_DIR}/INPUT
 if [ -w ${bkpath}/gfs_data.tile7.halo0.nc ]; then  # Use background from INPUT
@@ -195,26 +198,26 @@ fi
 
 PROCESS_BUFR_PATH=${CYCLE_DIR}/process_bufr
 
-obs_file=${PROCESS_BUFR_PATH}/LightningInFV3LAM.dat
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "LightningInFV3LAM.dat"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+obs_files_source[0]=${PROCESS_BUFR_PATH}/LightningInFV3LAM.dat
+obs_files_target[0]=LightningInFV3LAM.dat
 
-obs_file=${PROCESS_BUFR_PATH}/NASALaRC_cloud4fv3.bin
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "NASALaRC_cloud4fv3.bin"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+obs_files_source[1]=${PROCESS_BUFR_PATH}/NASALaRC_cloud4fv3.bin
+obs_files_target[1]=NASALaRC_cloud4fv3.bin
 
-obs_file=${PROCESS_BUFR_PATH}/fv3_metarcloud.bin
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "fv3_metarcloud.bin"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+obs_files_source[2]=${PROCESS_BUFR_PATH}/fv3_metarcloud.bin
+obs_files_target[2]=fv3_metarcloud.bin
+
+obs_number=${#obs_files_source[@]}
+for (( i=0; i<${obs_number}; i++ ));
+do
+  obs_file=${obs_files_source[$i]}
+  obs_file_t=${obs_files_target[$i]}
+  if [ -r "${obs_file}" ]; then
+    cp_vrfy "${obs_file}" "${obs_file_t}"
+  else
+    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+  fi
+done
 
 #-----------------------------------------------------------------------
 #
@@ -270,7 +273,7 @@ EXEC="${EXECDIR}/fv3sar_novarcldana.exe"
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the noVar Cloud Analysis executable to the run directory..."
-  cp_vrfy ${EXEC} ${workdir}/fv3sar_novarcldana.exe
+  cp_vrfy ${EXEC} ${workdir}
 else
   print_err_msg_exit "\
 The executable specified in EXEC does not exist:

@@ -110,7 +110,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
   <cycledef group="at_start">{{ cdate_first_cycl.strftime("%M %H %d %m %Y *") }}</cycledef>
   <cycledef group="forecast">{{ cdate_first_cycl.strftime("%Y%m%d%H%M") }} {{ cdate_last_cycl.strftime("%Y%m%d%H%M") }} {{ cycl_freq }}</cycledef>
 {%- if do_dacycle %}
-  <cycledef group="dacycle">00 03,06,09,15,18,21 {{cdate_first_cycl.strftime("%d") }}-{{ cdate_last_cycl.strftime("%d") }} {{ cdate_first_cycl.strftime("%m") }} 2020 *</cycledef>
+  <cycledef group="dacycle">00 03,06,09,15,18,21 {{cdate_first_cycl.strftime("%d") }}-{{ cdate_last_cycl.strftime("%d") }} {{ cdate_first_cycl.strftime("%m") }} {{cdate_first_cycl.strftime("%Y") }} *</cycledef>
 {% endif %}
   <cycledef group="archive">{{ cdate_first_arch.strftime("%Y%m%d%H%M") }} {{ cdate_last_arch.strftime("%Y%m%d%H%M") }} 24:00:00</cycledef> 
 
@@ -731,7 +731,11 @@ MODULES_RUN_TASK_FP script.
 
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
+{%- if do_dacycle %}
+    <task name="&RUN_NCL_TN;_#fhr#" cycledefs="forecast,dacycle" maxtries="2">
+{% else %}
     <task name="&RUN_NCL_TN;_#fhr#" cycledefs="forecast" maxtries="2">
+{% endif %}
 
       &RSRV_DEFAULT;
       &WALL_LIMIT_GRAPHICS;

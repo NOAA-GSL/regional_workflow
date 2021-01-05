@@ -166,9 +166,11 @@ Getting into working directory for BUFR obseration process ..."
 
 cd ${WORKDIR}
 
-fixdir=$FIXgsi/
+fixdir=$FIXgsi
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 
 #
 #-----------------------------------------------------------------------
@@ -177,8 +179,8 @@ print_info_msg "$VERBOSE" "fixdir is $fixdir"
 #
 #-----------------------------------------------------------------------
 
-cp_vrfy ${fixdir}/fv3_grid_spec          fv3sar_grid_spec.nc
-cp_vrfy ${fixdir}/geo_em.d01.nc          geo_em.d01.nc
+cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
+cp_vrfy ${fixgriddir}/geo_em.d01.nc          geo_em.d01.nc
 
 
 #-----------------------------------------------------------------------
@@ -243,7 +245,7 @@ EXEC="${EXECDIR}/process_Lightning_bufr.exe"
 if [ -f $EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_Lightning_bufr.exe
+  cp_vrfy ${EXEC} ${WORKDIR}
 else
   print_err_msg_exit "\
 The executable specified in EXEC does not exist:

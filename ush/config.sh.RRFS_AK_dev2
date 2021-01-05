@@ -1,7 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
-EXPT_BASEDIR="/misc/whome/rtrr/RRFS"
-EXPT_SUBDIR="RRFS_dev2"
+EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2"
+EXPT_SUBDIR="RRFS_AK"
 
 QUEUE_DEFAULT="batch"
 QUEUE_HPSS="service"
@@ -12,7 +12,7 @@ VERBOSE="TRUE"
 RUN_ENVIR="nco"
 PREEXISTING_DIR_METHOD="rename"
 
-EMC_GRID_NAME="GSD_HRRR3km"  # For now (20200130), this is maps to PREDEF_GRID_NAME="EMC_CONUS_coarse".
+EMC_GRID_NAME="GSD_RRFSAK_3km" 
 GRID_GEN_METHOD="ESGgrid"
 
 QUILTING="TRUE"
@@ -23,27 +23,27 @@ LBC_SPEC_INTVL_HRS="3"
 
 HALO_BLEND=10
 
-WTIME_RUN_FCST="02:45:00"
-WTIME_RUN_ANAL="00:25:00"
+WTIME_RUN_FCST="02:30:00"
 
-DATE_FIRST_CYCL="20210105"
-DATE_LAST_CYCL="20210106"
+DATE_FIRST_CYCL="20201224"
+DATE_LAST_CYCL="20201225"
 CYCL_HRS=( "00" "12" )
 
+WTIME_RUN_ANAL="00:25:00"
 DO_DACYCLE="TRUE"
 
-EXTRN_MDL_NAME_ICS="HRRRX"
+EXTRN_MDL_NAME_ICS="RAPX"
 EXTRN_MDL_NAME_LBCS="RAPX"
 
 envir="para"
 
-NET="RRFS_CONUS"
+NET="RRFS_AK"
 
-ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev2"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_ak"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
-NCL_REGION="conus"
-MODEL="RRFS_dev2"
+NCL_REGION="alaska"
+MODEL="RRFS_AK (dev2)"
 
 #
 # In NCO mode, the following don't need to be explicitly set to "FALSE" 
@@ -54,11 +54,11 @@ MODEL="RRFS_dev2"
 #RUN_TASK_MAKE_OROG="FALSE"
 #RUN_TASK_MAKE_SFC_CLIMO="FALSE"
 
-RUN="RRFS_dev2"
+RUN="RRFS_AK"
 COMINgfs=""
 
-STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/ptmp"  # Path to directory STMP that mostly contains input files.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)

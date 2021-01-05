@@ -199,6 +199,7 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 cd_vrfy ${ANALWORKDIR}
 
 fixdir=$FIXgsi
+fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 if [ ${BKTYPE} -eq 1 ]; then  # cold start, use background from INPUT
   bkpath=${CYCLE_DIR}/INPUT
 else
@@ -206,6 +207,7 @@ else
 fi
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 print_info_msg "$VERBOSE" "bkpath is $bkpath"
 
 
@@ -302,20 +304,20 @@ fi
 #-----------------------------------------------------------------------
 
 FV3SARPATH=${CYCLE_DIR}
-cp_vrfy ${fixdir}/fv3_akbk                               fv3_akbk
-cp_vrfy ${fixdir}/fv3_grid_spec                          fv3_grid_spec
+cp_vrfy ${fixgriddir}/fv3_akbk                               fv3_akbk
+cp_vrfy ${fixgriddir}/fv3_grid_spec                          fv3_grid_spec
 
-if [ ${BKTYPE} -eq 1 ]; then  # Use background from INPUT
+if [ ${BKTYPE} -eq 1 ]; then  # cold start uses background from INPUT
   cp_vrfy ${bkpath}/gfs_data.tile7.halo0.nc                gfs_data.tile7.halo0.nc_b
-  ${NCKS} -A -v  phis ${fixdir}/phis.nc                    gfs_data.tile7.halo0.nc_b
-  ${NCKS} -A -v radar_tten ${fixdir}/radar_tten_input.nc   gfs_data.tile7.halo0.nc_b
+  ${NCKS} -A -v  phis ${fixgriddir}/phis.nc                    gfs_data.tile7.halo0.nc_b
+  ${NCKS} -A -v radar_tten ${fixgriddir}/radar_tten_input.nc   gfs_data.tile7.halo0.nc_b
 
   cp_vrfy ${bkpath}/sfc_data.tile7.halo0.nc        fv3_sfcdata
   cp_vrfy gfs_data.tile7.halo0.nc_b                fv3_dynvars
   ln_vrfy -s fv3_dynvars                           fv3_tracer
 
   fv3sar_bg_type=1
-else
+else                          # cycle uses background from restart
   if [ ${DA_CYCLE_INTERV} -eq ${FCST_LEN_HRS} ]; then
     restart_prefix=""
   elif [ ${DA_CYCLE_INTERV} -lt ${FCST_LEN_HRS} ]; then
@@ -331,12 +333,12 @@ Restart hour should not larger than forecast hour:
   cp_vrfy  ${bkpath}/${restart_prefix}.fv_core.res.tile1.nc             fv3_dynvars
   cp_vrfy  ${bkpath}/${restart_prefix}.fv_tracer.res.tile1.nc           fv3_tracer
   cp_vrfy  ${bkpath}/${restart_prefix}.sfc_data.nc                      fv3_sfcdata
-  ${NCKS} -A -v radar_tten ${fixdir}/radar_tten_restart.nc              fv3_tracer
+  ${NCKS} -A -v radar_tten ${fixgriddir}/radar_tten_restart.nc              fv3_tracer
   fv3sar_bg_type=0
 fi
 
 # update times in coupler.res to current cycle time
-cp_vrfy ${fixdir}/fv3_coupler.res                        coupler.res.tmp
+cp_vrfy ${fixgriddir}/fv3_coupler.res          coupler.res.tmp
 cat coupler.res.tmp  | sed "s/yyyy/${YYYY}/" > coupler.res.newY
 cat coupler.res.newY | sed "s/mm/${MM}/"     > coupler.res.newM
 cat coupler.res.newM | sed "s/dd/${DD}/"     > coupler.res.newD
@@ -356,27 +358,34 @@ rm coupler.res.newY coupler.res.newM coupler.res.newD
 #
 #-----------------------------------------------------------------------
 
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
-print_info_msg "$VERBOSE" "obsfile is $obs_file"
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "prepbufr"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+#obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
+#print_info_msg "$VERBOSE" "obsfile is $obs_file"
+#if [ -r "${obs_file}" ]; then
+#   cp_vrfy "${obs_file}" "prepbufr"
+#else
+#   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+#fi
 
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.satwnd.tm00.bufr_d
-if [ -r "${obs_file}" ]; then
-   cp_vrfy "${obs_file}" "satwndbufr"
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
+obs_files_target[0]=prepbufr
 
-obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.nexrad.tm00.bufr_d
-if [ -r "${obs_file}" ]; then
-  ln -s ${obs_file} l2rwbufr
-else
-   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-fi
+obs_files_source[1]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.satwnd.tm00.bufr_d
+obs_files_target[1]=satwndbufr
+
+obs_files_source[2]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.nexrad.tm00.bufr_d
+obs_files_target[2]=l2rwbufr
+
+obs_number=${#obs_files_source[@]}
+for (( i=0; i<${obs_number}; i++ ));
+do
+  obs_file=${obs_files_source[$i]}
+  obs_file_t=${obs_files_target[$i]}
+  if [ -r "${obs_file}" ]; then
+    ln -s "${obs_file}" "${obs_file_t}"
+  else
+    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
+  fi
+done
 
 #-----------------------------------------------------------------------
 #
