@@ -179,6 +179,7 @@ FV3SARPATH=${CYCLE_DIR}
 cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
 
 
+
 #
 #-----------------------------------------------------------------------
 #

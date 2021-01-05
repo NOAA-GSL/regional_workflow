@@ -165,6 +165,7 @@ fixdir=$FIXgsi
 fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
 print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
+
 pwd
 
 #

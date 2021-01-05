@@ -182,7 +182,6 @@ print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
 cp_vrfy ${fixgriddir}/geo_em.d01.nc          geo_em.d01.nc
 
-
 #-----------------------------------------------------------------------
 #
 # Link to the NLDN data
