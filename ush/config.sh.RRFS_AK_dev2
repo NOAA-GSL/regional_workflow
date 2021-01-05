@@ -57,8 +57,8 @@ MODEL="RRFS_AK (dev2)"
 RUN="RRFS_AK"
 COMINgfs=""
 
-STMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
