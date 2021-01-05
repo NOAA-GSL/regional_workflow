@@ -362,14 +362,6 @@ rm coupler.res.newY coupler.res.newM coupler.res.newD
 #
 #-----------------------------------------------------------------------
 
-#obs_file=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
-#print_info_msg "$VERBOSE" "obsfile is $obs_file"
-#if [ -r "${obs_file}" ]; then
-#   cp_vrfy "${obs_file}" "prepbufr"
-#else
-#   print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
-#fi
-
 obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
 obs_files_target[0]=prepbufr
 
