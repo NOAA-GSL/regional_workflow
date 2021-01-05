@@ -301,6 +301,10 @@ fi
 #
 # link or copy background and grib configuration files
 #
+#  Using ncks to add phis (terrain) into cold start input background. 
+#           it is better to change GSI to use the terrain from fix file.
+#  Adding radar_tten array to fv3_tracer. Should remove this after add this array in
+#           radar_tten converting code.
 #-----------------------------------------------------------------------
 
 FV3SARPATH=${CYCLE_DIR}
