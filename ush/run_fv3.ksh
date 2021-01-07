@@ -25,7 +25,7 @@ FV3_EXE=$SRCDIR/exec/fv3_gfs.x
 # remove the IC/LBC source (HRRRX/, RAPX/), forecast files (dynf*.nc, phyf*.nc), log files (logf*), post and restart files (if applicable) 
 # must keep all the fix files and INPUT/ 
 #-------------------------------------------
-workdir=/WEHER-YOUR-TEST-DIR-IS/2021010612
+workdir=/WHERE-YOUR-TEST-DIR-IS/2021010612
 cd $workdir
 rm -f fv3_gfs.x
 cp ${FV3_EXE} fv3_gfs.x
