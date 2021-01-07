@@ -27,6 +27,7 @@ FV3_EXE=$SRCDIR/exec/fv3_gfs.x
 #-------------------------------------------
 workdir=/WHERE-YOUR-TEST-DIR-IS/2021010612
 cd $workdir
+rm -f phyf*.nc dynf*.nc logf* 
 rm -f fv3_gfs.x
 cp ${FV3_EXE} fv3_gfs.x
  
