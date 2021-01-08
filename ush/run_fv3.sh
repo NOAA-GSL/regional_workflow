@@ -1,4 +1,4 @@
-#!/bin/ksh --login
+#!/bin/sh --login
  
 # Set the queueing options 
 #SBATCH --nodes=60 --ntasks-per-node=4   ## refer to the run_fcst task section in the workflow xml
