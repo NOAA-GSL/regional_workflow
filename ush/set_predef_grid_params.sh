@@ -511,7 +511,7 @@ predefined domain:
       WRTCMP_stdlat2="${ESGgrid_LAT_CTR}"
       WRTCMP_nx="1726"
       WRTCMP_ny="974"
-      WRTCMP_lon_lwr_left="-122.21414225"
+      WRTCMP_lon_lwr_left="-122.01414225"
       WRTCMP_lat_lwr_left="22.41403305"
       WRTCMP_dx="${ESGgrid_DELX}"
       WRTCMP_dy="${ESGgrid_DELY}"
