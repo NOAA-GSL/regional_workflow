@@ -630,9 +630,9 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 -->
 {%- if do_dacycle %}
-  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast,dacycle" maxtries="1">
+  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast,dacycle" maxtries="2">
 {% else %}
-  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="1">
+  <task name="&RUN_FCST_TN;{{ uscore_ensmem_name }}" cycledefs="forecast" maxtries="2">
 {% endif %}
 
     &RSRV_FCST;
