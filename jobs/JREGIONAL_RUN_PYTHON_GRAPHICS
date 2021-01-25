@@ -81,7 +81,7 @@ mkdir_vrfy -p "${run_dir}"
 #-----------------------------------------------------------------------
 #
 python ${PYTHON_GRAPHICS_DIR}/create_graphics.py \
-  skewts \
+  ${GRAPHICS_TYPE} \
   -d ${post_dir} \
   -f 0 ${FCST_LEN_HRS} \
   --file_tmpl "RRFS_CONUS.t${CDATE:8:2}z.bgrd3df{FCST_TIME:03d}.tm${CDATE:8:2}.grib2"
