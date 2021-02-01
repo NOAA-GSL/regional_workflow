@@ -86,6 +86,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
 {%- endif %}
 <!ENTITY RSRV_GRAPH   "<account>&ACCOUNT;</account><{{ queue_default_tag }}>&QUEUE_FCST;</{{ queue_default_tag }}><partition>&GRAPHICS_PARTITION;</partition>">
+<!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><{{ queue_default_tag }}>&QUEUE_FCST;</{{ queue_default_tag }}><partition>kjet,xjet</partition>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
 <!ENTITY DEADLINE_FCST     "23:30:00">
@@ -488,25 +489,28 @@ MODULES_RUN_TASK_FP script.
 
   <task name="python_skewt" maxtries="1">
 
-      &RSRV_GRAPHICS;
-      &WALL_LIMIT_GRAPHICS;
+    &RSRV_GRAPHICS;
+    &WALL_LIMIT_GRAPHICS;
 
-      <walltime>{{ wtime_run_fcst }}</walltime>
-      <nodes>1:ppn=1</nodes>
-      <native>--exclusive<native>
-      <jobname><cyclestr>python_@H_skewt</cyclestr></jobname>
-      <join><cyclestr>&LOGDIR;/python_skewt.log</cyclestr></join>
+    <walltime>{{ wtime_run_fcst }}</walltime>
+    <nodes>1:ppn=24</nodes>
+    <native>--exclusive</native>
+    <jobname><cyclestr>python_@H_skewt</cyclestr></jobname>
+    <join><cyclestr>&LOGDIR;/python_skewt.log</cyclestr></join>
 
-      <command>&LOAD_MODULES_RUN_TASK_FP; "run_graphics" "&JOBSDIR;/JREGIONAL_RUN_PYTHON_GRAPHICS"</command>
+    <command>&LOAD_MODULES_RUN_TASK_FP; "run_graphics" "&JOBSDIR;/JREGIONAL_RUN_PYTHON_GRAPHICS"</command>
 
-      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-      <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
-      <envar><name>GRAPHICS_TYPE</name><value>skewts</value>
+    <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
+    <envar><name>GRAPHICS_TYPE</name><value>skewts</value></envar>
 
-      <dependency>
-        <datadep age="300"><cyclestr>&DATAROOT;/@Y@m@d@H/postprd/wrfnat_hrconus_00.grib2</cyclestr></datadep>
-      </dependency>
-    </task>
+    <dependency>
+      <taskdep task="&RUN_POST_TN;_f000"/>
+    </dependency>
+  </task>
 
 <!--
 ************************************************************************
