@@ -85,8 +85,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 {%- else %}
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
 {%- endif %}
-<!ENTITY RSRV_GRAPH   "<account>&ACCOUNT;</account><{{ queue_default_tag }}>&QUEUE_FCST;</{{ queue_default_tag }}><partition>&GRAPHICS_PARTITION;</partition>">
-<!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><{{ queue_default_tag }}>&QUEUE_FCST;</{{ queue_default_tag }}><partition>kjet,xjet</partition>">
+<!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue><partition>kjet,xjet</partition>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
 <!ENTITY DEADLINE_FCST     "23:30:00">
