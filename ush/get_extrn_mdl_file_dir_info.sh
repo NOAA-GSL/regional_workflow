@@ -468,7 +468,6 @@ and analysis or forecast (anl_or_fcst):
       prefix="${yy}${ddd}${hh}${mn}${fcst_mn}"
       suffix="${fcst_mn}"
       fns_on_disk=( "${fcst_hh[@]/#/$prefix}" )
-      #fns_on_disk=( "${fns_on_disk[@]/%/$suffix}" )
 
       prefix="${yy}${ddd}${hh}${mn}"
       fns_in_arcv=( "${fcst_hh[@]/#/$prefix}" )
@@ -487,7 +486,6 @@ and analysis or forecast (anl_or_fcst):
       prefix="${yy}${ddd}${hh}${mn}${fcst_mn}"
       suffix="${fcst_mn}"
       fns_on_disk=( "${fcst_hh[@]/#/$prefix}" )
-      #fns_on_disk=( "${fns_on_disk[@]/%/$suffix}" )
 
       prefix="${yy}${ddd}${hh}${mn}"
       fns_in_arcv=( "${fcst_hh[@]/#/$prefix}" )
