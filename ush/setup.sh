@@ -2573,7 +2573,6 @@ OZONE_PARAM="${OZONE_PARAM}"
 #-----------------------------------------------------------------------
 #
 EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS}"
-EXTRN_MDL_PREFIX_ICS="${EXTRN_MDL_PREFIX_ICS}"
 #
 #-----------------------------------------------------------------------
 #

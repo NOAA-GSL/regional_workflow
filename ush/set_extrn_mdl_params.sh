@@ -118,8 +118,7 @@ else
       EXTRN_MDL_SYSBASEDIR_ICS=""
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/misc/whome/rtrr/rap"
-      EXTRN_MDL_PREFIX_ICS="wrfnat_rr"
+      EXTRN_MDL_SYSBASEDIR_ICS="/public/data/grids/rap/full/wrfnat/grib2"
       ;;
     "CHEYENNE")
       EXTRN_MDL_SYSBASEDIR_ICS="dummy_value"
@@ -136,8 +135,7 @@ else
       EXTRN_MDL_SYSBASEDIR_ICS=""
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/misc/whome/rtrr/hrrr"
-      EXTRN_MDL_PREFIX_ICS="wrfnat_hrconus"
+      EXTRN_MDL_SYSBASEDIR_ICS="/public/data/grids/hrrr/conus/wrfnat/grib2"
       ;;
     "CHEYENNE")
       EXTRN_MDL_SYSBASEDIR_ICS="dummy_value"
@@ -274,7 +272,7 @@ else
       EXTRN_MDL_SYSBASEDIR_LBCS=""
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/misc/whome/rtrr/rap"
+      EXTRN_MDL_SYSBASEDIR_LBCS="/public/data/grids/rap/full/wrfnat/grib2"
       ;;
     "CHEYENNE")
       EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
@@ -291,7 +289,7 @@ else
       EXTRN_MDL_SYSBASEDIR_LBCS=""
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/misc/whome/rtrr/hrrr"
+      EXTRN_MDL_SYSBASEDIR_LBCS="/public/data/grids/hrrr/conus/wrfnat/grib2"
       ;;
     esac
     ;;
