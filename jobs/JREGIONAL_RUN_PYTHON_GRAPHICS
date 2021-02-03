@@ -71,6 +71,43 @@ else
   run_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/pyprd"
 fi
 
+# Choose an appropriate sites file for the grid
+if [[ ${PREDEF_GRID_NAME} =~ CONUS ]] ; then
+  sites_file=conus_raobs.txt
+elif [[ ${PREDEF_GRID_NAME} =~ AK ]] ; then
+  sites_file=alaska_raobs.txt
+else
+  print_err_msg_exit "\
+  Choice of sites file is ambiguous. Please help."
+fi
+
+# Choose the appropriate file template for graphics type
+
+case ${GRAPHICS_TYPE} in 
+
+  "maps")
+
+    file_tmpl="${NET}.${CDATE:8:2}z.bgdawpf{FCST_TIME:03d}.tm${CDATE:8:2}.grib2"
+    file_type=prs
+    extra_args="\
+      --tiles all
+      --images ${PYTHON_GRAPHICS_DIR}/image_lists/rrfs_subset.yml hourly"
+    ;;
+
+  "skewts")
+
+    file_tmpl="${NET}.t${CDATE:8:2}z.bgrd3df{FCST_TIME:03d}.tm00.grib2"
+    file_type=nat
+    extra_args="\
+      --sites ${PYTHON_GRAPHICS_DIR}/static/${sites_file}\
+      --max_plev 100"
+    ;;
+
+  *)
+    print_err_msg_exit "\
+      GRAPHICS_TYPE \"${GRAPHICS_TYPE}\" is not recognized."
+    ;;
+esac
 mkdir_vrfy -p "${run_dir}"
 #
 #-----------------------------------------------------------------------
@@ -85,14 +122,13 @@ python -u ${PYTHON_GRAPHICS_DIR}/create_graphics.py \
   ${GRAPHICS_TYPE} \
   -d ${postprd_dir} \
   -f 0 ${FCST_LEN_HRS} \
-  --file_tmpl "RRFS_CONUS.t${CDATE:8:2}z.bgrd3df{FCST_TIME:03d}.tm${CDATE:8:2}.grib2" \
-  --file_type nat \
-  --max_plev 100 \
+  --file_tmpl ${file_tmpl} \
+  --file_type ${file_type} \
   -n ${SLURM_CPUS_ON_NODE:-12} \
   -o ${run_dir} \
   -s ${CDATE} \
-  --sites ${PYTHON_GRAPHICS_DIR}/static/conus_raobs.txt \
-  -z ${run_dir}/skewt ||
+  -z ${run_dir}/skewt \
+  ${extra_args} ||
 print_err_msg_exit "\
 Call to pyscript \"${scrfunc_fn}\" failed."
 #
