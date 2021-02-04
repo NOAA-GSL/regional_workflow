@@ -196,6 +196,13 @@ EXPT_SUBDIR=""
 # 
 #   $PTMP/com/$NET/$envir/$RUN.$yyyymmdd/$hh
 #
+# Setup default observation locations for data assimilation:
+#
+#    OBSPATH:   observation BUFR file path
+#    OBSPATH_NSSLMOSIAC: NSSL radar reflectivity 
+#    LIGHTNING_ROOT: lightning observations
+#    ENKF_FCSTL: globa ensemble forecast
+
 #-----------------------------------------------------------------------
 #
 COMINgfs="/base/path/of/directory/containing/gfs/input/files"
@@ -210,6 +217,12 @@ NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
 NCL_REGION="conus"
 MODEL="NO MODEL CHOSEN"
+
+OBSPATH="/public/data/grids/rap/obs"
+OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
+LIGHTNING_ROOT="/public/data/lightning"
+ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm_v15"
+
 #
 #-----------------------------------------------------------------------
 #
@@ -1249,6 +1262,15 @@ NUM_ENS_MEMBERS="1"
 # Flag that determines whether to run a data assimilation cycle.
 #
 DO_DACYCLE="FALSE"
+#
+#-----------------------------------------------------------------------
+#
+# Set parameters associated with running retrospective experiments.  Definitions:
+#
+# DO_RETRO:
+# Flag turn on the retrospective experiments.
+#
+DO_RETRO="FALSE"
 #
 #-----------------------------------------------------------------------
 #

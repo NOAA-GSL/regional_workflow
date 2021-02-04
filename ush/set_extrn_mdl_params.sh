@@ -136,6 +136,10 @@ else
   esac
 
 fi
+
+if [ "${DO_RETRO}" = "TRUE" ]; then
+      EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/hrrr/conus/wrfnat"
+fi
 #
 # If EXTRN_MDL_SYSBASEDIR_ICS has not been set (not even to a null string), 
 # print out an error message and exit.
@@ -166,7 +170,7 @@ case ${EXTRN_MDL_NAME_LBCS} in
     EXTRN_MDL_LBCS_OFFSET_HRS="0"
     ;;
   "RAPX")
-    EXTRN_MDL_LBCS_OFFSET_HRS="3"
+    EXTRN_MDL_LBCS_OFFSET_HRS="1"
     ;;
   "HRRRX")
     EXTRN_MDL_LBCS_OFFSET_HRS="0"
@@ -272,6 +276,10 @@ else
 
   esac
 
+fi
+
+if [ "${DO_RETRO}" = "TRUE" ]; then
+      EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/rap/130_conus/wrfnat"
 fi
 #
 # If EXTRN_MDL_SYSBASEDIR_LBCS has not been set (not even to a null string), 

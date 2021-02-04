@@ -2551,10 +2551,10 @@ ENSMEM_NAMES=( $( printf "\"%s\" " "${ENSMEM_NAMES[@]}" ))
 FV3_NML_ENSMEM_FPS=( $( printf "\"%s\" " "${FV3_NML_ENSMEM_FPS[@]}" ))
 
 # for data assimilation
-OBSPATH="/public/data/grids/rap/obs"
-OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
-LIGHTNING_ROOT="/public/data/lightning"
-ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm_v15"
+OBSPATH="${OBSPATH}"
+OBSPATH_NSSLMOSIAC="${OBSPATH_NSSLMOSIAC}"
+LIGHTNING_ROOT="${LIGHTNING_ROOT}"
+ENKF_FCST="${ENKF_FCST}"
 
 FIXgsi="${FIXrrfs}/fix_gsi"
 FIXcrtm="${FIXrrfs}/fix_crtm"

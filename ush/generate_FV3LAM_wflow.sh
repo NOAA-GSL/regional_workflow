@@ -312,6 +312,10 @@ settings="\
 # data assimilation related parameters.
 #
   'do_dacycle': ${DO_DACYCLE}
+#
+#  retrospective experiments
+#
+  'do_retro': ${DO_RETRO}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "
