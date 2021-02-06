@@ -89,6 +89,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY DEADLINE_POST     "24:00:00">
 <!ENTITY DEADLINE_GRAPHICS "24:00:00">
 
+<!ENTITY START_TIME_ANALYSIS     "01:37:00">
 <!ENTITY START_TIME_CONVENTIONAL "00:37:00">
 <!ENTITY START_TIME_NSSLMOSIAC   "00:25:00">
 <!ENTITY START_TIME_LIGHTNINGNC  "00:25:00">
@@ -120,7 +121,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
   <cycledef group="at_start">{{ cdate_first_cycl.strftime("%M %H %d %m %Y *") }}</cycledef>
   <cycledef group="forecast">{{ cdate_first_cycl.strftime("%Y%m%d%H%M") }} {{ cdate_last_cycl.strftime("%Y%m%d%H%M") }} {{ cycl_freq }}</cycledef>
 {%- if do_dacycle %}
-  <cycledef group="dacycle">00 01-11,13-23 {{cdate_first_cycl.strftime("%d") }}-{{ cdate_last_cycl.strftime("%d") }} {{ cdate_first_cycl.strftime("%m") }} {{cdate_first_cycl.strftime("%Y") }} *</cycledef>
+  <cycledef group="dacycle">00 {{ da_cycle_interval_hrs }}-11/{{ da_cycle_interval_hrs }},{{ da_cycle_interval_hrs + 12 }}-23/{{ da_cycle_interval_hrs }} {{cdate_first_cycl.strftime("%d") }}-{{ cdate_last_cycl.strftime("%d") }} {{ cdate_first_cycl.strftime("%m") }} {{cdate_first_cycl.strftime("%Y") }} *</cycledef>
 {% endif %}
   <cycledef group="archive">{{ cdate_first_arch.strftime("%Y%m%d%H%M") }} {{ cdate_last_arch.strftime("%Y%m%d%H%M") }} 24:00:00</cycledef> 
 
@@ -259,10 +260,11 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_ics }}</value></envar>
+    <envar><name>EXTRN_MDL_PREFIX_NAME</name><value>{{ extrn_mdl_prefix_ics }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>ICS</value></envar>
 
     <dependency>
-      <datadep age="00:00:05:00"><cyclestr>{{ extrn_mdl_sysbasedir_ics }}/@Y@m@d@H/postprd/{{ extrn_mdl_prefix_ics }}_00.grib2</cyclestr></datadep>
+      <datadep age="00:00:05:00"><cyclestr>{{ extrn_mdl_sysbasedir_ics }}/@Y@m@d@H/postprd/{{ extrn_mdl_prefix_ics }}00.grib2</cyclestr></datadep>
     </dependency>
 
   </task>
@@ -291,10 +293,11 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>EXTRN_MDL_NAME</name><value>{{ extrn_mdl_name_lbcs }}</value></envar>
+    <envar><name>EXTRN_MDL_PREFIX_NAME</name><value>{{ extrn_mdl_prefix_lbcs }}</value></envar>
     <envar><name>ICS_OR_LBCS</name><value>LBCS</value></envar>
 
     <dependency>
-      <datadep age="00:00:05:00"> <cyclestr offset="-{{ extrn_mdl_lbcs_offset_hrs }}:00:00">{{ extrn_mdl_sysbasedir_lbcs }}/@Y@m@d@H/postprd/wrfnat_130_15.grib2</cyclestr></datadep>
+      <datadep age="00:00:05:00"> <cyclestr offset="-{{ extrn_mdl_lbcs_offset_hrs }}:00:00">{{ extrn_mdl_sysbasedir_lbcs }}/@Y@m@d@H/postprd/{{ extrn_mdl_prefix_lbcs }}{{ fcst_len_hrs + extrn_mdl_lbcs_offset_hrs }}.grib2</cyclestr></datadep>
     </dependency>
 
     
@@ -549,11 +552,25 @@ MODULES_RUN_TASK_FP script.
     <envar><name>BKTYPE</name><value><cyclestr>0</cyclestr></value></envar>
 
     <dependency>
+{%- if do_retro %}
       <and>
         <taskdep task="&MAKE_LBCS_TN;"/>
-        <datadep age="00:00:05:00"><cyclestr offset="-1:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf001.nc</cyclestr></datadep>
+        <datadep age="00:00:05:00"><cyclestr offset="-{{ da_cycle_interval_hrs }}:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf00{{ da_cycle_interval_hrs }}.nc</cyclestr></datadep>
         <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
+{% else %}
+      <or>
+        <and>
+          <taskdep task="&MAKE_LBCS_TN;"/>
+          <datadep age="00:00:05:00"><cyclestr offset="-{{ da_cycle_interval_hrs }}:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf00{{ da_cycle_interval_hrs }}.nc</cyclestr></datadep>
+          <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
+        </and>
+        <and>
+          <taskdep task="&MAKE_LBCS_TN;"/>
+          <timedep><cyclestr offset="&START_TIME_ANALYSIS;">@Y@m@d@H@M00</cyclestr></timedep>
+        </and>
+      </or>
+{% endif %}
     </dependency>
 
   </task>

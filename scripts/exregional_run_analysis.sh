@@ -180,9 +180,6 @@ START_DATE=`echo "${CDATE}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
 YYYYMMDDHH=`date +%Y%m%d%H -d "${START_DATE}"`
 JJJ=`date +%j -d "${START_DATE}"`
 
-YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${DA_CYCLE_INTERV} hours ago"`
-JJJm6=`date +%j -d "${START_DATE} ${DA_CYCLE_INTERV} hours ago"`
-
 YYYY=${YYYYMMDDHH:0:4}
 MM=${YYYYMMDDHH:4:2}
 DD=${YYYYMMDDHH:6:2}
@@ -203,12 +200,13 @@ fixgriddir=$FIXgsi/${PREDEF_GRID_NAME}
 if [ ${BKTYPE} -eq 1 ]; then  # cold start, use background from INPUT
   bkpath=${CYCLE_DIR}/INPUT
 else
+  YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${DA_CYCLE_INTERV} hours ago"`
   bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/RESTART  # cycling, use background from RESTART
 fi
 
 print_info_msg "$VERBOSE" "fixdir is $fixdir"
 print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
-print_info_msg "$VERBOSE" "bkpath is $bkpath"
+print_info_msg "$VERBOSE" "default bkpath is $bkpath"
 
 
 #-----------------------------------------------------------------------
@@ -308,13 +306,12 @@ fi
 #-----------------------------------------------------------------------
 
 FV3SARPATH=${CYCLE_DIR}
-cp_vrfy ${fixgriddir}/fv3_akbk                               fv3_akbk
-cp_vrfy ${fixgriddir}/fv3_grid_spec                          fv3_grid_spec
+cp_vrfy ${fixgriddir}/fv3_akbk                     fv3_akbk
+cp_vrfy ${fixgriddir}/fv3_grid_spec                fv3_grid_spec
 
 if [ ${BKTYPE} -eq 1 ]; then  # cold start uses background from INPUT
-  cp_vrfy ${bkpath}/gfs_data.tile7.halo0.nc                gfs_data.tile7.halo0.nc_b
-  ${NCKS} -A -v  phis ${fixgriddir}/phis.nc                    gfs_data.tile7.halo0.nc_b
-#  ${NCKS} -A -v radar_tten ${fixgriddir}/radar_tten_input.nc   gfs_data.tile7.halo0.nc_b
+  cp_vrfy ${bkpath}/gfs_data.tile7.halo0.nc        gfs_data.tile7.halo0.nc_b
+  ${NCKS} -A -v  phis ${fixgriddir}/phis.nc        gfs_data.tile7.halo0.nc_b
 
   cp_vrfy ${bkpath}/sfc_data.tile7.halo0.nc        fv3_sfcdata
   cp_vrfy gfs_data.tile7.halo0.nc_b                fv3_dynvars
@@ -328,16 +325,35 @@ else                          # cycle uses background from restart
     restart_prefix=${YYYYMMDD}.${HH}0000
   else
     print_err_msg_exit "\
-Restart hour should not larger than forecast hour:
+    Restart hour should not larger than forecast hour:
     Restart Hour = \"${DA_CYCLE_INTERV}\"
     Forecast Hour = \"${FCST_LEN_HRS}\""    
     exit 1
   fi
 
-  cp_vrfy  ${bkpath}/${restart_prefix}.fv_core.res.tile1.nc             fv3_dynvars
-  cp_vrfy  ${bkpath}/${restart_prefix}.fv_tracer.res.tile1.nc           fv3_tracer
-  cp_vrfy  ${bkpath}/${restart_prefix}.sfc_data.nc                      fv3_sfcdata
-#  ${NCKS} -A -v radar_tten ${fixgriddir}/radar_tten_restart.nc              fv3_tracer
+#   let us figure out which backgound is available
+  n=${DA_CYCLE_INTERV}
+  while [[ $n -le 6 ]] ; do
+    checkfile=${bkpath}/${restart_prefix}.fv_core.res.tile1.nc
+    if [ -r "${checkfile}" ]; then
+      print_info_msg "$VERBOSE" "Found ${checkfile}; Use it as background for analysis "
+      break
+    else
+      n=$((n + ${DA_CYCLE_INTERV}))
+      YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${n} hours ago"`
+      bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/RESTART  # cycling, use background from RESTART
+      print_info_msg "$VERBOSE" "Trying this path: ${bkpath}"
+    fi
+  done
+#
+  checkfile=${bkpath}/${restart_prefix}.fv_core.res.tile1.nc
+  if [ -r "${checkfile}" ]; then
+    cp_vrfy  ${bkpath}/${restart_prefix}.fv_core.res.tile1.nc             fv3_dynvars
+    cp_vrfy  ${bkpath}/${restart_prefix}.fv_tracer.res.tile1.nc           fv3_tracer
+    cp_vrfy  ${bkpath}/${restart_prefix}.sfc_data.nc                      fv3_sfcdata
+  else
+    print_info_msg_exit "$VERBOSE" "Error: cannot find background: ${checkfile}"
+  fi
   fv3sar_bg_type=0
 fi
 
@@ -350,10 +366,6 @@ cat coupler.res.newD | sed "s/hh/${HH}/"     > coupler.res.newH
 mv coupler.res.newH coupler.res
 rm coupler.res.newY coupler.res.newM coupler.res.newD
 
-# This is how to add radar tten array in the first time:
-#cp_vrfy ${USHDIR}/addtten.py                        addtten.py 
-#/scratch1/BMC/wrfruc/Samuel.Trahan/soft/anaconda2-5.3.1/bin/python3.7 addtten.py fv3_tracer
-#python addtten.py fv3_tracer
 #
 #-----------------------------------------------------------------------
 #

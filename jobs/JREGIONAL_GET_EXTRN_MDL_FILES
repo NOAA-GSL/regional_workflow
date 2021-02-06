@@ -205,6 +205,7 @@ cd_vrfy "${extrn_mdl_staging_dir}"
 #
 get_extrn_mdl_file_dir_info \
   extrn_mdl_name="${EXTRN_MDL_NAME}" \
+  extrn_mdl_prefix_name="${EXTRN_MDL_PREFIX_NAME}" \
   anl_or_fcst="${anl_or_fcst}" \
   cdate_FV3LAM="${CDATE}" \
   time_offset_hrs="${time_offset_hrs}" \

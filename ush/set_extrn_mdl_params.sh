@@ -108,7 +108,7 @@ else
       ;;
     "JET")
       EXTRN_MDL_SYSBASEDIR_ICS="/misc/whome/rtrr/rap"
-      EXTRN_MDL_PREFIX_ICS="wrfnat_rr"
+      EXTRN_MDL_PREFIX_ICS="wrfnat_rr_"
       ;;
 # This goes with the comment below for the if-statement (-z EXTRN_MDL_SYSBASEDIR_ICS).
 # Should not need this case.
@@ -125,7 +125,7 @@ else
       ;;
     "JET")
       EXTRN_MDL_SYSBASEDIR_ICS="/misc/whome/rtrr/hrrr"
-      EXTRN_MDL_PREFIX_ICS="wrfnat_hrconus"
+      EXTRN_MDL_PREFIX_ICS="wrfnat_hrconus_"
       ;;
     "CHEYENNE")
       EXTRN_MDL_SYSBASEDIR_ICS="dummy_value"
@@ -139,6 +139,7 @@ fi
 
 if [ "${DO_RETRO}" = "TRUE" ]; then
       EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/hrrr/conus/wrfnat"
+      EXTRN_MDL_PREFIX_ICS="wrfnat_hrconus_"
 fi
 #
 # If EXTRN_MDL_SYSBASEDIR_ICS has not been set (not even to a null string), 
@@ -256,6 +257,7 @@ else
       ;;
     "JET")
       EXTRN_MDL_SYSBASEDIR_LBCS="/misc/whome/rtrr/rap"
+      EXTRN_MDL_PREFIX_LBCS="wrfnat_rr_"
       ;;
     "CHEYENNE")
       EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
@@ -280,6 +282,7 @@ fi
 
 if [ "${DO_RETRO}" = "TRUE" ]; then
       EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/rap/130_conus/wrfnat"
+      EXTRN_MDL_PREFIX_LBCS="wrfnat_130_"
 fi
 #
 # If EXTRN_MDL_SYSBASEDIR_LBCS has not been set (not even to a null string), 

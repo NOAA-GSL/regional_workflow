@@ -59,6 +59,7 @@ function get_extrn_mdl_file_dir_info() {
 #
   local valid_args=( \
     "extrn_mdl_name" \
+    "extrn_mdl_prefix_name" \
     "anl_or_fcst" \
     "cdate_FV3LAM" \
     "time_offset_hrs" \
@@ -460,8 +461,7 @@ and analysis or forecast (anl_or_fcst):
       fcst_hh=( $( printf "%02d " "${lbc_spec_fhrs[@]}" ) )
 
       if [ "${MACHINE}" = "JET" ]; then 
-        #prefix="wrfnat_rr_"
-        prefix="wrfnat_130_"
+        prefix=${extrn_mdl_prefix_name}
         suffix=".grib2"
       else
         prefix="${yy}${ddd}${hh}${mn}"
@@ -480,7 +480,7 @@ and analysis or forecast (anl_or_fcst):
       fcst_hh=( $( printf "%02d " "${lbc_spec_fhrs[@]}" ) )
 
       if [ "${MACHINE}" = "JET" ]; then
-        prefix="wrfnat_hrconus_"
+        prefix=${extrn_mdl_prefix_name}
         suffix=".grib2"
       else
         prefix="${yy}${ddd}${hh}${mn}"

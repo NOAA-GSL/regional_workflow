@@ -2737,6 +2737,7 @@ EXTRN_MDL_PREFIX_ICS="${EXTRN_MDL_PREFIX_ICS}"
 #-----------------------------------------------------------------------
 #
 EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS}"
+EXTRN_MDL_PREFIX_LBCS="${EXTRN_MDL_PREFIX_LBCS}"
 #
 #-----------------------------------------------------------------------
 #
