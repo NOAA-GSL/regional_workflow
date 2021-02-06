@@ -448,6 +448,7 @@ case $MACHINE in
     ;;
 
   "GAEA")
+    WORKFLOW_MANAGER="rocoto"
     NCORES_PER_NODE=36
     SCHED="slurm"
     CLUSTERS_DEFAULT=${CLUSTERS_DEFAULT:-"c4"}
