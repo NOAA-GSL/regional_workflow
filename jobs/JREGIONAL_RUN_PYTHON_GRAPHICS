@@ -3,8 +3,8 @@
 #
 #-----------------------------------------------------------------------
 #
-# This script runs the post-processor (UPP) on the NetCDF output files
-# of the write component of the FV3-LAM model.
+# This script runs the adb_graphics create_graphics driver for creating
+# PNG figures and zipping them for dissemination to the web.
 #
 #-----------------------------------------------------------------------
 #
@@ -112,8 +112,7 @@ mkdir_vrfy -p "${run_dir}"
 #
 #-----------------------------------------------------------------------
 #
-# Call the ex-script for this J-job and pass to it the necessary varia-
-# bles.
+# Call the graphics driver script.
 #
 #-----------------------------------------------------------------------
 #
