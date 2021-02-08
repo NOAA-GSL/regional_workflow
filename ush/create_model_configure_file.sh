@@ -102,6 +102,20 @@ run directory (run_dir):
   dd=${cdate:6:2}
   hh=${cdate:8:2}
 #
+# decide the forecast length for this cycle
+#
+
+  num_fhrs=( "${#FCST_LEN_HRS_CYCLES[@]}" )
+  ihh=`expr ${hh} + 0`
+  if [ ${num_fhrs} -gt ${ihh} ]; then
+     FCST_LEN_HRS_thiscycle=${FCST_LEN_HRS_CYCLES[${ihh}]}
+  else
+     FCST_LEN_HRS_thiscycle=${FCST_LEN_HRS}
+  fi
+  print_info_msg "$VERBOSE" " The forecast length for cycle (\"${hh}\") is
+                 ( \"${FCST_LEN_HRS_thiscycle}\") "
+
+#
 # Set parameters in the model configure file.
 #
   dot_quilting_dot="."${QUILTING,,}"."
@@ -113,7 +127,7 @@ run directory (run_dir):
   set_file_param "${model_config_fp}" "start_month" "$mm"
   set_file_param "${model_config_fp}" "start_day" "$dd"
   set_file_param "${model_config_fp}" "start_hour" "$hh"
-  set_file_param "${model_config_fp}" "nhours_fcst" "${FCST_LEN_HRS}"
+  set_file_param "${model_config_fp}" "nhours_fcst" "${FCST_LEN_HRS_thiscycle}"
   set_file_param "${model_config_fp}" "ncores_per_node" "${NCORES_PER_NODE}"
   set_file_param "${model_config_fp}" "quilting" "${dot_quilting_dot}"
   set_file_param "${model_config_fp}" "print_esmf" "${dot_print_esmf_dot}"

@@ -365,6 +365,10 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 # FCST_LEN_HRS:
 # The length of each forecast, in integer hours.
 #
+# FCST_LEN_HRS_CYCLES:
+# The length of forecast for each cycle, in integer hours.
+# When it empty, all forecast will be FCST_LEN_HRS
+#
 # DA_CYCLE_INTERV:
 # Data assimilation cycle interval, in integer hours for now.
 #
@@ -377,6 +381,7 @@ DATE_FIRST_CYCL="YYYYMMDD"
 DATE_LAST_CYCL="YYYYMMDD"
 CYCL_HRS=( "HH1" "HH2" )
 FCST_LEN_HRS="24"
+FCST_LEN_HRS_CYCLES=( )
 DA_CYCLE_INTERV="3"
 RESTART_INTERVAL="3,6"
 #

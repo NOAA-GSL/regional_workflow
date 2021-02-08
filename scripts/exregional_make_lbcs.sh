@@ -57,6 +57,7 @@ hour zero).
 #
 valid_args=( \
 "lbcs_dir" \
+"cdate" \
 "wgrib2_dir" \
 "APRUN" \
 )
@@ -397,12 +398,34 @@ fi
 #
 #-----------------------------------------------------------------------
 #
+# Need to decide the forecast length for this cycle
+#
+  hh="${cdate:8:2}"
+  num_fhrs=( "${#FCST_LEN_HRS_CYCLES[@]}" )
+  ihh=`expr ${hh} + 0`
+  if [ ${num_fhrs} -gt ${ihh} ]; then
+     FCST_LEN_HRS_thiscycle=${FCST_LEN_HRS_CYCLES[${ihh}]}
+  else
+     FCST_LEN_HRS_thiscycle=${FCST_LEN_HRS}
+  fi
+  print_info_msg "$VERBOSE" " The forecast length for cycle (\"${hh}\") is
+                 ( \"${FCST_LEN_HRS_thiscycle}\") "
+#
+#  Now loop through all the boundary levels
+#
 num_fhrs="${#EXTRN_MDL_LBC_SPEC_FHRS[@]}"
+FCST_LEN_HRS_thiscycle_bdy=`expr ${FCST_LEN_HRS_thiscycle} + ${EXTRN_MDL_LBC_SPEC_FHRS[0]}`
 for (( i=0; i<${num_fhrs}; i++ )); do
 #
 # Get the forecast hour of the external model.
 #
   fhr="${EXTRN_MDL_LBC_SPEC_FHRS[$i]}"
+#
+# only do bdy less than the forecast length for each cycle
+#
+  if [ ${fhr} -gt ${FCST_LEN_HRS_thiscycle_bdy} ];then
+     break
+  fi
 #
 # Set external model output file name and file type/format.  Note that
 # these are now inputs into chgres.

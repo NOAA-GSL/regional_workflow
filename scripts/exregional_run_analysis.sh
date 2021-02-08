@@ -599,7 +599,7 @@ fi
 #-----------------------------------------------------------------------
 #
 
-netcdf_diag=${netcdf_diag:-".true."}
+netcdf_diag=${netcdf_diag:-".false."}
 binary_diag=${binary_diag:-".true."}
 
 loops="01 03"

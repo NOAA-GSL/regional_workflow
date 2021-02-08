@@ -119,6 +119,7 @@ mkdir_vrfy -p "${lbcs_dir}"
 $SCRIPTSDIR/exregional_make_lbcs.sh \
   lbcs_dir="${lbcs_dir}" \
   wgrib2_dir="${wgrib2_dir}" \
+  cdate="${CDATE}" \
   APRUN="${APRUN}" || \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
