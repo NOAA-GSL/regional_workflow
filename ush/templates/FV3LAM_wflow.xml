@@ -486,7 +486,7 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 -->
 
-  <task name="python_skewt" cycledefs="forecast" maxtries="{{ maxtries_run_post }}>
+  <task name="python_skewt" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
 
     &RSRV_GRAPHICS;
     &WALL_LIMIT_GRAPHICS;
