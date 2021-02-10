@@ -51,6 +51,11 @@ RUN_ENVIR="nco"
 # default, but if the machine name is set to a platform that supports
 # rocoto, this will be overwritten and set to "rocoto".
 #
+# NCORES_PER_NODE:
+# The number of cores available per node on the compute platform. Set
+# for supported platforms in setup.sh, but is now also configurable for
+# generic platforms.
+#
 # SCHED:
 # The job scheduler to use (e.g. slurm).  Set this to an empty string in
 # order for the experiment generation script to set it depending on the
@@ -109,6 +114,7 @@ RUN_ENVIR="nco"
 MACHINE="BIG_COMPUTER"
 ACCOUNT="project_name"
 WORKFLOW_MANAGER="none"
+NCORES_PER_NODE=""
 SCHED=""
 PARTITION_DEFAULT=""
 QUEUE_DEFAULT=""

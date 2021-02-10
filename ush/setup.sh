@@ -357,7 +357,7 @@ check_var_valid_value "MACHINE" "valid_vals_MACHINE"
 #
 #-----------------------------------------------------------------------
 #
-NCORES_PER_NODE=""
+NCORES_PER_NODE=${NCORES_PER_NODE:-""}
 case $MACHINE in
 
   "WCOSS_CRAY")
@@ -466,8 +466,8 @@ case $MACHINE in
     ;;
 
   "LINUX")
-    WORKFLOW_MANAGER="none"
-    SCHED="none"
+    WORKFLOW_MANAGER=${WORKFLOW_MANAGER:-"none"}
+    SCHED=${SCHED:-"none"}
     ;;
 
 esac
@@ -1014,6 +1014,92 @@ Please set this to a valid numerical value in the user-specified experiment
 configuration file (EXPT_CONFIG_FP) and rerun:
   EXPT_CONFIG_FP = \"${EXPT_CONFIG_FP}\""
 fi
+
+#
+#-----------------------------------------------------------------------
+#
+# If using the FV3_HRRR physics suite, make sure that the directory from 
+# which certain fixed orography files will be copied to the experiment 
+# directory actually exists.  Note that this is temporary code.  It should
+# be removed once there is a script or code available that will create 
+# these orography files for any grid.
+#
+#-----------------------------------------------------------------------
+#
+GWD_HRRRsuite_DIR=""
+if [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ]; then
+#
+# If in NCO mode, make sure that GWD_HRRRsuite_BASEDIR is set equal to  
+# FIXLAM_NCO_BASEDIR
+#
+  if [ "${RUN_ENVIR}" = "nco" ]; then
+
+    if [ "${GWD_HRRRsuite_BASEDIR}" != "${FIXLAM_NCO_BASEDIR}" ]; then
+
+      gwd_hrrrsuite_basedir_orig="${GWD_HRRRsuite_BASEDIR}"
+      GWD_HRRRsuite_BASEDIR="${FIXLAM_NCO_BASEDIR}"
+
+      if [ ! -z "${gwd_hrrrsuite_basedir_orig}" ]; then
+        print_err_msg_exit "
+When RUN_ENVIR is set to \"nco\", the workflow assumes that the base 
+directory (GWD_HRRRsuite_BASEDIR) under which the grid-specific 
+subdirectories containing the gravity wave drag-related orography 
+statistics files for the FV3_HRRR suite are located is the same as the 
+base directory (FIXLAM_NCO_BASEDIR) under which the other fixed files 
+are located.  Currently, this is not the case:
+  GWD_HRRRsuite_BASEDIR = \"${gwd_hrrrsuite_basedir_orig}\"
+  FIXLAM_NCO_BASEDIR = \"${FIXLAM_NCO_BASEDIR}\"
+Resetting GWD_HRRRsuite_BASEDIR to FIXLAM_NCO_BASEDIR.  Reset value is:
+  GWD_HRRRsuite_BASEDIR = \"${GWD_HRRRsuite_BASEDIR}\""
+      fi
+
+    fi
+
+  fi
+#
+# Check that GWD_HRRRsuite_BASEDIR exists and is a directory.
+#
+  if [ ! -d "${GWD_HRRRsuite_BASEDIR}" ]; then
+    print_err_msg_exit "\
+The base directory (GWD_HRRRsuite_BASEDIR) under which the grid-specific
+subdirectories containing the gravity wave drag-related orography files 
+for the FV3_HRRR suite should be located does not exist (or is not a 
+directory):
+  GWD_HRRRsuite_BASEDIR = \"${GWD_HRRRsuite_BASEDIR}\""
+  fi
+  GWD_HRRRsuite_DIR="${GWD_HRRRsuite_BASEDIR}/${PREDEF_GRID_NAME}"
+#
+# Ensure that PREDEF_GRID_NAME is not set to a null string.  Currently,
+# only predefined grids can be used with the FV3_HRRR suite because 
+# orography statistics files required by this suite are available only
+# for (some of) the predefined grids.
+#
+  if [ -z "${PREDEF_GRID_NAME}" ]; then
+    print_err_msg_exit "\
+A predefined grid name (PREDEF_GRID_NAME) must be specified when using 
+the FV3_HRRR physics suite:
+  CCPP_PHYS_SUITE = \"${CCPP_PHYS_SUITE}\"
+  PREDEF_GRID_NAME = \"${PREDEF_GRID_NAME}\""
+  else
+#
+# Ensure that the directory GWD_HRRRsuite_DIR in which the orography
+# statistics files required by the FV3_HRRR suite are located actually
+# exists.
+#
+    if [ ! -d "${GWD_HRRRsuite_DIR}" ]; then
+      print_err_msg_exit "\
+The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
+drag-related orography files for the FV3_HRRR suite does not exist:
+  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
+    elif [ ! "$( ls -A ${GWD_HRRRsuite_DIR} )" ]; then
+      print_err_msg_exit "\
+The directory (GWD_HRRRsuite_DIR) that should contain the gravity wave 
+drag related orography files for the FV3_HRRR suite is empty:
+  GWD_HRRRsuite_DIR = \"${GWD_HRRRsuite_DIR}\""
+    fi      
+  fi
+
+fi
 #
 #-----------------------------------------------------------------------
 #
@@ -1106,54 +1192,9 @@ check_for_preexist_dir_file "$EXPTDIR" "${PREEXISTING_DIR_METHOD}"
 #
 LOGDIR="${EXPTDIR}/log"
 
+FIXam="${EXPTDIR}/fix_am"
+FIXLAM="${EXPTDIR}/fix_lam"
 if [ "${RUN_ENVIR}" = "nco" ]; then
-
-  FIXam="${FIXrrfs}/fix_am"
-#
-# In NCO mode (i.e. if RUN_ENVIR set to "nco"), it is assumed that before
-# running the experiment generation script, the path specified in FIXam 
-# already exists and is either itself the directory in which various fixed
-# files (but not the ones containing the regional grid and the orography
-# and surface climatology on that grid) are located, or it is a symlink 
-# to such a directory.  Resolve any symlinks in the path specified by 
-# FIXam and check that this is the case.
-#
-  path_resolved=$( $READLINK -m "$FIXam" )
-  if [ ! -d "${path_resolved}" ]; then
-    print_err_msg_exit "\
-In order to be able to generate a forecast experiment in NCO mode (i.e. 
-when RUN_ENVIR set to \"nco\"), the path specified by FIXam after resolving 
-all symlinks (path_resolved) must be an existing directory (but in this
-case isn't):
-  RUN_ENVIR = \"${RUN_ENVIR}\"
-  FIXam = \"$FIXam\"
-  path_resolved = \"${path_resolved}\"
-Please ensure that path_resolved is an existing directory and then rerun 
-the experiment generation script."
-  fi
-
-  FIXLAM="${FIXrrfs}/fix_lam/${PREDEF_GRID_NAME}"
-#
-# In NCO mode (i.e. if RUN_ENVIR set to "nco"), it is assumed that before
-# running the experiment generation script, the path specified in FIXLAM 
-# already exists and is either itself the directory in which the fixed 
-# grid, orography, and surface climatology files are located, or it is a
-# symlink to such a directory.  Resolve any symlinks in the path specified
-# by FIXLAM and check that this is the case.
-#
-  path_resolved=$( $READLINK -m "$FIXLAM" )
-  if [ ! -d "${path_resolved}" ]; then
-    print_err_msg_exit "\
-In order to be able to generate a forecast experiment in NCO mode (i.e. 
-when RUN_ENVIR set to \"nco\"), the path specified by FIXLAM after resolving 
-all symlinks (path_resolved) must be an existing directory (but in this
-case isn't):
-  RUN_ENVIR = \"${RUN_ENVIR}\"
-  FIXLAM = \"$FIXLAM\"
-  path_resolved = \"${path_resolved}\"
-Please ensure that path_resolved is an existing directory and then rerun 
-the experiment generation script."
-  fi
 
   CYCLE_BASEDIR="$STMP/tmpnwprd/$RUN"
   check_for_preexist_dir_file "${CYCLE_BASEDIR}" "${PREEXISTING_DIR_METHOD}"
@@ -1832,35 +1873,9 @@ mkdir_vrfy -p "$EXPTDIR"
 #
 #-----------------------------------------------------------------------
 #
-if [ "${RUN_ENVIR}" = "nco" ]; then
 
-  suffix="${DOT_OR_USCORE}mosaic.halo${NH3}.nc"
-  glob_pattern="C*$suffix"
-  cd_vrfy $FIXLAM
-  num_files=$( ls -1 ${glob_pattern} 2>/dev/null | wc -l )
-
-  if [ "${num_files}" -ne "1" ]; then
-    print_err_msg_exit "\
-Exactly one file must exist in directory FIXLAM matching the globbing
-pattern glob_pattern:
-  FIXLAM = \"${FIXLAM}\"
-  glob_pattern = \"${glob_pattern}\"
-  num_files = ${num_files}"
-  fi
-
-  fn=$( ls -1 ${glob_pattern} )
-  RES_IN_FIXLAM_FILENAMES=$( \
-    printf "%s" $fn | $SED -n -r -e "s/^C([0-9]*)$suffix/\1/p" )
-  if [ "${GRID_GEN_METHOD}" = "GFDLgrid" ] && \
-     [ "${GFDLgrid_RES}" -ne "${RES_IN_FIXLAM_FILENAMES}" ]; then
-    print_err_msg_exit "\
-The resolution extracted from the fixed file names (RES_IN_FIXLAM_FILENAMES)
-does not match the resolution specified by GFDLgrid_RES:
-  GFDLgrid_RES = ${GFDLgrid_RES}
-  RES_IN_FIXLAM_FILENAMES = ${RES_IN_FIXLAM_FILENAMES}"
-  fi
-
-else
+mkdir_vrfy -p "$FIXLAM"
+RES_IN_FIXLAM_FILENAMES=""
 #
 #-----------------------------------------------------------------------
 #
@@ -2064,22 +2079,23 @@ fi
 #
 NNODES_RUN_FCST=$(( (PE_MEMBER01 + PPN_RUN_FCST - 1)/PPN_RUN_FCST ))
 
-
-
 #
 #-----------------------------------------------------------------------
 #
-# Create a new experiment directory.  Note that at this point we are 
-# guaranteed that there is no preexisting experiment directory. For
-# platforms with no workflow manager, we need to create LOGDIR as well,
-# since it won't be created later at runtime.
+# Set the name of the file containing aerosol climatology data that, if
+# necessary, can be used to generate approximate versions of the aerosol 
+# fields needed by Thompson microphysics.  This file will be used to 
+# generate such approximate aerosol fields in the ICs and LBCs if
+# Thompson 
+# MP is included in the physics suite and if the exteranl model for ICs
+# or LBCs does not already provide these fields.  Also, set the full
+# path
+# to this file.
 #
 #-----------------------------------------------------------------------
 #
-mkdir_vrfy -p "$EXPTDIR"
-mkdir_vrfy -p "$LOGDIR"
-
-
+THOMPSON_MP_CLIMO_FN="Thompson_MP_MONTHLY_CLIMO.nc"
+THOMPSON_MP_CLIMO_FP="$FIXam/${THOMPSON_MP_CLIMO_FN}"
 #
 #-----------------------------------------------------------------------
 #
