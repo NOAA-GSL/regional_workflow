@@ -128,10 +128,15 @@ case "$MACHINE" in
     ;;
 #
   *)
-    print_err_msg_exit "\
+
+    if [[ -n ${LMOD_PATH:-""} && -f ${LMOD_PATH:-""} ]] ; then
+      . ${LMOD_PATH}
+    else
+      print_err_msg_exit "\
 The script to source to initialize lmod (module loads) has not yet been
 specified for the current machine (MACHINE):
   MACHINE = \"$MACHINE\""
+    fi
     ;;
 #
 esac
@@ -153,7 +158,7 @@ jjob_fp="$2"
 #-----------------------------------------------------------------------
 #
 machine=$(echo_lowercase $MACHINE)
-env_fn="build_${machine}_${COMPILER}.env"
+env_fn=${BUILD_ENV_FN:-"build_${machine}_${COMPILER}.env"}
 env_fp="${SR_WX_APP_TOP_DIR}/env/${env_fn}"
 source "${env_fp}" || print_err_msg_exit "\
 Sourcing platform- and compiler-specific environment file (env_fp) for the 

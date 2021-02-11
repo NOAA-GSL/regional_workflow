@@ -495,9 +495,6 @@ The variable ACCOUNT cannot be empty if you are using a workflow manager:
   ACCOUNT = \"$ACCOUNT\"
   WORKFLOW_MANAGER = \"$WORKFLOW_MANAGER\""
   fi
-  RUN_CMD_UTILS=""
-  RUN_CMD_FCST=""
-  RUN_CMD_POST=""
 fi
 #
 #-----------------------------------------------------------------------

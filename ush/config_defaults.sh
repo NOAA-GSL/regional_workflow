@@ -56,6 +56,14 @@ RUN_ENVIR="nco"
 # for supported platforms in setup.sh, but is now also configurable for
 # generic platforms.
 #
+# LMOD_PATH:
+# Path to the LMOD sh file on your Linux system. Is set automatically
+# for supported machines.
+#
+# BUILD_ENV_FN:
+# Name of alternative environment file to use if using Linux system. Is
+# set automativally for supported machines.
+#
 # SCHED:
 # The job scheduler to use (e.g. slurm).  Set this to an empty string in
 # order for the experiment generation script to set it depending on the
@@ -115,6 +123,8 @@ MACHINE="BIG_COMPUTER"
 ACCOUNT="project_name"
 WORKFLOW_MANAGER="none"
 NCORES_PER_NODE=""
+LMOD_PATH=""
+BUILD_ENV_FN=""
 SCHED=""
 PARTITION_DEFAULT=""
 QUEUE_DEFAULT=""
