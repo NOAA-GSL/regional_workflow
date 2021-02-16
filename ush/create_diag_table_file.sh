@@ -96,7 +96,7 @@ to create:
   diag_table_fp = \"${diag_table_fp}\""
 
   settings="
-  starttime: !datetime ${ALL_CDATES[$i]}
+  starttime: !datetime ${CDATE}
   cres: ${CRES}
 "
 

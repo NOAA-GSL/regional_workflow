@@ -7,6 +7,10 @@ SCHED=slurm
 LMOD_PATH=/apps/lmod/lmod/init/sh
 BUILD_ENV_FN=build_hera_intel.env
 
+RUN_CMD_UTILS="srun"
+RUN_CMD_FCST="srun"
+RUN_CMD_POST="srun"
+
 NCORES_PER_NODE=40
 PARTITION_DEFAULT="hera"
 QUEUE_DEFAULT=batch
@@ -37,7 +41,7 @@ EXTRN_MDL_FILES_LBCS=( \
   "gfs.t00z.pgrb2.0p25.f012"
 )
 FV3GFS_FILE_FMT_ICS=grib2
-
+FV3GFS_FILE_FMT_LBCS=grib2
 
 VERBOSE="TRUE"
 
