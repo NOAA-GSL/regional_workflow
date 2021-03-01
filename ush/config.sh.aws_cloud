@@ -1,79 +1,84 @@
-ACCOUNT=zrtrr
+MACHINE="LINUX"
+ACCOUNT="an_account"
+WORKFLOW_MANAGER="rocoto"
+SCHED="slurm"
 
-MACHINE=LINUX
-WORKFLOW_MANAGER=rocoto
-SCHED=slurm
+EXPT_BASEDIR="/lustre"
+EXPT_SUBDIR="test_rrfs"
 
-LMOD_PATH=/apps/lmod/lmod/init/sh
-BUILD_ENV_FN=build_hera_intel.env
+RUN_CMD_UTILS="srun --mpi=pmi2"
+RUN_CMD_FCST="srun --mpi=pmi2"
+RUN_CMD_POST="srun --mpi=pmi2"
 
-RUN_CMD_UTILS="srun"
-RUN_CMD_FCST="srun"
-RUN_CMD_POST="srun"
+NCORES_PER_NODE="36"
+PPN_RUN_FCST="18"
+LAYOUT_X="16"
+LAYOUT_Y="16"
+WRTCMP_write_groups="1"
+WRTCMP_write_tasks_per_group="32"
 
-NCORES_PER_NODE=40
-PARTITION_DEFAULT="hera"
-QUEUE_DEFAULT=batch
-PARTITION_HPSS=service
-QUEUE_HPSS=batch
-PARTITION_FCST=hera
-QUEUE_FCST=batch
+PARTITION_DEFAULT=
+QUEUE_DEFAULT=
+PARTITION_HPSS=
+QUEUE_HPSS=
+PARTITION_FCST=
+QUEUE_FCST=
 
-EXPT_BASEDIR=/scratch2/BMC/wrfruc/cholt
-EXPT_SUBDIR=rrfs_cloud
-
-RUN=RRFS_CONUS
-
-# Copied directly from setup.sh HERA settings
-FIXgsm=${FIXgsm:-"/scratch1/NCEPDEV/global/glopara/fix/fix_am"}
-TOPO_DIR=${TOPO_DIR:-"/scratch1/NCEPDEV/global/glopara/fix/fix_orog"}
-SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/scratch1/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
-FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/scratch2/BMC/det/FV3LAM_pregen"}
-
-
-# Get external model files
-USE_USER_STAGED_EXTRN_FILES=TRUE
-EXTRN_MDL_SOURCE_BASEDIR_ICS="/scratch2/BMC/wrfruc/cholt/data/gfs"
-EXTRN_MDL_FILES_ICS=( "gfs.t00z.pgrb2.0p25.f000")
-EXTRN_MDL_SOURCE_BASEDIR_LBCS="/scratch2/BMC/wrfruc/cholt/data/gfs"
-EXTRN_MDL_FILES_LBCS=( \
-  "gfs.t00z.pgrb2.0p25.f006"
-  "gfs.t00z.pgrb2.0p25.f012"
-)
-FV3GFS_FILE_FMT_ICS=grib2
-FV3GFS_FILE_FMT_LBCS=grib2
+LMOD_PATH="/apps/lmod/lmod/init/sh"
+BUILD_ENV_FN="build_aws_intel.env"
 
 VERBOSE="TRUE"
 
+NET="RRFS_CONUS"
+RUN="RRFS_CONUS"
 RUN_ENVIR="nco"
+envir="para"
 PREEXISTING_DIR_METHOD="rename"
 
-PREDEF_GRID_NAME=RRFS_CONUS_3km
-
+PREDEF_GRID_NAME="RRFS_CONUS_3km"
 QUILTING="TRUE"
+
 CCPP_PHYS_SUITE="FV3_GSD_SAR"
-FCST_LEN_HRS="12"
-LBC_SPEC_INTVL_HRS="6"
+FCST_LEN_HRS="3"
+LBC_SPEC_INTVL_HRS="3"
 
-HALO_BLEND=10
-
-WTIME_RUN_FCST="06:45:00"
-
-DATE_FIRST_CYCL="20210210"
-DATE_LAST_CYCL="20210210"
+DATE_FIRST_CYCL="20210218"
+DATE_LAST_CYCL="20210218"
 CYCL_HRS=( "00" )
-
 
 EXTRN_MDL_NAME_ICS="FV3GFS"
 EXTRN_MDL_NAME_LBCS="FV3GFS"
 
-envir="para"
+FV3GFS_FILE_FMT_ICS="grib2"
+FV3GFS_FILE_FMT_LBCS="grib2"
 
-NET="RRFS_CONUS"
+WTIME_RUN_FCST="06:45:00"
 
-STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"
-PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"
+HALO_BLEND="10"
 
+STMP="/lustre/stmp"
+PTMP="/lustre/ptmp"
 
-STMP="/scratch2/BMC/wrfruc/cholt/NCO_dirs/rrfs_cloud/stmp"
-PTMP="/scratch2/BMC/wrfruc/cholt/NCO_dirs/rrfs_cloud/ptmp"
+# The following are specifically for AWS using Parallel Works
+FIXgsm=${FIXgsm:-"/contrib/NCEPDEV/global/glopara/fix/fix_am"}
+TOPO_DIR=${TOPO_DIR:-"/contrib/NCEPDEV/global/glopara/fix/fix_orog"}
+SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/contrib/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
+FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/contrib/NCEPDEV/global/glopara/fix/FV3LAM_pregen"}
+
+#
+# Uncomment the following line in order to use user-staged external model
+# files with locations and names as specified by EXTRN_MDL_SOURCE_BASEDIR_ICS/
+# LBCS and EXTRN_MDL_FILES_ICS/LBCS.
+#
+USE_USER_STAGED_EXTRN_FILES="TRUE"
+#
+# The following is specifically for AWS via Parallel Works.  It will have to be
+# modified if on another platform, using other dates, other external models, etc.
+#
+EXTRN_MDL_SOURCE_BASEDIR_ICS="/lustre/model_data/FV3GFS"
+EXTRN_MDL_FILES_ICS=( "gfs.t00z.pgrb2.0p25.f000")
+EXTRN_MDL_SOURCE_BASEDIR_LBCS="/lustre/model_data/FV3GFS"
+EXTRN_MDL_FILES_LBCS=( \
+  "gfs.t00z.pgrb2.0p25.f003"
+)
+

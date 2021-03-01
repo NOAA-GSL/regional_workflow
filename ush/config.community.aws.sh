@@ -6,6 +6,24 @@ SCHED="slurm"
 EXPT_BASEDIR="/lustre"
 EXPT_SUBDIR="test_community"
 
+RUN_CMD_UTILS="srun --mpi=pmi2"
+RUN_CMD_FCST="srun --mpi=pmi2"
+RUN_CMD_POST="srun --mpi=pmi2"
+
+NCORES_PER_NODE="36"
+PPN_RUN_FCST="18"
+LAYOUT_X="4"
+LAYOUT_Y="4"
+WRTCMP_write_groups="1"
+WRTCMP_write_tasks_per_group="2"
+
+PARTITION_DEFAULT=
+QUEUE_DEFAULT=
+PARTITION_HPSS=
+QUEUE_HPSS=
+PARTITION_FCST=
+QUEUE_FCST=
+
 LMOD_PATH="/apps/lmod/lmod/init/sh"
 BUILD_ENV_FN="build_aws_intel.env"
 

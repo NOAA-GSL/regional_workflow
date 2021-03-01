@@ -150,6 +150,7 @@ case $MACHINE in
     ;;
 
   "LINUX")
+    OMP_NUM_THREADS=$(( NCORES_PER_NODE / PPN_RUN_FCST ))
     APRUN=$RUN_CMD_FCST
     ;;
 

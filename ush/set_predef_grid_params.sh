@@ -104,8 +104,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-40}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="2"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-2}"
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -148,8 +148,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-32}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -192,8 +194,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-32}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -236,8 +240,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-35}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -284,8 +290,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-40}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -308,8 +316,10 @@ case ${PREDEF_GRID_NAME} in
 # The following rotated_latlon coordinate system parameters were obtained
 # using the NCL code and work.
 #    if [ "$QUILTING" = "TRUE" ]; then
-#      WRTCMP_write_groups="1"
-#      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+#      WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+#      if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+#        WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+#      fi
 #      WRTCMP_output_grid="rotated_latlon"
 #      WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
 #      WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -362,8 +372,8 @@ case ${PREDEF_GRID_NAME} in
 #    BLOCKSIZE="${BLOCKSIZE:-15}"
 #
 #    if [ "$QUILTING" = "TRUE" ]; then
-#      WRTCMP_write_groups="1"
-#      WRTCMP_write_tasks_per_group="2"
+#      WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+#      WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-2}"
 #      WRTCMP_output_grid="lambert_conformal"
 #      WRTCMP_cen_lon="${GFDLgrid_LON_T6_CTR}"
 #      WRTCMP_cen_lat="${GFDLgrid_LAT_T6_CTR}"
@@ -400,8 +410,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-40}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -457,8 +469,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-36}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="rotated_latlon"
     WRTCMP_cen_lon="${GFDLgrid_LON_T6_CTR}"
     WRTCMP_cen_lat="${GFDLgrid_LAT_T6_CTR}"
@@ -512,8 +526,10 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-35}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    if [ -z "$WRTCMP_write_tasks_per_group" ]; then
+      WRTCMP_write_tasks_per_group=$(( 1*LAYOUT_Y ))
+    fi
     WRTCMP_output_grid="rotated_latlon"
     WRTCMP_cen_lon="${GFDLgrid_LON_T6_CTR}"
     WRTCMP_cen_lat="${GFDLgrid_LAT_T6_CTR}"
@@ -647,9 +663,9 @@ case ${PREDEF_GRID_NAME} in
 #This section is all for the write component, which you need for output during model integration
   if [ "$QUILTING" = "TRUE" ]; then
 #Write component reserves MPI tasks for writing output. The number of "groups" is usually 1, but if you have a case where group 1 is not done writing before the next write step, you need group 2, etc.
-    WRTCMP_write_groups="1"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
 #Number of tasks per write group. Ny must be divisible my this number. LAYOUT_Y is usually a good value
-    WRTCMP_write_tasks_per_group="24"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-24}"
 #lambert_conformal or rotated_latlon. lambert_conformal not well tested and probably doesn't work for our purposes
     WRTCMP_output_grid="lambert_conformal"
 #These should always be set the same as compute grid
@@ -721,9 +737,9 @@ case ${PREDEF_GRID_NAME} in
 #This section is all for the write component, which you need for output during model integration
   if [ "$QUILTING" = "TRUE" ]; then
 #Write component reserves MPI tasks for writing output. The number of "groups" is usually 1, but if you have a case where group 1 is not done writing before the next write step, you need group 2, etc.
-    WRTCMP_write_groups="1"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
 #Number of tasks per write group. Ny must be divisible my this number. LAYOUT_Y is usually a good value
-    WRTCMP_write_tasks_per_group="8"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-8}"
 #lambert_conformal or rotated_latlon. lambert_conformal not well tested and probably doesn't work for our purposes
     WRTCMP_output_grid="lambert_conformal"
 #These should usually be set the same as compute grid
@@ -797,9 +813,9 @@ case ${PREDEF_GRID_NAME} in
 #This section is all for the write component, which you need for output during model integration
   if [ "$QUILTING" = "TRUE" ]; then
 #Write component reserves MPI tasks for writing output. The number of "groups" is usually 1, but if you have a case where group 1 is not done writing before the next write step, you need group 2, etc.
-    WRTCMP_write_groups="1"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
 #Number of tasks per write group. Ny must be divisible my this number. LAYOUT_Y is usually a good value
-    WRTCMP_write_tasks_per_group="24"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-24}"
 #lambert_conformal or rotated_latlon. lambert_conformal not well tested and probably doesn't work for our purposes
     WRTCMP_output_grid="lambert_conformal"
 #These should always be set the same as compute grid
@@ -871,9 +887,9 @@ case ${PREDEF_GRID_NAME} in
 #This section is all for the write component, which you need for output during model integration
   if [ "$QUILTING" = "TRUE" ]; then
 #Write component reserves MPI tasks for writing output. The number of "groups" is usually 1, but if you have a case where group 1 is not done writing before the next write step, you need group 2, etc.
-    WRTCMP_write_groups="1"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
 #Number of tasks per write group. Ny must be divisible my this number. LAYOUT_Y is usually a good value
-    WRTCMP_write_tasks_per_group="24"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-24}"
 #lambert_conformal or rotated_latlon. lambert_conformal not well tested and probably doesn't work for our purposes
     WRTCMP_output_grid="lambert_conformal"
 #These should always be set the same as compute grid
@@ -920,8 +936,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-6}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="32"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-32}"
     WRTCMP_output_grid="regional_latlon"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="25.0"
@@ -962,8 +978,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-35}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="32"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-32}"
     WRTCMP_output_grid="regional_latlon"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="25.0"
@@ -1004,8 +1020,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-32}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="32"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-32}"
     WRTCMP_output_grid="regional_latlon"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="25.0"
@@ -1046,8 +1062,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-37}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="1"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-1}"
     WRTCMP_output_grid="lambert_conformal"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
@@ -1099,8 +1115,8 @@ case ${PREDEF_GRID_NAME} in
 #    BLOCKSIZE="26"
 #
 #    if [ "$QUILTING" = "TRUE" ]; then
-#      WRTCMP_write_groups="1"
-#      WRTCMP_write_tasks_per_group="14"
+#      WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+#      WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-14}"
 #      WRTCMP_output_grid="rotated_latlon"
 #      WRTCMP_cen_lon="${GFDLgrid_LON_T6_CTR}"
 #      WRTCMP_cen_lat="${GFDLgrid_LAT_T6_CTR}"
@@ -1134,8 +1150,8 @@ case ${PREDEF_GRID_NAME} in
   BLOCKSIZE="${BLOCKSIZE:-30}"
 
   if [ "$QUILTING" = "TRUE" ]; then
-    WRTCMP_write_groups="1"
-    WRTCMP_write_tasks_per_group="16"
+    WRTCMP_write_groups="${WRTCMP_write_groups:-1}"
+    WRTCMP_write_tasks_per_group="${WRTCMP_write_tasks_per_group:-16}"
     WRTCMP_output_grid="rotated_latlon"
     WRTCMP_cen_lon="${ESGgrid_LON_CTR}"
     WRTCMP_cen_lat="${ESGgrid_LAT_CTR}"
