@@ -49,7 +49,7 @@ RUN="RRFS_ens"
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
-COMINgfs="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/data/GEFS/public/pgrb2"  # path to the external model (GEFS)
+COMINgfs="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"  # path to the external model (GEFS)
 STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
 
