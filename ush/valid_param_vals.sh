@@ -34,7 +34,7 @@ valid_vals_CCPP_PHYS_SUITE=( \
 "FV3_HRRR" \
 ) 
 valid_vals_GFDLgrid_RES=("48" "96" "192" "384" "768" "1152" "3072")
-valid_vals_EXTRN_MDL_NAME_ICS=("GSMGFS" "FV3GFS" "RAP" "HRRR" "NAM" "GEFS")
+valid_vals_EXTRN_MDL_NAME_ICS=("GSMGFS" "FV3GFS" "RAP" "HRRR" "NAM" "GEFS" "HRRRDAS")
 valid_vals_EXTRN_MDL_NAME_LBCS=("GSMGFS" "FV3GFS" "RAP" "HRRR" "NAM" "GEFS")
 valid_vals_USE_USER_STAGED_EXTRN_FILES=("TRUE" "true" "YES" "yes" "FALSE" "false" "NO" "no")
 valid_vals_FV3GFS_FILE_FMT_ICS=("nemsio" "grib2")

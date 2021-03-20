@@ -292,6 +292,7 @@ fi
 #
   if [ "${extrn_mdl_name}" = "RAP" ] || \
      [ "${extrn_mdl_name}" = "HRRR" ] || \
+     [ "${extrn_mdl_name}" = "HRRRDAS" ] || \
      [ "${extrn_mdl_name}" = "NAM" ] || \
      [ "${extrn_mdl_name}" = "GEFS" -a "${MACHINE}" = "JET" ] || \
      [ "${extrn_mdl_name}" = "FV3GFS" -a "${MACHINE}" = "JET" ]; then
@@ -397,6 +398,12 @@ fi
     "HRRR")
       fns_on_disk=( "${yy}${ddd}${hh}${mn}${fcst_mn}${fcst_hh}" )
       fns_in_arcv=( "${yy}${ddd}${hh}${mn}${fcst_hh}${fcst_mn}" )
+      ;;
+
+    "HRRRDAS")
+      ensmem_name="${ENSMEM_NAME}"
+      fns_on_disk=( "wrfnat${ensmem_name}_00.grib2" )
+      fns_in_arcv=( "wrfnat${ensmem_name}_00.grib2" )
       ;;
 
     "NAM")
@@ -635,6 +642,24 @@ has not been specified for this external model and machine combination:
        ;;
      "JET")
        sysdir="$sysbasedir/${INPUT_ENSMEM_SUBDIR}"
+       ;;
+    *)
+      print_err_msg_exit "\
+The system directory in which to look for external model output files 
+has not been specified for this external model and machine combination:
+  extrn_mdl_name = \"${extrn_mdl_name}\"
+  MACHINE = \"$MACHINE\""
+      ;;
+    esac
+    ;;
+
+  "HRRRDAS")
+    case "$MACHINE" in
+    "HERA")
+       sysdir="$sysbasedir"
+       ;;
+     "JET")
+       sysdir="$sysbasedir/${yyyymmdd}${hh}/${POST_ENSMEM_SUBDIR}"
        ;;
     *)
       print_err_msg_exit "\
@@ -887,6 +912,14 @@ has not been specified for this external model:
     arcv_fmt="zip"
     arcv_fns="${yyyy}${mm}${dd}${hh}00.${arcv_fmt}"
     arcv_fps="$arcv_dir/$arcv_fns"
+    arcvrel_dir=""
+    ;;
+
+  "HRRRDAS")
+    arcv_dir=""
+    arcv_fmt=""
+    arcv_fns=""
+    arcv_fps=""
     arcvrel_dir=""
     ;;
 

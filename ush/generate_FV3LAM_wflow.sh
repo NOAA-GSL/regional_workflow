@@ -153,11 +153,15 @@ ensmem_indx_name="\"\""
 uscore_ensmem_name="\"\""
 slash_ensmem_subdir="\"\""
 input_ensmem_subdir="\"\""
+post_ensmem_subdir="\"\""
+ensmem_name="\"\""
 if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
   ensmem_indx_name="mem"
   uscore_ensmem_name="_mem#${ensmem_indx_name}#"
   slash_ensmem_subdir="/mem#${ensmem_indx_name}#"
   input_ensmem_subdir="/gep0#${ensmem_indx_name}#"
+  post_ensmem_subdir="/postprd_mem000#${ensmem_indx_name}#"
+  ensmem_name="_mem000#${ensmem_indx_name}#"
 fi
 
 settings="\
@@ -173,6 +177,10 @@ settings="\
   'partition_fcst': ${PARTITION_FCST}
   'queue_fcst': ${QUEUE_FCST}
   'machine': ${MACHINE}
+#
+# Whether or not to run in real-time mode
+#
+  'run_realtime': ${RUN_REALTIME}
 #
 # Workflow task names.
 #
@@ -291,6 +299,8 @@ settings="\
   'uscore_ensmem_name': ${uscore_ensmem_name}
   'slash_ensmem_subdir': ${slash_ensmem_subdir}
   'input_ensmem_subdir': ${input_ensmem_subdir}
+  'post_ensmem_subdir': ${post_ensmem_subdir}
+  'ensmem_name': ${ensmem_name}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "
@@ -530,7 +540,8 @@ fi
 #
 lsoil="4"
 if [ "${EXTRN_MDL_NAME_ICS}" = "HRRR" -o \
-     "${EXTRN_MDL_NAME_ICS}" = "RAP" ] && \
+     "${EXTRN_MDL_NAME_ICS}" = "RAP"  -o \
+     "${EXTRN_MDL_NAME_ICS}" = "HRRRDAS" ] && \
    [ "${SDF_USES_RUC_LSM}" = "TRUE" ]; then
   lsoil="9"
 fi

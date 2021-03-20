@@ -154,6 +154,17 @@ else
     esac
     ;;
 
+  "HRRRDAS")
+    case $MACHINE in
+    "HERA")
+      EXTRN_MDL_SYSBASEDIR_ICS=""
+      ;;
+    "JET")
+      EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs1/BMC/wrfruc/HRRRE/cycle"
+      ;;
+    esac
+    ;;
+
   esac
 
 fi
@@ -214,6 +225,9 @@ case ${EXTRN_MDL_NAME_ICS} in
     EXTRN_MDL_ICS_OFFSET_HRS="3"
     ;;
   "HRRR")
+    EXTRN_MDL_ICS_OFFSET_HRS="0"
+    ;;
+  "HRRRDAS")
     EXTRN_MDL_ICS_OFFSET_HRS="0"
     ;;
   "NAM")
@@ -303,11 +317,8 @@ else
 
   "GEFS")
     case $MACHINE in
-    "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
-      ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"
+      EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"
       ;;
     esac
     ;;

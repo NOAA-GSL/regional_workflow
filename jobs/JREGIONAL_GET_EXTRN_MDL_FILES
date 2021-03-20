@@ -216,7 +216,7 @@ get_extrn_mdl_file_dir_info \
   varname_extrn_mdl_arcv_fmt="extrn_mdl_arcv_fmt" \
   varname_extrn_mdl_arcv_fns="extrn_mdl_arcv_fns" \
   varname_extrn_mdl_arcv_fps="extrn_mdl_arcv_fps" \
-  varname_extrn_mdl_arcvrel_dir="extrn_mdl_arcvrel_dir" || \
+  varname_extrn_mdl_arcvrel_dir="extrn_mdl_arcvrel_dir"  || \
 print_err_msg_exit "\
 Call to function get_extrn_mdl_file_dir_info failed."
 #
@@ -244,14 +244,14 @@ if [ "${USE_USER_STAGED_EXTRN_FILES}" = "TRUE" ]; then
 
   if [ "${ICS_OR_LBCS}" = "ICS" ]; then
     extrn_mdl_source_dir="${EXTRN_MDL_SOURCE_BASEDIR_ICS}/$CDATE"
-    if [[ "${DO_ENSEMBLE}" = "TRUE" ]]; then
+    if [[ "${DO_ENSEMBLE}" = "TRUE" && "${extrn_mdl_name} = "GEFS" ]]; then
         extrn_mdl_source_dir="${EXTRN_MDL_SOURCE_BASEDIR_ICS}/${INPUT_ENSMEM_SUBDIR}"
     fi
     extrn_mdl_fns_on_disk=( $( printf "%s " "${EXTRN_MDL_FILES_ICS[@]}" ))
   elif [ "${ICS_OR_LBCS}" = "LBCS" ]; then
     extrn_mdl_source_dir="${EXTRN_MDL_SOURCE_BASEDIR_LBCS}/$CDATE"
-    if [[ "${DO_ENSEMBLE}" = "TRUE" ]]; then
-        extrn_mdl_source_dir="${EXTRN_MDL_SOURCE_BASEDIR_ICS}/${INPUT_ENSMEM_SUBDIR}"
+    if [[ "${DO_ENSEMBLE}" = "TRUE" && "${extrn_mdl_name} = "GEFS" ]]; then
+        extrn_mdl_source_dir="${EXTRN_MDL_SOURCE_BASEDIR_LBCS}/${INPUT_ENSMEM_SUBDIR}"
     fi
     extrn_mdl_fns_on_disk=( $( printf "%s " "${EXTRN_MDL_FILES_LBCS[@]}" ))
   fi

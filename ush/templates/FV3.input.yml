@@ -57,6 +57,7 @@ FV3_HRRR:
     nrows_blend: 10
     regional_bcs_from_gsi: false
     write_restart_with_bcs: false
+    rf_cutoff: 5000
   gfs_physics_nml:
     <<: *gsd_sar_phys
     cdmbgwd: [3.5, 1.0]

@@ -1,13 +1,14 @@
 MACHINE="jet"
-ACCOUNT="rtwrfruc"
+ACCOUNT="nrtrr"
 EXPT_BASEDIR="/home/wrfruc/RRFSE"
 EXPT_BASEDIR="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE"
 EXPT_SUBDIR="RRFS_ens"
 
-FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
-FIXgsm=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_am.20210128
+FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_lam.20210128
+FIXgsm=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_am.20210128
 
 VERBOSE="TRUE"
+RUN_REALTIME=TRUE
 
 RUN_ENVIR="nco"
 PREEXISTING_DIR_METHOD="rename"
@@ -25,12 +26,12 @@ HALO_BLEND=10
 
 WTIME_RUN_FCST="03:30:00"
 
-DATE_FIRST_CYCL="20210314"
-DATE_LAST_CYCL="20220313"
+DATE_FIRST_CYCL="20210320"
+DATE_LAST_CYCL="20220319"
 
 CYCL_HRS=( "00" "12" )
 
-EXTRN_MDL_NAME_ICS="GEFS"
+EXTRN_MDL_NAME_ICS="HRRRDAS"
 EXTRN_MDL_NAME_LBCS="GEFS"
 
 envir="para"
@@ -44,12 +45,11 @@ NET="RRFSE_CONUS"
 #MODEL="RRFSE"
 
 RUN="RRFS_ens"
-#COMINgfs=""
+COMINgfs=""
 
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
-COMINgfs="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"  # path to the external model (GEFS)
 STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
 

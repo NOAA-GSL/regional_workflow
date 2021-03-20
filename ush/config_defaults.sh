@@ -1426,4 +1426,10 @@ COMPILER="intel"
 #-----------------------------------------------------------------------
 #
 GWD_HRRRsuite_BASEDIR=""
+#
+#----------------------------------------------------------------------
+#
+# Add option for whether or not to run it in real-time
+#
+RUN_REALTIME="FALSE"
 

@@ -163,6 +163,7 @@ case "${CCPP_PHYS_SUITE}" in
   "FV3_RRFS_v1beta" | \
   "FV3_HRRR" )
     if [ "${EXTRN_MDL_NAME_ICS}" = "RAP" ] || \
+       [ "${EXTRN_MDL_NAME_ICS}" = "HRRRDAS" ] || \
        [ "${EXTRN_MDL_NAME_ICS}" = "HRRR" ]; then
       varmap_file="GSDphys_var_map.txt"
     elif [ "${EXTRN_MDL_NAME_ICS}" = "NAM" ] || \
@@ -339,6 +340,7 @@ convert_nst=""
 #
 nsoill_out="4"
 if [ "${EXTRN_MDL_NAME_ICS}" = "HRRR" -o \
+     "${EXTRN_MDL_NAME_ICS}" = "HRRRDAS" -o \
      "${EXTRN_MDL_NAME_ICS}" = "RAP" ] && \
    [ "${SDF_USES_RUC_LSM}" = "TRUE" ]; then
   nsoill_out="9"
@@ -359,6 +361,7 @@ fi
 #
 thomp_mp_climo_file=""
 if [ "${EXTRN_MDL_NAME_ICS}" != "HRRR" -a \
+     "${EXTRN_MDL_NAME_ICS}" != "HRRRDAS" -a \
      "${EXTRN_MDL_NAME_ICS}" != "RAP" ] && \
    [ "${SDF_USES_THOMPSON_MP}" = "TRUE" ]; then
   thomp_mp_climo_file="${THOMPSON_MP_CLIMO_FP}"
@@ -433,6 +436,25 @@ case "${EXTRN_MDL_NAME_ICS}" in
 # Path to the HRRRX geogrid file.
 #
   geogrid_file_input_grid="${FIXgsm}/geo_em.d01.nc_HRRRX"
+# Note that vgfrc, shdmin/shdmax (minmax_vgfrc), and lai fields are only available in HRRRX
+# files after mid-July 2019, and only so long as the record order didn't change afterward
+  vgtyp_from_climo=False
+  sotyp_from_climo=False
+  vgfrc_from_climo=False
+  minmax_vgfrc_from_climo=False
+  lai_from_climo=False
+  tg3_from_soil=True
+  convert_nst=False
+  ;;
+
+"HRRRDAS")
+  external_model="HRRR"
+  fn_grib2="${EXTRN_MDL_FNS[0]}"
+  input_type="grib2"
+#
+# Path to the HRRRX geogrid file.
+#
+  geogrid_file_input_grid="${FIXgsm}/hrrrdas_geo_em.d02.nc"
 # Note that vgfrc, shdmin/shdmax (minmax_vgfrc), and lai fields are only available in HRRRX
 # files after mid-July 2019, and only so long as the record order didn't change afterward
   vgtyp_from_climo=False
