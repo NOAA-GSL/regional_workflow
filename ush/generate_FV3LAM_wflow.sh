@@ -171,6 +171,7 @@ settings="\
   'partition_fcst': ${PARTITION_FCST}
   'queue_fcst': ${QUEUE_FCST}
   'machine': ${MACHINE}
+  'use_reservation': ${USE_RESERVATION}
 #
 # Workflow task names.
 #
@@ -183,6 +184,10 @@ settings="\
   'make_lbcs_tn': ${MAKE_LBCS_TN}
   'run_fcst_tn': ${RUN_FCST_TN}
   'run_post_tn': ${RUN_POST_TN}
+
+  'anal_gsi_input': ${ANAL_GSI_INPUT_TN}
+  'anal_gsi_resta': ${ANAL_GSI_RESTA_TN}
+
 #
 # Number of nodes to use for each task.
 #
@@ -194,12 +199,16 @@ settings="\
   'nnodes_make_ics': ${NNODES_MAKE_ICS}
   'nnodes_make_lbcs': ${NNODES_MAKE_LBCS}
   'nnodes_run_fcst': ${NNODES_RUN_FCST}
+  'nnodes_run_anal': ${NNODES_RUN_ANAL}
   'nnodes_run_post': ${NNODES_RUN_POST}
 #
 # Number of cores used for a task
 #
   'ncores_run_fcst': ${PE_MEMBER01}
   'native_run_fcst': --cpus-per-task 4 --exclusive
+  'ncores_run_anal': 240
+  'native_run_anal': --cpus-per-task 4 --exclusive
+  'partition_run_anal': vjet,kjet,xjet
 #
 # Number of logical processes per node for each task.  If running without
 # threading, this is equal to the number of MPI processes per node.
@@ -212,6 +221,7 @@ settings="\
   'ppn_make_ics': ${PPN_MAKE_ICS}
   'ppn_make_lbcs': ${PPN_MAKE_LBCS}
   'ppn_run_fcst': ${PPN_RUN_FCST}
+  'ppn_run_anal': ${PPN_RUN_ANAL}
   'ppn_run_post': ${PPN_RUN_POST}
 #
 # Maximum wallclock time for each task.
@@ -224,6 +234,7 @@ settings="\
   'wtime_make_ics': ${WTIME_MAKE_ICS}
   'wtime_make_lbcs': ${WTIME_MAKE_LBCS}
   'wtime_run_fcst': ${WTIME_RUN_FCST}
+  'wtime_run_anal': ${WTIME_RUN_ANAL}
   'wtime_run_post': ${WTIME_RUN_POST}
 #
 # Maximum number of tries for each task.
@@ -263,6 +274,7 @@ settings="\
   'extrn_mdl_sysbasedir_ics': ${EXTRN_MDL_SYSBASEDIR_ICS}
   'extrn_mdl_sysbasedir_lbcs': ${EXTRN_MDL_SYSBASEDIR_LBCS}
   'extrn_mdl_lbcs_offset_hrs': ${EXTRN_MDL_LBCS_OFFSET_HRS}
+  'bc_update_interval': ${LBC_SPEC_INTVL_HRS}
 #
 # Parameters that determine the set of cycles to run.
 #
@@ -287,6 +299,15 @@ settings="\
   'ensmem_indx_name': ${ensmem_indx_name}
   'uscore_ensmem_name': ${uscore_ensmem_name}
   'slash_ensmem_subdir': ${slash_ensmem_subdir}
+#
+# data assimilation related parameters.
+#
+  'do_dacycle': ${DO_DACYCLE}
+  'da_cycle_interval_hrs': ${DA_CYCLE_INTERV}
+#
+#  retrospective experiments
+#
+  'do_retro': ${DO_RETRO}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "
@@ -408,6 +429,9 @@ fi
 # First, consider NCO mode.
 #
 if [ "${RUN_ENVIR}" = "nco" ]; then
+
+  ln_vrfy -fsn "$FIX_GSI" "$FIXgsi"
+  ln_vrfy -fsn "$FIX_CRTM" "$FIXcrtm"
 
   ln_vrfy -fsn "$FIXgsm" "$FIXam"
 #
@@ -557,6 +581,9 @@ settings="\
     'target_lon': ${LON_CTR},
     'target_lat': ${LAT_CTR},
     'nrows_blend': ${HALO_BLEND},
+    'nord_tr': "2",
+    'regional_bcs_from_gsi': FALSE,
+    'write_restart_with_bcs': FALSE,
 #
 # Question:
 # For a ESGgrid type grid, what should stretch_fac be set to?  This depends
@@ -577,6 +604,12 @@ settings="\
     'do_shum': ${DO_SHUM},
     'do_sppt': ${DO_SPPT},
     'do_skeb': ${DO_SKEB},
+    'gwd_opt': "3",
+    'iaer': "5111",
+    'icliq_sw': "2",
+    'imfdeepcnv': "-1",
+    'imfshalcnv': "-1",
+    'iovr': "3",
   }
 'nam_stochy': {
     'shum': ${SHUM_MAG},
@@ -712,6 +745,33 @@ for the various ensemble members failed."
   fi
 
 fi
+
+# need to generate a namelist for da cycle
+ settings="\
+ 'fv_core_nml': {
+     'external_ic': false,
+     'make_nh'    : false,
+     'na_init'    : 0,
+     'nggps_ic'   : false,
+     'mountain'  : true,
+     'warm_start' : true,
+   }"
+ 
+ $USHDIR/set_namelist.py -q \
+                         -n ${FV3_NML_FP} \
+                         -u "$settings" \
+                         -o ${FV3_NML_RESTART_FP} || \
+   print_err_msg_exit "\
+ Call to python script set_namelist.py to generate an restart FV3 namelist file
+ failed.  Parameters passed to this script are:
+   Full path to base namelist file:
+     FV3_NML_FP = \"${FV3_NML_FP}\"
+   Full path to output namelist file for DA:
+     FV3_NML_RESTART_FP = \"${FV3_NML_RESTART_FP}\"
+   Namelist settings specified on command line:
+     settings =
+ $settings"
+
 #
 #-----------------------------------------------------------------------
 #
