@@ -217,9 +217,10 @@ print_info_msg "$VERBOSE" "default bkpath is $bkpath"
 
 stampcycle=`date -d "${START_DATE}" +%s`
 minHourDiff=100
-loops="009"
+loops="009"    # or 009s for GFSv15
+ens_type="nc"  # or nemsio for GFSv15
 for loop in $loops; do
-  for timelist in `ls ${ENKF_FCST}/*.gdas.t*z.atmf${loop}s.mem080.nemsio`; do
+  for timelist in `ls ${ENKF_FCST}/*.gdas.t*z.atmf${loop}.mem080.${ens_type}`; do
     availtimeyy=`basename ${timelist} | cut -c 1-2`
     availtimeyyyy=20${availtimeyy}
     availtimejjj=`basename ${timelist} | cut -c 3-5`
@@ -239,13 +240,13 @@ for loop in $loops; do
 
     if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
        minHourDiff=${hourDiff}
-       enkfcstname=${availtimeyy}${availtimejjj}${availtimehh}00.gdas.t${availtimehh}z.atmf${loop}s
+       enkfcstname=${availtimeyy}${availtimejjj}${availtimehh}00.gdas.t${availtimehh}z.atmf${loop}
     fi
   done
 done
 
-size=`du --apparent-size --block-size=1 --dereference ${ENKF_FCST}/${enkfcstname}.mem001.nemsio | grep -o '..........' | sed -n '1 p'`
-ls ${ENKF_FCST}/${enkfcstname}.mem001.nemsio > filelist03
+size=`du --apparent-size --block-size=1 --dereference ${ENKF_FCST}/${enkfcstname}.mem001.${ens_type} | grep -o '..........' | sed -n '1 p'`
+ls ${ENKF_FCST}/${enkfcstname}.mem001.${ens_type} > filelist03
 
 n=2
 while [[ $n -le 80 ]] ; do
@@ -256,12 +257,12 @@ while [[ $n -le 80 ]] ; do
     nn=0$n
   fi
 
-  size2=`du --apparent-size --block-size=1 --dereference ${ENKF_FCST}/${enkfcstname}.mem${nn}.nemsio | grep -o '..........' | sed -n '1 p'`
+  size2=`du --apparent-size --block-size=1 --dereference ${ENKF_FCST}/${enkfcstname}.mem${nn}.${ens_type} | grep -o '..........' | sed -n '1 p'`
 
   if [[ $size2 -lt $size ]]; then
     print_info_msg "$VERBOSE"  "Bad GDAS member number ${nn}."
   else
-    ls ${ENKF_FCST}/${enkfcstname}.mem${nn}.nemsio >> filelist03
+    ls ${ENKF_FCST}/${enkfcstname}.mem${nn}.${ens_type} >> filelist03
   fi
 
   n=$((n + 1))
@@ -552,8 +553,8 @@ fi
 #-----------------------------------------------------------------------
 #
 # comment out for testing
-#$APRUN ./gsi.x < gsiparm.anl > stdout 2>&1 || print_err_msg_exit "\
-#Call to executable to run GSI returned with nonzero exit code."
+$APRUN ./gsi.x < gsiparm.anl > stdout 2>&1 || print_err_msg_exit "\
+Call to executable to run GSI returned with nonzero exit code."
 
 
 #-----------------------------------------------------------------------

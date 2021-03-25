@@ -299,15 +299,21 @@ Call to \"module use\" command failed."
     # Load the .local module file if available for the given task
     #
     modulefile_local="${task_name}.local"
-    if [ -f ${modules_dir}/${modulefile_local} ]; then
-      module load "${modulefile_local}" || print_err_msg_exit "\
+    if [ ${task_name} = "run_anal_gsi" ]; then
+      source "${modules_dir}/${modulefile_local}" || print_err_msg_exit "\
+Loading .local module file for the specified task (task_name) failed:
+  modulefile_local = \"${modulefile_local}\""
+    else
+      if [ -f ${modules_dir}/${modulefile_local} ]; then
+        module load "${modulefile_local}" || print_err_msg_exit "\
 Loading .local module file (in directory specified by mod-
 ules_dir) for the specified task (task_name) failed:
   task_name = \"${task_name}\"
   modulefile_local = \"${modulefile_local}\"
   modules_dir = \"${modules_dir}\""    
+      fi
     fi
-
+#
 #  else # using default modulefile
 #
 #    module load "${default_modulefile_name}" || print_err_msg_exit "\

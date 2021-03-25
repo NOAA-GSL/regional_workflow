@@ -97,8 +97,6 @@ RUN_ENVIR="nco"
 # If this is not set or set to an empty string, it will be (re)set to a 
 # machine-dependent value.
 #
-# USE_RESERVATION:
-#  The reservation used for the experiment
 # mach_doc_end
 #
 #-----------------------------------------------------------------------
@@ -113,7 +111,6 @@ PARTITION_HPSS=""
 QUEUE_HPSS=""
 PARTITION_FCST=""
 QUEUE_FCST=""
-USE_RESERVATION=""
 PARTITION_GRAPHICS=""
 QUEUE_GRAPHICS=""
 #
@@ -233,9 +230,9 @@ EXPT_SUBDIR=""
 # Setup default observation locations for data assimilation:
 #
 #    OBSPATH:   observation BUFR file path
-#    OBSPATH_NSSLMOSIAC: NSSL radar reflectivity 
-#    LIGHTNING_ROOT: lightning observations
-#    ENKF_FCSTL: globa ensemble forecast
+#    OBSPATH_NSSLMOSIAC: location of NSSL radar reflectivity 
+#    LIGHTNING_ROOT: location of lightning observations
+#    ENKF_FCSTL: location of global ensemble forecast
 #-----------------------------------------------------------------------
 #
 COMINgfs="/base/path/of/directory/containing/gfs/input/files"
@@ -256,7 +253,7 @@ MODEL="NO MODEL CHOSEN"
 OBSPATH="/public/data/grids/rap/obs"
 OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
 LIGHTNING_ROOT="/public/data/lightning"
-ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm_v15"
+ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm"
 
 #
 #-----------------------------------------------------------------------

@@ -174,7 +174,6 @@ settings="\
   'partition_graphics': ${PARTITION_GRAPHICS}
   'queue_graphics': ${QUEUE_GRAPHICS}
   'machine': ${MACHINE}
-  'use_reservation': ${USE_RESERVATION}
 #
 # Workflow task names.
 #
@@ -432,8 +431,37 @@ fi
 #
 if [ "${RUN_ENVIR}" = "nco" ]; then
 
-  ln_vrfy -fsn "$FIX_GSI" "$FIXgsi"
-  ln_vrfy -fsn "$FIX_CRTM" "$FIXcrtm"
+  if [ "${DO_DACYCLE}" = "true" ]; then
+# Resolve the target directory that the FIXgsi symlink points to
+    ln_vrfy -fsn "$FIX_GSI" "$FIXgsi"
+
+    path_resolved=$( readlink -m "$FIXgsi" )
+    if [ ! -d "${path_resolved}" ]; then
+      print_err_msg_exit "\
+    Missing link to FIXgsi
+    RUN_ENVIR = \"${RUN_ENVIR}\"
+    FIXgsi = \"$FIXgsi\"
+    path_resolved = \"${path_resolved}\"
+    Please ensure that path_resolved is an existing directory and then rerun
+    the experiment generation script."
+    fi
+#
+
+# Resolve the target directory that the FIXcrtm symlink points to
+    ln_vrfy -fsn "$FIX_CRTM" "$FIXcrtm"
+
+    path_resolved=$( readlink -m "$FIXcrtm" )
+    if [ ! -d "${path_resolved}" ]; then
+      print_err_msg_exit "\
+    Missing link to FIXcrtm
+    RUN_ENVIR = \"${RUN_ENVIR}\"
+    FIXgsi = \"$FIXcrtm\"
+    path_resolved = \"${path_resolved}\"
+    Please ensure that path_resolved is an existing directory and then rerun
+    the experiment generation script."
+    fi
+
+  fi  # check if DA
 
   ln_vrfy -fsn "$FIXgsm" "$FIXam"
 #
@@ -583,7 +611,6 @@ settings="\
     'target_lon': ${LON_CTR},
     'target_lat': ${LAT_CTR},
     'nrows_blend': ${HALO_BLEND},
-    'nord_tr': "2",
     'regional_bcs_from_gsi': FALSE,
     'write_restart_with_bcs': FALSE,
 #
@@ -606,12 +633,6 @@ settings="\
     'do_shum': ${DO_SHUM},
     'do_sppt': ${DO_SPPT},
     'do_skeb': ${DO_SKEB},
-    'gwd_opt': "3",
-    'iaer': "5111",
-    'icliq_sw': "2",
-    'imfdeepcnv': "-1",
-    'imfshalcnv': "-1",
-    'iovr': "3",
   }
 'nam_stochy': {
     'shum': ${SHUM_MAG},
@@ -748,6 +769,7 @@ for the various ensemble members failed."
 
 fi
 
+if [ "${DO_DACYCLE}" = "true" ]; then
 # need to generate a namelist for da cycle
  settings="\
  'fv_core_nml': {
@@ -773,7 +795,7 @@ fi
    Namelist settings specified on command line:
      settings =
  $settings"
-
+fi
 #
 #-----------------------------------------------------------------------
 #
