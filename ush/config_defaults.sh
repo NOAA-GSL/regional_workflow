@@ -105,6 +105,7 @@ RUN_ENVIR="nco"
 #
 MACHINE="BIG_COMPUTER"
 ACCOUNT="project_name"
+RESERVATION=""
 SCHED=""
 PARTITION_DEFAULT=""
 QUEUE_DEFAULT=""
@@ -113,6 +114,8 @@ QUEUE_HPSS=""
 PARTITION_FCST=""
 QUEUE_FCST=""
 USE_RESERVATION=""
+PARTITION_GRAPHICS=""
+QUEUE_GRAPHICS=""
 #
 #-----------------------------------------------------------------------
 #
@@ -189,7 +192,7 @@ EXPT_SUBDIR=""
 # that will point to a subdirectory (having the name of the grid being
 # used) under this directory.  This variable should be set to a null 
 # string in this file, but it can be specified in the user-specified 
-# workflow configuration file (EXPT_CONFIG_FN)
+# workflow configuration file (EXPT_CONFIG_FN).
 #
 # STMP:
 # The beginning portion of the directory that will contain cycle-dependent
@@ -241,6 +244,7 @@ STMP="/base/path/of/directory/containing/model/input/and/raw/output/files"
 NET="rrfs"
 envir="para"
 RUN="experiment_name"
+TAG="dev_grid"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
 
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
