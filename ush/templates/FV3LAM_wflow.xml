@@ -94,6 +94,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
 {%- endif %}
 <!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
+<!ENTITY RSRV_NCL   "<account>&ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
 <!ENTITY DEADLINE_ANAL     "16:00:00">
@@ -449,6 +450,7 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
+        <taskdep task="&MAKE_LBCS_TN;"/>
         <taskdep task="&MAKE_ICS_TN;"/>
         <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
@@ -519,7 +521,7 @@ MODULES_RUN_TASK_FP script.
     <command>&LOAD_MODULES_RUN_TASK_FP; "&RUN_FCST_TN;" "&JOBSDIR;/JREGIONAL_RUN_FCST"</command>
   {% if machine in ["JET", "HERA"]  %}
     <cores>{{ ncores_run_fcst }}</cores>
-    <native>{{ native_run_fcst }} &RRFS_RESERVE;</native>
+    <native>{{ native_run_fcst }}</native>
   {% else %}
     <nodes>{{ nnodes_run_fcst }}:ppn={{ ppn_run_fcst }}</nodes>
     <nodesize>&NCORES_PER_NODE;</nodesize>
@@ -578,13 +580,10 @@ MODULES_RUN_TASK_FP script.
       <envar><name>fhr</name><value>#fhr#</value></envar>
 
       <dependency>
-        <or>
-          <taskdep task="&RUN_FCST_TN;{{ uscore_ensmem_name }}"/>
-          <and>
-            <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/dynf#fhr#.nc</cyclestr></datadep>
-            <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/phyf#fhr#.nc</cyclestr></datadep>
-          </and>
-        </or>
+        <and>
+          <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/dynf#fhr#.nc</cyclestr></datadep>
+          <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/phyf#fhr#.nc</cyclestr></datadep>
+        </and>
       </dependency>
 
     </task>
@@ -635,7 +634,7 @@ MODULES_RUN_TASK_FP script.
 
     <task name="&RUN_NCL_TN;_#fhr#" cycledefs="forecast,dacycle" maxtries="{{ maxtries_run_post }}">
 
-      &RSRV_DEFAULT;
+      &RSRV_NCL;
       &WALL_LIMIT_GRAPHICS;
 
       <command>&JOBSDIR;/../scripts/exregional_run_ncl.ksh</command>
@@ -667,7 +666,7 @@ MODULES_RUN_TASK_FP script.
 
     <task name="&RUN_NCL_ZIP_TN;_#fhr#" cycledefs="forecast,dacycle" maxtries="{{ maxtries_run_post }}">
 
-      &RSRV_DEFAULT;
+      &RSRV_NCL;
       &WALL_LIMIT_GRAPHICS;
 
       <command>&JOBSDIR;/../scripts/exregional_run_ncl_zip.ksh</command>
