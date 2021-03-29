@@ -1,7 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
 # RESERVATION="rrfsdet"
-EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2"
+EXPT_BASEDIR="/home/rtrr/RRFS"
 EXPT_SUBDIR="RRFS_dev2"
 
 if [[ -n $RESERVATION ]] ; then
@@ -26,7 +26,6 @@ PREEXISTING_DIR_METHOD="rename"
 PREDEF_GRID_NAME=RRFS_CONUS_3km
 
 DO_DACYCLE="true"
->>>>>>> 744d3c4c90c2d738216085231f05af57bd6f16dd
 
 QUILTING="TRUE"
 CCPP_PHYS_SUITE="FV3_HRRR"
@@ -84,8 +83,8 @@ MODEL="RRFS_dev2"
 RUN="RRFS_dev2"
 COMINgfs=""
 
-STMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
