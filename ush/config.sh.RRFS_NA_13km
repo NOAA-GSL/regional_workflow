@@ -2,7 +2,7 @@ MACHINE="jet"
 ACCOUNT="nrtrr"
 RESERVATION="rrfsdet"
 EXPT_BASEDIR="/home/rtrr/RRFS"
-EXPT_SUBDIR="RRFS_NA_13km"
+EXPT_SUBDIR="RRFS_NA_13km_dev1"
 
 if [[ -n $RESERVATION ]] ; then
   ACCOUNT=rtrr
@@ -45,11 +45,11 @@ FV3GFS_FILE_FMT_LBCS="grib2"
 envir="para"
 
 NET="RRFS_NA_13km"
-TAG="RRFS_NA_13km"
+TAG="RRFS_dev1_NA_13km"
 
 USE_CUSTOM_POST_CONFIG_FILE="TRUE"
-CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1_13km_NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
-ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_na_13km"
+CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-13km-NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_na_13km_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
 NCL_REGION="conus"
@@ -64,7 +64,7 @@ MODEL="RRFS_NA_13km"
 #RUN_TASK_MAKE_OROG="FALSE"
 #RUN_TASK_MAKE_SFC_CLIMO="FALSE"
 
-RUN="RRFS_NA_13km"
+RUN="RRFS_NA_13km_dev1"
 COMINgfs=""
 
 STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
