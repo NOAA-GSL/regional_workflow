@@ -36,7 +36,7 @@ Workflow task names.
 
 
 <!ENTITY ANAL_GSI_INPUT_TN    "{{ anal_gsi_input }}">
-<!ENTITY ANAL_GSI_RESTA_TN    "{{ anal_gsi_resta }}">
+<!ENTITY ANAL_GSI_RESTART_TN    "{{ anal_gsi_restart }}">
 
 <!ENTITY RUN_ANAL_TN       "run_anal_gsi">
 <!ENTITY RUN_BUFR_TN       "run_bufr">
@@ -92,6 +92,11 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue><partition>{{ partition_fcst }}</partition><native>&RRFS_RESERVE;</native>">
 {%- else %}
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
+{%- endif %}
+{%- if partition_analysis is not none %}
+<!ENTITY RSRV_ANALYSIS    "<account>&ACCOUNT;</account><queue>&QUEUE_ANALYSIS;</queue><partition>{{ partition_analysis }}</partition><native>&RRFS_RESERVE;</native>">
+{%- else %}
+<!ENTITY RSRV_ANALYSIS    "<account>&ACCOUNT;</account><queue>&QUEUE_ANALYSIS;</queue>">
 {%- endif %}
 <!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
 <!ENTITY RSRV_NCL   "<account>&ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
@@ -423,9 +428,9 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 ************************************************************************
 -->
-  <task name="&ANAL_GSI_INPUT_TN;" cycledefs="forecast" maxtries="2">
+  <task name="&ANAL_GSI_INPUT_TN;" cycledefs="forecast" maxtries="{{ maxtries_anal_gsi }}">
 
-    &RSRV_DEFAULT;
+    &RSRV_ANALYSIS;
     &WALL_LIMIT_ANAL;
 
     <command>&LOAD_MODULES_RUN_TASK_FP; "&RUN_ANAL_TN;" "&JOBSDIR;/JREGIONAL_RUN_ANAL"</command>
@@ -450,9 +455,9 @@ MODULES_RUN_TASK_FP script.
 
     <dependency>
       <and>
+        <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
         <taskdep task="&MAKE_LBCS_TN;"/>
         <taskdep task="&MAKE_ICS_TN;"/>
-        <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
       </and>
     </dependency>
 
@@ -463,9 +468,9 @@ MODULES_RUN_TASK_FP script.
 ************************************************************************
 -->
 
-  <task name="&ANAL_GSI_RESTA_TN;" cycledefs="dacycle" maxtries="2">
+  <task name="&ANAL_GSI_RESTART_TN;" cycledefs="dacycle" maxtries="{{ maxtries_anal_gsi }}">
 
-    &RSRV_DEFAULT;
+    &RSRV_ANALYSIS;
     &WALL_LIMIT_ANAL;
 
     <command>&LOAD_MODULES_RUN_TASK_FP; "&RUN_ANAL_TN;" "&JOBSDIR;/JREGIONAL_RUN_ANAL"</command>
@@ -477,8 +482,8 @@ MODULES_RUN_TASK_FP script.
     <nodesize>&NCORES_PER_NODE;</nodesize>
     {% endif -%}
     <walltime>{{ wtime_run_anal }}</walltime>
-    <jobname>&ANAL_GSI_RESTA_TN;</jobname>
-    <join><cyclestr>&LOGDIR;/&ANAL_GSI_RESTA_TN;_@Y@m@d@H.log</cyclestr></join>
+    <jobname>&ANAL_GSI_RESTART_TN;</jobname>
+    <join><cyclestr>&LOGDIR;/&ANAL_GSI_RESTART_TN;_@Y@m@d@H.log</cyclestr></join>
 
     <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
     <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
@@ -490,9 +495,9 @@ MODULES_RUN_TASK_FP script.
     <dependency>
       <or>
         <and>
+          <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
           <taskdep task="&MAKE_LBCS_TN;"/>
           <datadep age="00:00:05:00"><cyclestr offset="-{{ da_cycle_interval_hrs }}:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf00{{ da_cycle_interval_hrs }}.nc</cyclestr></datadep>
-          <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
         </and>
         <and>
           <taskdep task="&MAKE_LBCS_TN;"/>
@@ -541,7 +546,7 @@ MODULES_RUN_TASK_FP script.
       {%- if do_dacycle %}
       <or>
         <taskdep task="&ANAL_GSI_INPUT_TN;"/>
-        <taskdep task="&ANAL_GSI_RESTA_TN;"/>
+        <taskdep task="&ANAL_GSI_RESTART_TN;"/>
       </or>
       {%- else %}
       <and>

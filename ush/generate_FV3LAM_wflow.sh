@@ -174,6 +174,8 @@ settings="\
   'partition_graphics': ${PARTITION_GRAPHICS}
   'queue_graphics': ${QUEUE_GRAPHICS}
   'machine': ${MACHINE}
+  'partition_analysis': ${PARTITION_ANALYSIS}
+  'queue_analysis': ${QUEUE_ANALYSIS}
 #
 # Workflow task names.
 #
@@ -187,7 +189,7 @@ settings="\
   'run_fcst_tn': ${RUN_FCST_TN}
   'run_post_tn': ${RUN_POST_TN}
   'anal_gsi_input': ${ANAL_GSI_INPUT_TN}
-  'anal_gsi_resta': ${ANAL_GSI_RESTA_TN}
+  'anal_gsi_restart': ${ANAL_GSI_RESTART_TN}
   'tag': ${TAG}
 #
 # Number of nodes to use for each task.
@@ -207,7 +209,7 @@ settings="\
 #
   'ncores_run_fcst': ${PE_MEMBER01}
   'native_run_fcst': --cpus-per-task 2 --exclusive
-  'ncores_run_anal': 240
+  'ncores_run_anal': ${NCORES_RUN_ANAL}
   'native_run_anal': --cpus-per-task 2 --exclusive
   'partition_run_anal': vjet,kjet,xjet
 #
@@ -248,6 +250,7 @@ settings="\
   'maxtries_make_ics': ${MAXTRIES_MAKE_ICS}
   'maxtries_make_lbcs': ${MAXTRIES_MAKE_LBCS}
   'maxtries_run_fcst': ${MAXTRIES_RUN_FCST}
+  'maxtries_anal_gsi': ${MAXTRIES_ANAL_GSI}
   'maxtries_run_post': ${MAXTRIES_RUN_POST}
 #
 # Flags that specify whether to run the preprocessing tasks.
@@ -455,7 +458,7 @@ if [ "${RUN_ENVIR}" = "nco" ]; then
       print_err_msg_exit "\
     Missing link to FIXcrtm
     RUN_ENVIR = \"${RUN_ENVIR}\"
-    FIXgsi = \"$FIXcrtm\"
+    FIXcrtm = \"$FIXcrtm\"
     path_resolved = \"${path_resolved}\"
     Please ensure that path_resolved is an existing directory and then rerun
     the experiment generation script."
