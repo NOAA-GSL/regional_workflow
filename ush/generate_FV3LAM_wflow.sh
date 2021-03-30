@@ -210,8 +210,6 @@ settings="\
   'ncores_run_fcst': ${PE_MEMBER01}
   'native_run_fcst': --cpus-per-task 2 --exclusive
   'ncores_run_anal': ${NCORES_RUN_ANAL}
-  'native_run_anal': --cpus-per-task 2 --exclusive
-  'partition_run_anal': vjet,kjet,xjet
 #
 # Number of logical processes per node for each task.  If running without
 # threading, this is equal to the number of MPI processes per node.
@@ -289,7 +287,7 @@ settings="\
   'cdate_first_arch': !datetime ${DATE_FIRST_CYCL}07
   'cdate_last_arch': !datetime ${DATE_LAST_CYCL}07
   'cycl_hrs': [ $( printf "\'%s\', " "${CYCL_HRS[@]}" ) ]
-  'cycl_freq': !!str 06:00:00
+  'cycl_freq': !!str 12:00:00
 #
 # Forecast length (same for all cycles).
 #

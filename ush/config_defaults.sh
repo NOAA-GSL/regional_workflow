@@ -1277,7 +1277,7 @@ NNODES_RUN_ANAL="16"
 #
 # Number of cores.
 #
-NCORES_RUN_ANAL="240"
+NCORES_RUN_ANAL="4"
 #
 # Number of MPI processes per node.
 #

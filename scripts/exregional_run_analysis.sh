@@ -349,13 +349,11 @@ else                          # cycle uses background from restart
 fi
 
 # update times in coupler.res to current cycle time
-cp_vrfy ${fixgriddir}/fv3_coupler.res          coupler.res.tmp
-cat coupler.res.tmp  | sed "s/yyyy/${YYYY}/" > coupler.res.newY
-cat coupler.res.newY | sed "s/mm/${MM}/"     > coupler.res.newM
-cat coupler.res.newM | sed "s/dd/${DD}/"     > coupler.res.newD
-cat coupler.res.newD | sed "s/hh/${HH}/"     > coupler.res.newH
-mv coupler.res.newH coupler.res
-rm coupler.res.newY coupler.res.newM coupler.res.newD
+cp_vrfy ${fixgriddir}/fv3_coupler.res          coupler.res
+sed -i "s/yyyy/${YYYY}/" coupler.res
+sed -i "s/mm/${MM}/"     coupler.res
+sed -i "s/dd/${DD}/"     coupler.res
+sed -i "s/hh/${HH}/"     coupler.res
 
 #
 #-----------------------------------------------------------------------

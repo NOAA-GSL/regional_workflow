@@ -912,7 +912,6 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-#LBC_SPEC_FCST_HRS=($( seq ${LBC_SPEC_INTVL_HRS} ${LBC_SPEC_INTVL_HRS} \
 LBC_SPEC_FCST_HRS=($( seq 0 ${LBC_SPEC_INTVL_HRS} \
                           ${FCST_LEN_HRS} ))
 #
