@@ -114,7 +114,7 @@ case $MACHINE in
   if [ "${USE_CCPP}" = "TRUE" ]; then
   
 # Need to change to the experiment directory to correctly load necessary 
-# modules for CCPP-version of FV3SAR in lines below
+# modules for CCPP-version of FV3LAM in lines below
     cd_vrfy ${EXPTDIR}
   
     set +x
@@ -195,7 +195,6 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 
 cd_vrfy ${ANALWORKDIR}
 
-fixdir=$FIX_GSI
 fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
 if [ ${BKTYPE} -eq 1 ]; then  # cold start, use background from INPUT
   bkpath=${CYCLE_DIR}/INPUT
@@ -204,7 +203,7 @@ else
   bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/RESTART  # cycling, use background from RESTART
 fi
 
-print_info_msg "$VERBOSE" "fixdir is $fixdir"
+print_info_msg "$VERBOSE" "FIX_GSI is $FIX_GSI"
 print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 print_info_msg "$VERBOSE" "default bkpath is $bkpath"
 
@@ -228,10 +227,10 @@ for loop in $loops; do
     availtimedd=`date -d "${availtimeyyyy}0101 +$(( 10#${availtimejjj} - 1 )) days" +%d`
     availtimehh=`basename ${timelist} | cut -c 6-7`
     availtime=${availtimeyyyy}${availtimemm}${availtimedd}${availtimehh}
-    AVAIL_TIME=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
-    AVAIL_TIME=`date -d "${AVAIL_TIME}"`
+    avail_time=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
+    avail_time=`date -d "${avail_time}"`
 
-    stamp_avail=`date -d "${AVAIL_TIME} ${loop} hours" +%s`
+    stamp_avail=`date -d "${avail_time} ${loop} hours" +%s`
 
     hourDiff=`echo "($stampcycle - $stamp_avail) / (60 * 60 )" | bc`;
     if [[ ${stampcycle} -lt ${stamp_avail} ]]; then
@@ -306,7 +305,6 @@ fi
 #           radar_tten converting code.
 #-----------------------------------------------------------------------
 
-FV3SARPATH=${CYCLE_DIR}
 cp_vrfy ${fixgriddir}/fv3_akbk                     fv3_akbk
 cp_vrfy ${fixgriddir}/fv3_grid_spec                fv3_grid_spec
 
@@ -318,7 +316,7 @@ if [ ${BKTYPE} -eq 1 ]; then  # cold start uses background from INPUT
   cp_vrfy gfs_data.tile7.halo0.nc_b                fv3_dynvars
   ln_vrfy -s fv3_dynvars                           fv3_tracer
 
-  fv3sar_bg_type=1
+  fv3lam_bg_type=1
 else                          # cycle uses background from restart
 #   let us figure out which backgound is available
   restart_prefix=${YYYYMMDD}.${HH}0000.
@@ -347,7 +345,7 @@ else                          # cycle uses background from restart
   else
     print_err_msg_exit "$VERBOSE" "Error: cannot find background: ${checkfile}"
   fi
-  fv3sar_bg_type=0
+  fv3lam_bg_type=0
 fi
 
 # update times in coupler.res to current cycle time
@@ -409,14 +407,14 @@ done
 #
 #-----------------------------------------------------------------------
 
-anavinfo=${fixdir}/anavinfo_fv3sar_hrrr
-BERROR=${fixdir}/rap_berror_stats_global_RAP_tune
-SATINFO=${fixdir}/global_satinfo.txt
+anavinfo=${FIX_GSI}/anavinfo_fv3lam_hrrr
+BERROR=${FIX_GSI}/rap_berror_stats_global_RAP_tune
+SATINFO=${FIX_GSI}/global_satinfo.txt
 CONVINFO=${fixgriddir}/nam_regional_convinfo_RAP.txt
-OZINFO=${fixdir}/global_ozinfo.txt
-PCPINFO=${fixdir}/global_pcpinfo.txt
-OBERROR=${fixdir}/nam_errtable.r3dv
-ATMS_BEAMWIDTH=${fixdir}/atms_beamwidth.txt
+OZINFO=${FIX_GSI}/global_ozinfo.txt
+PCPINFO=${FIX_GSI}/global_pcpinfo.txt
+OBERROR=${FIX_GSI}/nam_errtable.r3dv
+ATMS_BEAMWIDTH=${FIX_GSI}/atms_beamwidth.txt
 
 # Fixed fields
 cp_vrfy "${anavinfo}" "anavinfo"
@@ -428,7 +426,7 @@ cp      $PCPINFO  pcpinfo
 cp_vrfy $OBERROR  errtable
 cp_vrfy $ATMS_BEAMWIDTH atms_beamwidth.txt
 
-cp_vrfy ${fixdir}/hybens_info_rrfs hybens_info
+cp_vrfy ${FIX_GSI}/hybens_info_rrfs hybens_info
 
 # Get aircraft reject list and surface uselist
 cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
@@ -436,7 +434,7 @@ cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
 sfcuselists=gsd_sfcobs_uselist.txt
 sfcuselists_path=${SFCOBS_USELIST}
 cp_vrfy ${sfcuselists_path}/${sfcuselists} gsd_sfcobs_uselist.txt
-cp_vrfy ${fixdir}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
+cp_vrfy ${FIX_GSI}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
 
 
 #-----------------------------------------------------------------------

@@ -408,6 +408,8 @@ case $MACHINE in
     QUEUE_FCST=${QUEUE_FCST:-"batch"}
     PARTITION_GRAPHICS=${PARTITION_GRAPHICS:-"kjet,xjet"}
     QUEUE_GRAPHICS=${QUEUE_GRAPHICS:-"batch"}
+    PARTITION_ANALYSIS=${PARTITION_ANALYSIS:-"vjet,kjet,xjet"}
+    QUEUE_ANALYSIS=${QUEUE_ANALYSIS:-"batch"}
     ;;
 
   "ODIN")

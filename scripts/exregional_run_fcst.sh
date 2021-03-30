@@ -356,7 +356,7 @@ if [ -f "${target}" ]; then
   ln_vrfy -sf ${relative_or_null} $target $symlink
 else
   print_err_msg_exit "\
-Cannot create symlink because target does not exist:
+  Cannot create symlink because target does not exist:
   target = \"$target\""
 fi
 
@@ -367,12 +367,17 @@ if [ ${BKTYPE} -eq 1 ]; then
     ln_vrfy -sf ${relative_or_null} $target $symlink
   else
     print_err_msg_exit "\
-  Cannot create symlink because target does not exist:
+    Cannot create symlink because target does not exist:
     target = \"$target\""
-fi
+  fi
 else
-  print_info_msg "$VERBOSE" "
-  sfc_data.nc is available at INPUT directory"
+  if [ -f "sfc_data.nc" ]; then
+    print_info_msg "$VERBOSE" "
+    sfc_data.nc is available at INPUT directory"
+  else
+    print_err_msg_exit "\
+    sfc_data.nc is not available for cycling"
+  fi
 fi
 
 #
@@ -457,10 +462,10 @@ if [ "${DO_ENSEMBLE}" = TRUE ]; then
   ln_vrfy -sf ${relative_or_null} "${FV3_NML_ENSMEM_FPS[$(( 10#${ensmem_indx}-1 ))]}" ${run_dir}/${FV3_NML_FN}
 else
    if [ ${BKTYPE} -eq 0 ]; then
-# cycling, using namelist for cycling forecast
+    # cycling, using namelist for cycling forecast
     ln_vrfy -sf ${relative_or_null} ${FV3_NML_RESTART_FP} ${run_dir}/input.nml
   else
-# cold start, using namelist for cold start
+    # cold start, using namelist for cold start
     ln_vrfy -sf ${relative_or_null} ${FV3_NML_FP} ${run_dir}
   fi
 fi

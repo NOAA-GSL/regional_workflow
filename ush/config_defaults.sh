@@ -113,6 +113,8 @@ PARTITION_FCST=""
 QUEUE_FCST=""
 PARTITION_GRAPHICS=""
 QUEUE_GRAPHICS=""
+PARTITION_ANALYSIS=""
+QUEUE_ANALYSIS=""
 #
 #-----------------------------------------------------------------------
 #
@@ -460,7 +462,7 @@ RESTART_INTERVAL="3,6"
 EXTRN_MDL_NAME_ICS="FV3GFS"
 EXTRN_MDL_NAME_LBCS="FV3GFS"
 LBC_SPEC_INTVL_HRS="6"
-EXTRN_MDL_LBCS_OFFSET_HRS="3"
+EXTRN_MDL_LBCS_OFFSET_HRS=""
 FV3GFS_FILE_FMT_ICS="nemsio"
 FV3GFS_FILE_FMT_LBCS="nemsio"
 #
@@ -1257,7 +1259,7 @@ RUN_FCST_TN="run_fcst"
 RUN_POST_TN="run_post"
 
 ANAL_GSI_INPUT_TN="anal_gsi_input"
-ANAL_GSI_RESTA_TN="anal_gsi_resta"
+ANAL_GSI_RESTART_TN="anal_gsi_restart"
 
 #
 # Number of nodes.
@@ -1272,6 +1274,10 @@ NNODES_MAKE_LBCS="4"
 NNODES_RUN_FCST=""  # This is calculated in the workflow generation scripts, so no need to set here.
 NNODES_RUN_POST="2"
 NNODES_RUN_ANAL="16"
+#
+# Number of cores.
+#
+NCORES_RUN_ANAL="240"
 #
 # Number of MPI processes per node.
 #
@@ -1309,6 +1315,7 @@ MAXTRIES_GET_EXTRN_LBCS="1"
 MAXTRIES_MAKE_ICS="1"
 MAXTRIES_MAKE_LBCS="1"
 MAXTRIES_RUN_FCST="1"
+MAXTRIES_ANAL_GSI="1"
 MAXTRIES_RUN_POST="1"
 MAXTRIES_RUN_ANAL="1"
 #
