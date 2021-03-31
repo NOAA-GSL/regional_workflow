@@ -408,7 +408,7 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 #
 # RESTART_INTERVAL:
 # Set up frequenency or list of the forecast hours that FV3 should
-# generate the restart files. The numbers need to match with DA_CYCLE_INTERV.
+# generate the restart files.
 #
 #-----------------------------------------------------------------------
 #

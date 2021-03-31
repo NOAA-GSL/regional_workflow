@@ -55,8 +55,8 @@ fi
 
 WTIME_RUN_FCST="02:45:00"
 
-DATE_FIRST_CYCL="20210330"
-DATE_LAST_CYCL="20210331"
+DATE_FIRST_CYCL="20210401"
+DATE_LAST_CYCL="20211231"
 CYCL_HRS=( "00" "12" )
 
 EXTRN_MDL_NAME_ICS="HRRR"
@@ -67,6 +67,8 @@ envir="para"
 NET="RRFS_CONUS"
 TAG="RRFS_dev1_CONUS"
 
+USE_CUSTOM_POST_CONFIG_FILE="TRUE"
+CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
@@ -82,7 +84,7 @@ MODEL="RRFS_dev1"
 #RUN_TASK_MAKE_OROG="FALSE"
 #RUN_TASK_MAKE_SFC_CLIMO="FALSE"
 
-RUN="RRFS_dev2"
+RUN="RRFS_dev1"
 COMINgfs=""
 
 STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
