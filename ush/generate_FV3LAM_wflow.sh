@@ -164,6 +164,12 @@ if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
   ensmem_name="_mem000#${ensmem_indx_name}#"
 fi
 
+NATIVE_RUN_FCST=" --cpus-per-task 4 --exclusive "
+if [[ ${RUN_REALTIME} == "TRUE" ]]; then
+  NATIVE_RUN_FCST=" --cpus-per-task 4 --exclusive --reservation=rrfsens"
+  PARTITION_FCST=${PARTITION_FCST_RES}
+fi
+
 settings="\
 #
 # Parameters needed by the job scheduler.
@@ -209,7 +215,7 @@ settings="\
 # Number of cores used for a task
 #
   'ncores_run_fcst': ${PE_MEMBER01}
-  'native_run_fcst': --cpus-per-task 4 --exclusive
+  'native_run_fcst': ${NATIVE_RUN_FCST}
 #
 # Number of logical processes per node for each task.  If running without
 # threading, this is equal to the number of MPI processes per node.

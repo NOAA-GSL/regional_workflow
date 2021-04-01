@@ -437,6 +437,7 @@ case $MACHINE in
     PARTITION_HPSS=${PARTITION_HPSS:-"service"}
     QUEUE_HPSS=${QUEUE_HPSS:-"batch"}
     PARTITION_FCST=${PARTITION_FCST:-"sjet,vjet,kjet,xjet"}
+    PARTITION_FCST_RES=${PARTITION_FCST_RES:-"kjet"}
     QUEUE_FCST=${QUEUE_FCST:-"batch"}
     ;;
 
