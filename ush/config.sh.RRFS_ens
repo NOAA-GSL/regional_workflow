@@ -22,7 +22,7 @@ FCST_LEN_HRS_00Z="60"
 FCST_LEN_HRS_12Z="48"
 LBC_SPEC_INTVL_HRS="3"
 
-HALO_BLEND=10
+HALO_BLEND=30
 
 WTIME_RUN_FCST="03:30:00"
 
@@ -56,6 +56,7 @@ PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/ptmp"  #
 DO_ENSEMBLE=TRUE
 NUM_ENS_MEMBERS=9
 DO_SPPT=TRUE
+SPPT_MAG=0.5
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
