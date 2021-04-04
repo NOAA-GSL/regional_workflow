@@ -14,6 +14,7 @@ See README.xml_templating.md for information on using the Templating mechanisms.
 Parameters needed by the job scheduler.
 -->
 <!ENTITY ACCOUNT       "{{ account }}">
+<!ENTITY ACCOUNT_RES   "{{ account_res }}">
 <!ENTITY SCHED         "{{ sched }}">
 <!ENTITY QUEUE_DEFAULT "{{ queue_default }}">
 <!ENTITY QUEUE_HPSS    "{{ queue_hpss }}">
@@ -38,6 +39,16 @@ Workflow task names.
 <!ENTITY CLEAN_TN          "run_clean">
 <!ENTITY ARCHIVE_TN        "run_archive">
 
+<!--
+Settings for NCL/PYTHON plotting
+-->
+<!ENTITY NCL_WORKDIR_ROOT "{{ ncl_workdir_root }}">
+<!ENTITY NCL_ROOT "/whome/wrfruc/bin/ncl/nclrrfs">
+<!ENTITY NCL_SCRIPTS "/home/wrfruc/HRRRE/bin">
+<!ENTITY NCL_MAIN_PROC "8">
+<!ENTITY NCL_PROC "1">
+<!ENTITY NCL_MAIN_RESOURCES "<walltime>01:15:00</walltime>">
+<!ENTITY PYTHON_SCRIPTS "/mnt/lfs4/BMC/wrfruc/RRFSE/python_graphics">
 
 <!--
 Flags that specify whether to run the preprocessing tasks.
@@ -60,6 +71,7 @@ Directories and files.
 <!ENTITY JOBSDIR                  "{{ jobsdir }}">
 <!ENTITY LOGDIR                   "{{ logdir }}">
 <!ENTITY CYCLE_BASEDIR            "{{ cycle_basedir }}">
+<!ENTITY COMOUT_BASEDIR            "{{ comout_basedir }}">
 <!ENTITY GLOBAL_VAR_DEFNS_FP      "{{ global_var_defns_fp }}">
 <!ENTITY LOAD_MODULES_RUN_TASK_FP "{{ load_modules_run_task_fp }}">
 
@@ -82,7 +94,11 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_HPSS    "<account>&ACCOUNT;</account><queue>&QUEUE_HPSS;</queue>">
 {%- endif %}
 {%- if partition_fcst is not none %}
+{%- if run_realtime %} 
+<!ENTITY RSRV_FCST    "<account>&ACCOUNT_RES;</account><queue>&QUEUE_FCST;</queue><partition>{{ partition_fcst }}</partition>">
+{%- else %}
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue><partition>{{ partition_fcst }}</partition>">
+{%- endif %}
 {%- else %}
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
 {%- endif %}
@@ -99,8 +115,6 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY WALL_LIMIT_BUFR '<deadline><cyclestr offset="&DEADLINE_POST;">@Y@m@d@H@M</cyclestr></deadline>'>
 <!ENTITY WALL_LIMIT_GRAPHICS '<deadline><cyclestr offset="&DEADLINE_GRAPHICS;">@Y@m@d@H@M</cyclestr></deadline>'>
 {%- endif %}
-
-
 
 ]>
 
@@ -506,6 +520,7 @@ MODULES_RUN_TASK_FP script.
 
   </metatask>
 
+{%- if run_realtime %}
 <!--
 ************************************************************************
 ************************************************************************
@@ -525,10 +540,191 @@ MODULES_RUN_TASK_FP script.
     <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
 
   </task>
-
+{% endif %}
 
 {% if do_ensemble %}
   </metatask>
+{% endif %}
+
+<!--
+************************************************************************
+************************************************************************
+-->
+{% if do_ensemble %}
+
+<metatask name="plot_fcst">
+<var name="fcstsec"> {% for h in range(0, fcst_len_hrs+1) %}{{ 3600 * h }} {% endfor %} </var>
+<var name="fcsthour"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %02d" % h  }}{% endfor %} </var>
+
+    <task name="ncl_fcst_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+      &NCL_MAIN_RESOURCES;
+      &RSRV_DEFAULT;
+
+      <command>&NCL_SCRIPTS;/NCL/nclrrfsens.ksh</command>
+      <cores>&NCL_MAIN_PROC;</cores>
+      <jobname>rrfse_ncl_fcst_#fcsthour#</jobname>
+      <envar><name>LOGDIR</name><value>&LOGDIR;</value></envar>
+      <join><cyclestr>&LOGDIR;/ncl_@Y@m@d@H_#fcsthour#.log</cyclestr></join>
+
+      <envar><name>START_TIME</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>START_TIME_JUL_BASE</name><value><cyclestr>@Y@j@H</cyclestr></value></envar>
+      <envar><name>FCST_TIME</name><value>#fcsthour#</value></envar>
+      <envar><name>INFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>NATINFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>SFCINFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>WORKDIR_ROOT</name><value>&NCL_WORKDIR_ROOT;</value></envar>
+      <envar><name>OUTPUT_ROOT</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>EXE_ROOT</name><value>&NCL_ROOT;</value></envar>
+      <envar><name>MODEL</name><value>{{ model_name }}</value></envar> 
+
+<!-- Files exist for all the members. -->
+      <dependency>
+       <sh>
+         test $(find <cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H/mem?/{{ net_name }}.t@Hz.bgdawpf0#fcsthour#.tm00.grib2  -mmin +5 | wc -l)</cyclestr> \
+         == {{ num_ens_members }}
+       </sh>
+      </dependency>
+
+    </task>
+
+<!--
+************************************************************************
+************************************************************************
+-->
+
+    <task name="ncl_ens9_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+      &NCL_MAIN_RESOURCES;
+      &RSRV_DEFAULT;
+
+      <command>&NCL_SCRIPTS;/NCL/nclrrfsens9.ksh</command>
+      <cores>&NCL_MAIN_PROC;</cores>
+      <jobname>rrfse_ncl_ens9_#fcsthour#</jobname>
+      <envar><name>LOGDIR</name><value>&LOGDIR;</value></envar>
+      <join><cyclestr>&LOGDIR;/ncl_ens9_@Y@m@d@H_#fcsthour#.log</cyclestr></join>
+
+      <envar><name>START_TIME</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>START_TIME_JUL_BASE</name><value><cyclestr>@Y@j@H</cyclestr></value></envar>
+      <envar><name>FCST_TIME</name><value>#fcsthour#</value></envar>
+      <envar><name>INFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>NATINFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>SFCINFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>WORKDIR_ROOT</name><value>&NCL_WORKDIR_ROOT;</value></envar>
+      <envar><name>OUTPUT_ROOT</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+      <envar><name>EXE_ROOT</name><value>&NCL_ROOT;</value></envar>
+      <envar><name>MODEL</name><value>{{ model_name }}</value></envar> 
+
+<!-- Files exist for all the members. -->
+      <dependency>
+       <sh>
+         test $(find <cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H/mem?/{{ net_name }}.t@Hz.bgdawpf0#fcsthour#.tm00.grib2  -mmin +5 | wc -l)</cyclestr> \
+         == {{ num_ens_members }}
+       </sh>
+      </dependency>
+
+    </task>
+
+<!--
+************************************************************************
+************************************************************************
+-->
+
+     <task name="py_max_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+      &NCL_MAIN_RESOURCES;
+      &RSRV_DEFAULT;
+
+      <command>&PYTHON_SCRIPTS;/py_max_plot.ksh</command>
+      <cores>&NCL_PROC;</cores>
+      <jobname>rrfse_py_max_#fcsthour#</jobname>
+      <envar><name>LOGDIR</name><value>&LOGDIR;</value></envar>
+      <join><cyclestr>&LOGDIR;/py_max_@Y@m@d@H_#fcsthour#.log</cyclestr></join>
+
+      <envar><name>FCST_TIME</name><value>#fcsthour#</value></envar>
+      <envar><name>START_TIME</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>INFILEPATH</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+
+<!-- Note depending on variable, the bgsfc or bgdawp files are used,
+only checking for sfc here, and assuming that bgdawp are also available -->
+
+<!-- Files exist for all the members. -->
+      <dependency>
+       <sh>
+         test $(find <cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H/mem?/{{ net_name }}.t@Hz.bgsfcf0#fcsthour#.tm00.grib2  -mmin +5 | wc -l)</cyclestr> \
+         == {{ num_ens_members }}
+       </sh>
+      </dependency>
+
+     </task>
+
+  </metatask>
+
+<!--
+************************************************************************
+************************************************************************
+-->
+
+<metatask name="zip_part1" mode="serial">
+
+   <var name="fcsthour">00</var>
+
+   <task name="ncl_zip_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+      &NCL_MAIN_RESOURCES;
+      &RSRV_DEFAULT;
+
+      <command>&NCL_SCRIPTS;/NCL/ncl_rrfs_zip.ksh</command>
+      <cores>&NCL_PROC;</cores>
+      <jobname><cyclestr>rrfse_ncl_zip_#fcsthour#</cyclestr></jobname>
+      <join><cyclestr>&LOGDIR;/ncl_zip_@Y@m@d@H_#fcsthour#.log</cyclestr></join>
+
+      <envar><name>FCST_TIME</name><value>#fcsthour#</value></envar>
+      <envar><name>OUTPUT_ROOT</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+
+      <dependency>
+        <and>
+         <taskdep task="ncl_fcst_#fcsthour#"/>
+         <taskdep task="ncl_ens9_#fcsthour#"/>
+        </and>
+      </dependency>
+
+    </task>
+
+  </metatask>
+
+<!--
+************************************************************************
+************************************************************************
+-->
+
+<metatask name="zip_part2" mode="serial">
+   <var name="fcsthour"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %02d" % h  }}{% endfor %} </var>
+    <task name="ncl_zip_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
+
+     &NCL_MAIN_RESOURCES;
+     &RSRV_DEFAULT;
+
+     <command>&NCL_SCRIPTS;/NCL/ncl_rrfs_zip.ksh</command>
+     <cores>&NCL_PROC;</cores>
+     <jobname><cyclestr>rrfse_ncl_zip_#fcsthour#</cyclestr></jobname>
+     <join><cyclestr>&LOGDIR;/ncl_zip_@Y@m@d@H_#fcsthour#.log</cyclestr></join>
+
+     <envar><name>FCST_TIME</name><value>#fcsthour#</value></envar>
+     <envar><name>OUTPUT_ROOT</name><value><cyclestr>&COMOUT_BASEDIR;/{{ run_name }}.@Y@m@d/@H</cyclestr></value></envar>
+
+     <dependency>
+        <and>
+         <metataskdep metatask="zip_part1"/>
+         <taskdep task="ncl_fcst_#fcsthour#"/>
+         <taskdep task="ncl_ens9_#fcsthour#"/>
+        </and>
+      </dependency>
+
+     </task>
+
+</metatask>
+
 {% endif %}
 
 </workflow>

@@ -1183,6 +1183,7 @@ check_for_preexist_dir_file "$EXPTDIR" "${PREEXISTING_DIR_METHOD}"
 #-----------------------------------------------------------------------
 #
 LOGDIR="${EXPTDIR}/log/@Y@m@d/@H"
+NCL_WORKDIR_ROOT="$EXPTDIR/ncl_graphics/nclprdrrfsens"
 
 FIXam="${EXPTDIR}/fix_am"
 FIXLAM="${EXPTDIR}/fix_lam"
@@ -1193,8 +1194,8 @@ if [ "${RUN_ENVIR}" = "nco" ]; then
   check_for_preexist_dir_file "${CYCLE_BASEDIR}" "${PREEXISTING_DIR_METHOD}"
   COMROOT="$PTMP/com"
   COMOUT_BASEDIR="$COMROOT/$NET/$envir"
-
   LOGDIR="${COMROOT}/logs/${NET}/${RUN}.@Y@m@d/@H"
+  NCL_WORKDIR_ROOT="$STMP/../../ncl_graphics/nclprdrrfsens"
 
 else
 
