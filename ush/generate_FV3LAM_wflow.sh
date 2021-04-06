@@ -155,6 +155,9 @@ slash_ensmem_subdir="\"\""
 input_ensmem_subdir="\"\""
 post_ensmem_subdir="\"\""
 ensmem_name="\"\""
+input_ensmem_subdir_00="\"\""
+post_ensmem_subdir_00="\"\""
+ensmem_name_00="\"\""
 if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
   ensmem_indx_name="mem"
   uscore_ensmem_name="_mem#${ensmem_indx_name}#"
@@ -162,6 +165,9 @@ if [ "${DO_ENSEMBLE}" = "TRUE" ]; then
   input_ensmem_subdir="/gep0#${ensmem_indx_name}#"
   post_ensmem_subdir="/postprd_mem000#${ensmem_indx_name}#"
   ensmem_name="_mem000#${ensmem_indx_name}#"
+  input_ensmem_subdir_00="/gec00"
+  post_ensmem_subdir_00="/postprd_mem0000"
+  ensmem_name_00="_mem0000"
 fi
 
 NATIVE_RUN_FCST=" --cpus-per-task 4 --exclusive "
@@ -316,6 +322,10 @@ settings="\
   'input_ensmem_subdir': ${input_ensmem_subdir}
   'post_ensmem_subdir': ${post_ensmem_subdir}
   'ensmem_name': ${ensmem_name}
+  'input_ensmem_subdir_00': ${input_ensmem_subdir_00}
+  'post_ensmem_subdir_00': ${post_ensmem_subdir_00}
+  'ensmem_name_00': ${ensmem_name_00}
+  'run_control': ${RUN_CONTROL}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "

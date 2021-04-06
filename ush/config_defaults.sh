@@ -1314,6 +1314,9 @@ CUSTOM_POST_CONFIG_FP=""
 DO_ENSEMBLE="FALSE"
 NUM_ENS_MEMBERS="1"
 #
+# in ensemble mode, whether or not to run member 1 as control member
+RUN_CONTROL="FALSE"
+#
 #-----------------------------------------------------------------------
 #
 # Set default ad-hoc stochastic physics options.

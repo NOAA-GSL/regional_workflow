@@ -58,6 +58,7 @@ DO_ENSEMBLE=TRUE
 NUM_ENS_MEMBERS=9
 DO_SPPT=TRUE
 SPPT_MAG=0.5
+RUN_CONTROL=TRUE
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
