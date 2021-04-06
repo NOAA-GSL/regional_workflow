@@ -60,6 +60,7 @@ DO_SPPT=TRUE
 SPPT_MAG=0.5
 RUN_CONTROL=TRUE
 
+
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
 # create the symlink "${FIXrrfs}/fix_sar" that points to EMC's FIXLAM

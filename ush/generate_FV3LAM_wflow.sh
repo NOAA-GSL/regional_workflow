@@ -176,6 +176,12 @@ if [[ ${RUN_REALTIME} == "TRUE" ]]; then
   PARTITION_FCST=${PARTITION_FCST_RES}
 fi
 
+NATIVE_RUN_FCST=" --cpus-per-task 4 --exclusive "
+if [[ ${RUN_REALTIME} == "TRUE" ]]; then
+  NATIVE_RUN_FCST=" --cpus-per-task 4 --exclusive --reservation=rrfsens"
+  PARTITION_FCST=${PARTITION_FCST_RES}
+fi
+
 settings="\
 #
 # Parameters needed by the job scheduler.
