@@ -307,7 +307,7 @@ settings="\
   'date_first_cycl': ${DATE_FIRST_CYCL}
   'date_last_cycl': ${DATE_LAST_CYCL}
   'cdate_first_cycl': !datetime ${DATE_FIRST_CYCL}${CYCL_HRS[0]}
-  'cdate_last_cycl': !datetime ${DATE_LAST_CYCL}${CYCL_HRS[0]}
+  'cdate_last_cycl': !datetime ${DATE_LAST_CYCL}${CYCL_HRS[-1]}
   'cdate_first_arch': !datetime ${DATE_FIRST_CYCL}07
   'cdate_last_arch': !datetime ${DATE_LAST_CYCL}07
   'cycl_hrs': [ $( printf "\'%s\', " "${CYCL_HRS[@]}" ) ]
