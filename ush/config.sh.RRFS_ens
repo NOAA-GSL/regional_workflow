@@ -48,9 +48,6 @@ MODEL="RRFSE"
 RUN="RRFS_ens"
 COMINgfs=""
 
-#EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/data/GEFS/public/pgrb2.merged"
-#EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/data/HRRRE"
-
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
