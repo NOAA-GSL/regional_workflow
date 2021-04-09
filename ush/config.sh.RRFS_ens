@@ -48,6 +48,9 @@ MODEL="RRFSE"
 RUN="RRFS_ens"
 COMINgfs=""
 
+#EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/data/GEFS/public/pgrb2.merged"
+#EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/data/HRRRE"
+
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
@@ -60,6 +63,12 @@ DO_SPPT=TRUE
 SPPT_MAG=0.5
 RUN_CONTROL=TRUE
 
+MAXTRIES_GET_EXTRN_ICS="1"
+MAXTRIES_GET_EXTRN_LBCS="1"
+MAXTRIES_MAKE_ICS="2"
+MAXTRIES_MAKE_LBCS="2"
+MAXTRIES_RUN_FCST="1"
+MAXTRIES_RUN_POST="2"
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)

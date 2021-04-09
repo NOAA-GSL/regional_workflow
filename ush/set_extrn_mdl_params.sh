@@ -45,122 +45,122 @@ local func_name="${FUNCNAME[0]}"
 #
 if [[ "${RUN_ENVIR}" = "nco" && ! -z ${COMINgfs} ]]; then
 
-  EXTRN_MDL_SYSBASEDIR_ICS="$COMINgfs"
+  EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-$COMINgfs}"
 
 else
 
-  case ${EXTRN_MDL_NAME_ICS} in
+  case "${EXTRN_MDL_NAME_ICS}" in
 
   "GSMGFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "WCOSS_CRAY")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "WCOSS_DELL_P3")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "ODIN")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch/ywang/EPIC/GDAS/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch/ywang/EPIC/GDAS/2019053000_mem001}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_ICS="/glade/p/ral/jntp/UFS_CAM/COMGFS"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/glade/p/ral/jntp/UFS_CAM/COMGFS}"
       ;;
     "STAMPEDE")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001}"
       ;;
     esac
     ;;
 
   "FV3GFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "WCOSS_CRAY")
-      EXTRN_MDL_SYSBASEDIR_ICS="/gpfs/dell1/nco/ops/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/gpfs/dell1/nco/ops/com/gfs/prod}"
       ;;
     "WCOSS_DELL_P3")
-      EXTRN_MDL_SYSBASEDIR_ICS="/gpfs/dell1/nco/ops/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/gpfs/dell1/nco/ops/com/gfs/prod}"
       ;;
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch1/NCEPDEV/rstprod/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch1/NCEPDEV/rstprod/com/gfs/prod}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/public/data/grids/gfs/nemsio"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/public/data/grids/gfs/nemsio}"
       ;;
     "ODIN")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch/ywang/test_runs/FV3_regional/gfs"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch/ywang/test_runs/FV3_regional/gfs}"
       ;;
     "STAMPEDE")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_ICS="/glade/p/ral/jntp/UFS_CAM/COMGFS"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/glade/p/ral/jntp/UFS_CAM/COMGFS}"
       ;;
     esac
     ;;
 
   "GEFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
       EXTRN_MDL_SYSBASEDIR_ICS=""
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b}"
       ;;
     esac
     ;;
 
   "RAP")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch2/BMC/public/data/gsd/rap/full/wrfnat"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch2/BMC/public/data/gsd/rap/full/wrfnat}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/public/data/grids/rap/full/wrfnat/grib2"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/public/data/grids/rap/full/wrfnat/grib2}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_ICS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-dummy_value}"
       ;;
     esac
     ;;
 
   "HRRR")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS="/scratch2/BMC/public/data/gsd/hrrr/conus/wrfnat"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/scratch2/BMC/public/data/gsd/hrrr/conus/wrfnat}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/public/data/grids/hrrr/conus/wrfnat/grib2"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/public/data/grids/hrrr/conus/wrfnat/grib2}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_ICS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-dummy_value}"
       ;;
     esac
     ;;
 
   "HRRRDAS")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_ICS=""
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_ICS="/mnt/lfs1/BMC/wrfruc/HRRRE/cycle"
+      EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS:-/mnt/lfs1/BMC/wrfruc/HRRRE/cycle}"
       ;;
     esac
     ;;
@@ -190,7 +190,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-case ${EXTRN_MDL_NAME_LBCS} in
+case "${EXTRN_MDL_NAME_LBCS}" in
   "GSMGFS")
     EXTRN_MDL_LBCS_OFFSET_HRS="0"
     ;;
@@ -211,7 +211,7 @@ case ${EXTRN_MDL_NAME_LBCS} in
     ;;
 esac
 
-case ${EXTRN_MDL_NAME_ICS} in
+case "${EXTRN_MDL_NAME_ICS}" in
   "GSMGFS")
     EXTRN_MDL_ICS_OFFSET_HRS="0"
     ;;
@@ -251,119 +251,119 @@ esac
 #
 if [[ "${RUN_ENVIR}" == "nco" && ! -z ${COMINgfs} ]]; then
 
-  EXTRN_MDL_SYSBASEDIR_LBCS="$COMINgfs"
+  EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-$COMINgfs}"
 
 else
 
-  case ${EXTRN_MDL_NAME_LBCS} in
+  case "${EXTRN_MDL_NAME_LBCS}" in
 
   "GSMGFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "WCOSS_CRAY")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "WCOSS_DELL_P3")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "ODIN")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch/ywang/EPIC/GDAS/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch/ywang/EPIC/GDAS/2019053000_mem001}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/glade/p/ral/jntp/UFS_CAM/COMGFS"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/glade/p/ral/jntp/UFS_CAM/COMGFS}"
       ;;
     "STAMPEDE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001}"
       ;;
     esac
     ;;
 
   "FV3GFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "WCOSS_CRAY")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/gpfs/dell1/nco/ops/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/gpfs/dell1/nco/ops/com/gfs/prod}"
       ;;
     "WCOSS_DELL_P3")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/gpfs/dell1/nco/ops/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/gpfs/dell1/nco/ops/com/gfs/prod}"
       ;;
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch1/NCEPDEV/rstprod/com/gfs/prod"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch1/NCEPDEV/rstprod/com/gfs/prod}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/public/data/grids/gfs/nemsio"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/public/data/grids/gfs/nemsio}"
       ;;
     "ODIN")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch/ywang/test_runs/FV3_regional/gfs"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch/ywang/test_runs/FV3_regional/gfs}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/glade/p/ral/jntp/UFS_CAM/COMGFS"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/glade/p/ral/jntp/UFS_CAM/COMGFS}"
       ;;
     "STAMPEDE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch/00315/tg455890/GDAS/20190530/2019053000_mem001}"
       ;;
     esac
     ;;
 
   "GEFS")
-    case $MACHINE in
+    case "$MACHINE" in
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b}"
       ;;
     esac
     ;;
 
   "RAP")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch2/BMC/public/data/gsd/rap/full/wrfnat"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch2/BMC/public/data/gsd/rap/full/wrfnat}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/public/data/grids/rap/full/wrfnat/grib2"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/public/data/grids/rap/full/wrfnat/grib2}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-dummy_value}"
       ;;
     esac
     ;;
 
   "HRRR")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/scratch2/BMC/public/data/gsd/hrrr/conus/wrfnat"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/scratch2/BMC/public/data/gsd/hrrr/conus/wrfnat}"
       ;;
     "ORION")
-      EXTRN_MDL_SYSBASEDIR_LBCS=""
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-}"
       ;;
     "JET")
-      EXTRN_MDL_SYSBASEDIR_LBCS="/public/data/grids/hrrr/conus/wrfnat/grib2"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-/public/data/grids/hrrr/conus/wrfnat/grib2}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-dummy_value}"
       ;;
     esac
     ;;
 
   "NAM")
-    case $MACHINE in
+    case "$MACHINE" in
     "HERA")
-      EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-dummy_value}"
       ;;
     "CHEYENNE")
-      EXTRN_MDL_SYSBASEDIR_LBCS="dummy_value"
+      EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS:-dummy_value}"
       ;;
     esac
     ;;
