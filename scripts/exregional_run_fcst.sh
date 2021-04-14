@@ -291,7 +291,8 @@ fi
 # that the FV3 model is hardcoded to recognize, and those are the names 
 # we use below.
 #
-if [ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" ]; then
+if [[ "${CCPP_PHYS_SUITE}" = "FV3_HRRR" || \
+      "${CCPP_PHYS_SUITE}" = "FV3_RAP " ]]; then
 
   fileids=( "ss" "ls" )
   for fileid in "${fileids[@]}"; do
