@@ -3,6 +3,14 @@
 #
 #-----------------------------------------------------------------------
 #
+# This J-JOB script prepare initial and boundary conditions  
+#      for the FV3-LAM model
+#
+#-----------------------------------------------------------------------
+
+#
+#-----------------------------------------------------------------------
+#
 # Source the variable definitions file and the bash utility functions.
 #
 #-----------------------------------------------------------------------
@@ -17,7 +25,7 @@
 #
 #-----------------------------------------------------------------------
 #
-{ save_shell_opts; set -u -x; } > /dev/null 2>&1
+{ save_shell_opts; set -u +x; } > /dev/null 2>&1
 #
 #-----------------------------------------------------------------------
 #
@@ -42,29 +50,31 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the J-job script for the task that generates initial condition 
-(IC), surface, and zeroth-hour lateral boundary condition (LBC0) files 
-for the FV3 (in NetCDF format).
+This is the J-job script for the task that runs a analysis with FV3 for 
+the specified cycle.
 ========================================================================"
 #
 #-----------------------------------------------------------------------
 #
-# Set the name of and create the directory in which the output from this
-# script will be placed (if that directory doesn't already exist).
+# Create the working directory under the cycle directory.
 #
 #-----------------------------------------------------------------------
 #
-ics_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}/ics"
-mkdir_vrfy -p "${ics_dir}"
+ANALWORKDIR=${CYCLE_DIR}/fcst_fv3lam/INPUT
+rm -fr ${ANALWORKDIR}
+mkdir_vrfy -p ${ANALWORKDIR}
 #
 #-----------------------------------------------------------------------
 #
-# Call the ex-script for this J-job and pass to it the necessary variables.
+# Call the ex-script for this J-job and pass to it the necessary varia-
+# bles.
 #
 #-----------------------------------------------------------------------
 #
-$SCRIPTSDIR/exregional_make_ics.sh \
-  ics_dir="${ics_dir}" || \
+$SCRIPTSDIR/exregional_run_prepstart.sh \
+             CYCLE_DIR="${CYCLE_DIR}" \
+             ANALWORKDIR="${ANALWORKDIR}" \
+             CYCLE_ROOT="${CYCLE_ROOT}" || \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
 #
@@ -82,7 +92,8 @@ In directory:    \"${scrfunc_dir}\"
 #
 #-----------------------------------------------------------------------
 #
-# Restore the shell options saved at the beginning of this script/function.
+# Restore the shell options saved at the beginning of this script/func-
+# tion.
 #
 #-----------------------------------------------------------------------
 #

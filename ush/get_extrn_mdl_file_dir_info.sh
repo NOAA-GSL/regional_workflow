@@ -27,7 +27,7 @@ function get_extrn_mdl_file_dir_info() {
 #
 #-----------------------------------------------------------------------
 #
-  { save_shell_opts; set -u +x; } > /dev/null 2>&1
+  { save_shell_opts; set -u -x; } > /dev/null 2>&1
 #
 #-----------------------------------------------------------------------
 #
@@ -61,6 +61,8 @@ function get_extrn_mdl_file_dir_info() {
     "extrn_mdl_name" \
     "anl_or_fcst" \
     "cdate_FV3LAM" \
+    "lbs_spec_intvl_hrs" \
+    "boundary_len_hrs" \
     "time_offset_hrs" \
     "varname_extrn_mdl_cdate" \
     "varname_extrn_mdl_lbc_spec_fhrs" \
@@ -106,6 +108,8 @@ Usage:
     extrn_mdl_name \
     anl_or_fcst \
     cdate_FV3LAM \
+    lbs_spec_intvl_hrs \
+    boundary_len_hrs \
     time_offset_hrs \
     varname_extrn_mdl_cdate \
     varname_extrn_mdl_lbc_spec_fhrs \
@@ -267,6 +271,9 @@ fi
   lbc_spec_fhrs=( "" )
 
   if [ "${anl_or_fcst}" = "FCST" ]; then
+
+    LBC_SPEC_FCST_HRS=($( seq 0 ${lbs_spec_intvl_hrs} \
+                          ${boundary_len_hrs} ))
 
     lbc_spec_fhrs=( "${LBC_SPEC_FCST_HRS[@]}" )
 #

@@ -913,7 +913,9 @@ fi
 #-----------------------------------------------------------------------
 #
 LBC_SPEC_FCST_HRS=($( seq 0 ${LBC_SPEC_INTVL_HRS} \
-                          ${FCST_LEN_HRS} ))
+                          ${BOUNDARY_LEN_HRS} ))
+LBC_SPEC_FCST_LONG_HRS=($( seq 0 ${LBC_SPEC_INTVL_HRS} \
+                          ${BOUNDARY_LONG_LEN_HRS} ))
 #
 #-----------------------------------------------------------------------
 #
@@ -1196,7 +1198,7 @@ if [ "${RUN_ENVIR}" = "nco" ]; then
   COMROOT="$PTMP/com"
   COMOUT_BASEDIR="$COMROOT/$NET/$envir"
 
-  LOGDIR="${COMROOT}/logs/${NET}/${RUN}.@Y@m@d/@H"
+  LOGDIR="${PTMP}/logs/${NET}/${RUN}.@Y@m@d/@H"
 
 else
 
@@ -2684,6 +2686,7 @@ EXTRN_MDL_LBCS_OFFSET_HRS="${EXTRN_MDL_LBCS_OFFSET_HRS}"
 #-----------------------------------------------------------------------
 #
 LBC_SPEC_FCST_HRS=(${LBC_SPEC_FCST_HRS[@]})
+LBC_SPEC_FCST_LONG_HRS=(${LBC_SPEC_FCST_LONG_HRS[@]})
 #
 #-----------------------------------------------------------------------
 #

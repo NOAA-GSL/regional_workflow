@@ -401,6 +401,12 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 # two-digit string representing an integer that is less than or equal to
 # 23, e.g. "00", "03", "12", "23".
 #
+# BOUNDARY_LEN_HRS
+# The length of boundary condition for normal forecast, in integer hours.
+#
+# BOUNDARY_LONG_LEN_HRS
+# The length of boundary condition for long forecast, in integer hours.
+#
 # FCST_LEN_HRS:
 # The length of each forecast, in integer hours.
 #
@@ -420,10 +426,22 @@ WFLOW_LAUNCH_LOG_FN="log.launch_FV3LAM_wflow"
 DATE_FIRST_CYCL="YYYYMMDD"
 DATE_LAST_CYCL="YYYYMMDD"
 CYCL_HRS=( "HH1" "HH2" )
+BOUNDARY_LEN_HRS="24"
+BOUNDARY_LONG_LEN_HRS="24"
 FCST_LEN_HRS="24"
 FCST_LEN_HRS_CYCLES=( )
 DA_CYCLE_INTERV="3"
 RESTART_INTERVAL="3,6"
+
+AT_START_CYCLEDEF="00 01 01 01 2100 *"
+INITIAL_CYCLEDEF="00 01 01 01 2100 *"
+BOUNDARY_CYCLEDEF="00 01 01 01 2100 *"
+BOUNDARY_LONG_CYCLEDEF="00 01 01 01 2100 *"
+PREP_COLDSTART_CYCLEDEF="00 01 01 01 2100 *"
+PREP_WARMSTART_CYCLEDEF="00 01 01 01 2100 *"
+ANALYSIS_CYCLEDEF="00 01 01 01 2100 *"
+FORECAST_CYCLEDEF="00 01 01 01 2100 *"
+ARCHIVE_CYCLEDEF="00 01 01 01 2100 *"
 #
 #-----------------------------------------------------------------------
 #
@@ -1258,13 +1276,15 @@ MAKE_OROG_TN="make_orog"
 MAKE_SFC_CLIMO_TN="make_sfc_climo"
 GET_EXTRN_ICS_TN="get_extrn_ics"
 GET_EXTRN_LBCS_TN="get_extrn_lbcs"
+GET_EXTRN_LBCS_LONG_TN="get_extrn_lbcs_long"
 MAKE_ICS_TN="make_ics"
 MAKE_LBCS_TN="make_lbcs"
 RUN_FCST_TN="run_fcst"
 RUN_POST_TN="run_post"
 
-ANAL_GSI_INPUT_TN="anal_gsi_input"
-ANAL_GSI_RESTART_TN="anal_gsi_restart"
+ANAL_GSI_TN="anal_gsi_input"
+PREP_COLDSTART_TN="prep_coldstart"
+PREP_WARMSTART_TN="prep_warmstart"
 
 #
 # Number of nodes.
@@ -1276,6 +1296,7 @@ NNODES_GET_EXTRN_ICS="1"
 NNODES_GET_EXTRN_LBCS="1"
 NNODES_MAKE_ICS="4"
 NNODES_MAKE_LBCS="4"
+NNODES_RUN_PREPSTART="1"
 NNODES_RUN_FCST=""  # This is calculated in the workflow generation scripts, so no need to set here.
 NNODES_RUN_POST="2"
 NNODES_RUN_ANAL="16"
@@ -1293,6 +1314,7 @@ PPN_GET_EXTRN_ICS="1"
 PPN_GET_EXTRN_LBCS="1"
 PPN_MAKE_ICS="12"
 PPN_MAKE_LBCS="12"
+PPN_RUN_PREPSTART="1"
 PPN_RUN_FCST="24"  # This may have to be changed depending on the number of threads used.
 PPN_RUN_POST="24"
 PPN_RUN_ANAL="24"
@@ -1306,6 +1328,7 @@ WTIME_GET_EXTRN_ICS="00:45:00"
 WTIME_GET_EXTRN_LBCS="00:45:00"
 WTIME_MAKE_ICS="00:30:00"
 WTIME_MAKE_LBCS="00:30:00"
+WTIME_RUN_PREPSTART="00:10:00"
 WTIME_RUN_FCST="04:30:00"
 WTIME_RUN_POST="00:15:00"
 WTIME_RUN_ANAL="00:30:00"
@@ -1319,6 +1342,7 @@ MAXTRIES_GET_EXTRN_ICS="1"
 MAXTRIES_GET_EXTRN_LBCS="1"
 MAXTRIES_MAKE_ICS="1"
 MAXTRIES_MAKE_LBCS="1"
+MAXTRIES_RUN_PREPSTART="1"
 MAXTRIES_RUN_FCST="1"
 MAXTRIES_ANAL_GSI="1"
 MAXTRIES_RUN_POST="1"
