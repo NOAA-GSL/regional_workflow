@@ -827,7 +827,7 @@ only checking for sfc here, and assuming that bgdawp are also available -->
 -->
 
 <metatask name="zip_part2" mode="serial">
-   <var name="fcsthour"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %02d" % h  }}{% endfor %} </var>
+   <var name="fcsthour"> {% for h in range(1, fcst_len_hrs+1) %}{{ " %02d" % h  }}{% endfor %} </var>
     <task name="ncl_zip_#fcsthour#" cycledefs="forecast" maxtries="{{ maxtries_run_post }}">
 
      &NCL_MAIN_RESOURCES;
