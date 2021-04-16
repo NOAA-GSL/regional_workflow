@@ -91,6 +91,13 @@ FV3_RAP:
     do_sfcperts: !!python/none
     effr_in: true
     gwd_opt: 3
+    do_ugwp_v0: false
+    do_ugwp_v0_orog_only: false
+    do_gsl_drag_ls_bl: true
+    do_gsl_drag_ss: true
+    do_gsl_drag_tofd: true
+    do_ugwp_v1: false
+    do_ugwp_v1_orog_only: false
     iaer: 5111
     icliq_sw: 2
     imfdeepcnv: 3
