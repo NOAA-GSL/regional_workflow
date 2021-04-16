@@ -265,6 +265,9 @@ settings="\
   'run_task_make_orog': ${RUN_TASK_MAKE_OROG}
   'run_task_make_sfc_climo': ${RUN_TASK_MAKE_SFC_CLIMO}
 #
+  'is_rtma':  ${IS_RTMA}
+  'fg_rootdir': ${FG_ROOTDIR}
+#
 # Number of physical cores per node for the current machine.
 #
   'ncores_per_node': ${NCORES_PER_NODE}

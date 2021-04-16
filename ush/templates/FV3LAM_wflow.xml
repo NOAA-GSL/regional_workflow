@@ -71,6 +71,11 @@ Directories and files.
 <!ENTITY JOBSDIR                  "{{ jobsdir }}">
 <!ENTITY LOGDIR                   "{{ logdir }}">
 <!ENTITY CYCLE_BASEDIR            "{{ cycle_basedir }}">
+{%- if is_rtma %}
+<!ENTITY FG_ROOT                  "{{ fg_rootdir }}">
+{%- else %}
+<!ENTITY FG_ROOT                  "{{ cycle_basedir }}">
+{%- endif %}
 <!ENTITY GLOBAL_VAR_DEFNS_FP      "{{ global_var_defns_fp }}">
 <!ENTITY LOAD_MODULES_RUN_TASK_FP "{{ load_modules_run_task_fp }}">
 
@@ -101,7 +106,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 {%- else %}
 <!ENTITY RSRV_ANALYSIS    "<account>&ACCOUNT;</account><queue>&QUEUE_ANALYSIS;</queue>">
 {%- endif %}
-<!ENTITY RSRV_GRAPHICS   "<account>&ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
+<!ENTITY RSRV_GRAPHICS   "<account>&SERVICE_ACCOUNT;</account><queue>&QUEUE_GRAPHICS;</queue><partition>{{ partition_graphics }}</partition>">
 
 <!ENTITY DEADLINE_PRE      "16:00:00">
 <!ENTITY DEADLINE_ANAL     "16:00:00">
@@ -492,7 +497,7 @@ MODULES_RUN_TASK_FP script.
     <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>CYCLE_ROOT</name><value><cyclestr>&CYCLE_BASEDIR;</cyclestr></value></envar>
+    <envar><name>FG_ROOT</name><value><cyclestr>&CYCLE_BASEDIR;</cyclestr></value></envar>
     <envar><name>BKTYPE</name><value><cyclestr>1</cyclestr></value></envar>
 
     <dependency>
@@ -526,22 +531,26 @@ MODULES_RUN_TASK_FP script.
     <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>CYCLE_ROOT</name><value><cyclestr>&CYCLE_BASEDIR;</cyclestr></value></envar>
+    <envar><name>FG_ROOT</name><value><cyclestr>&FG_ROOT;</cyclestr></value></envar>
     <envar><name>BKTYPE</name><value><cyclestr>0</cyclestr></value></envar>
 
     <dependency>
       <or>
         <and>
           <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
+          {%- if not is_rtma %}
           <taskdep task="&MAKE_LBCS_TN;"/>
-          <datadep age="00:00:05:00"><cyclestr offset="-{{ da_cycle_interval_hrs }}:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/fcst_fv3lam/dynf00{{ da_cycle_interval_hrs }}.nc</cyclestr></datadep>
+          {%- endif %}
+          <datadep age="00:00:05:00"><cyclestr offset="-{{ da_cycle_interval_hrs }}:00:00">&FG_ROOT;/@Y@m@d@H/fcst_fv3lam/dynf00{{ da_cycle_interval_hrs }}.nc</cyclestr></datadep>
         </and>
         <and>
+          {%- if not is_rtma %}
           <taskdep task="&MAKE_LBCS_TN;"/>
+          {%- endif %}
           <timedep><cyclestr offset="&START_TIME_ANALYSIS;">@Y@m@d@H@M00</cyclestr></timedep>
           <or>
             {%- for h in range(da_cycle_interval_hrs+da_cycle_interval_hrs, 6+1, da_cycle_interval_hrs) %}
-            <datadep age="00:00:05:00"><cyclestr offset="-{{ h }}:00:00">&CYCLE_BASEDIR;/@Y@m@d@H/dynf{{ "%03d" % h}}.nc</cyclestr></datadep>
+            <datadep age="00:00:05:00"><cyclestr offset="-{{ h }}:00:00">&FG_ROOT;/@Y@m@d@H/fcst_fv3lam/dynf{{ "%03d" % h}}.nc</cyclestr></datadep>
             {%- endfor %}
           </or>
         </and>
@@ -687,7 +696,7 @@ MODULES_RUN_TASK_FP script.
 
     <walltime>{{ wtime_run_fcst }}</walltime>
     <nodes>1:ppn=24</nodes>
-    <native>--exclusive &RRFS_RESERVE;</native>
+    <native>--exclusive</native>
     <jobname><cyclestr>&TAG;_python_@H_skewt</cyclestr></jobname>
     <join><cyclestr>&LOGDIR;/python_skewt.log</cyclestr></join>
 

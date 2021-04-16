@@ -275,6 +275,7 @@ bgrd3d=${postprd_dir}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
 bgsfc=${postprd_dir}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
 mv_vrfy BGDAWP.GrbF${post_fhr} ${bgdawp}
 mv_vrfy BGRD3D.GrbF${post_fhr} ${bgrd3d}
+# small subset of surface fields for testbed and internal use
 wgrib2 -match "APCP|parmcat=16 parm=196|PRATE" ${bgrd3d} -grib ${bgsfc}
 
 #Link output for transfer to Jet
@@ -284,14 +285,54 @@ wgrib2 -match "APCP|parmcat=16 parm=196|PRATE" ${bgrd3d} -grib ${bgsfc}
 # and hh are calculated above, i.e. start_date is just cdate but with a
 # space inserted between the dd and hh.  If so, just use "$yyyymmdd $hh"
 # instead of calling sed.
-start_date=$( echo "${cdate}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/' )
-basetime=$( date +%y%j%H%M -d "${start_date}" )
+basetime=$( date +%y%j%H%M -d "${yyyymmdd} ${hh}" )
 cp_vrfy ${bgdawp} ${COMOUT}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
 cp_vrfy ${bgrd3d} ${COMOUT}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
 cp_vrfy ${bgsfc}  ${COMOUT}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
 ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 ${COMOUT}/BGDAWP_${basetime}${post_fhr}00
 ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 ${COMOUT}/BGRD3D_${basetime}${post_fhr}00
 ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2  ${COMOUT}/BGSFC_${basetime}${post_fhr}00
+
+# Remap North America output grids for 130-CONUS and 242-AK
+if [ ${NET} = "RRFS_NA_13km" ]; then
+
+  cd ${COMOUT}
+
+  grid_specs_130="lambert:265:25.000000 233.862000:451:13545.000000 16.281000:337:13545.000000"
+  grid_specs_242="nps:225:60.000000 187.000000:553:11250.000000 30.000000:425:11250.000000"
+
+  for grid in 130 242
+  do
+    for leveltype in dawp rd3d sfc 
+    do
+      
+      eval grid_specs=\$grid_specs_${grid}
+      subdir=${postprd_dir}/${grid}_grid
+      mkdir -p ${subdir}
+      bg_remap=${subdir}/${NET}.t${cyc}z.bg${leveltype}f${fhr}.${tmmark}.grib2
+
+      # Interpolate fields to new grid
+      eval infile=\$bg${leveltype}
+      wgrib2 ${infile} -set_bitmap 1 -set_grib_type c3 -new_grid_winds grid \
+        -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" \
+        -new_grid_interpolation bilinear \
+        -if ":(WEASD|APCP|NCPCP|ACPCP|SNOD):" -new_grid_interpolation budget -fi \
+        -if ":(NCONCD|NCCICE|SPNCR|CLWMR|CICE|RWMR|SNMR|GRLE|PMTF|PMTC|REFC|CSNOW|CICEP|CFRZR|CRAIN|LAND|ICEC|TMP:surface|VEG|CCOND|SFEXC|MSLMA|PRES:tropopause|LAI|HPBL|HGT:planetary boundary layer):" -new_grid_interpolation neighbor -fi \
+        -new_grid ${grid_specs} ${subdir}/tmp_${grid}.grib2 &
+      wait 
+
+      # Merge vector field records
+      wgrib2 ${subdir}/tmp_${grid}.grib2 -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" -submsg_uv ${bg_remap} &
+      wait 
+
+      # Remove temporary files
+      rm -f ${subdir}/tmp_${grid}.grib2
+
+      # Link output for transfer from Jet to web
+      ln -fs ${bg_remap} ${subdir}/BG${leveltype^^}_${basetime}${post_fhr}00
+    done
+  done
+fi
 
 rm_vrfy -rf ${fhr_dir}
 #

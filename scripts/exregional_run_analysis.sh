@@ -55,7 +55,7 @@ specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-valid_args=( "CYCLE_DIR" "ANALWORKDIR" "CYCLE_ROOT")
+valid_args=( "CYCLE_DIR" "ANALWORKDIR" "FG_ROOT")
 process_args valid_args "$@"
 #
 #-----------------------------------------------------------------------
@@ -264,7 +264,6 @@ fi
 cloudanalysistype=0
 ifsatbufr=.false.
 ifsoilnudge=.false.
-beta1_inv=1.0
 ifhyb=.false.
 
 # Determine if hybrid option is available
@@ -273,7 +272,6 @@ nummem=`more filelist03 | wc -l`
 nummem=$((nummem - 3 ))
 if [[ ${nummem} -eq 80 ]]; then
   print_info_msg "$VERBOSE" "Do hybrid with ${memname}"
-  beta1_inv=0.15
   ifhyb=.true.
   print_info_msg "$VERBOSE" " Cycle ${YYYYMMDDHH}: GSI hybrid uses ${memname} with n_ens=${nummem}" 
 fi
@@ -303,7 +301,6 @@ if [ ${BKTYPE} -eq 1 ]; then  # cold start uses background from INPUT
 
   fv3lam_bg_type=1
 else                          # cycle uses background from restart
-#
   cp_vrfy  ${bkpath}/fv_core.res.tile1.nc             fv3_dynvars
   cp_vrfy  ${bkpath}/fv_tracer.res.tile1.nc           fv3_tracer
   cp_vrfy  ${bkpath}/sfc_data.nc                      fv3_sfcdata
@@ -367,35 +364,32 @@ done
 #
 #-----------------------------------------------------------------------
 
-anavinfo=${FIX_GSI}/anavinfo_fv3lam_hrrr
-BERROR=${FIX_GSI}/rap_berror_stats_global_RAP_tune
+ANAVINFO=${USHDIR}/templates/${ANAVINFO_FN}
+CONVINFO=${USHDIR}/templates/${CONVINFO_FN}
+HYBENSINFO=${USHDIR}/templates/${HYBENSINFO_FN}
+OBERROR=${USHDIR}/templates/${OBERROR_FN}
+BERROR=${FIX_GSI}/${BERROR_FN}
+
 SATINFO=${FIX_GSI}/global_satinfo.txt
-CONVINFO=${fixgriddir}/nam_regional_convinfo_RAP.txt
 OZINFO=${FIX_GSI}/global_ozinfo.txt
 PCPINFO=${FIX_GSI}/global_pcpinfo.txt
-OBERROR=${FIX_GSI}/nam_errtable.r3dv
 ATMS_BEAMWIDTH=${FIX_GSI}/atms_beamwidth.txt
 
 # Fixed fields
-cp_vrfy "${anavinfo}" "anavinfo"
-cp_vrfy "${BERROR}"   "berror_stats"
-cp_vrfy $SATINFO  satinfo
-cp_vrfy $CONVINFO convinfo
-cp      $OZINFO   ozinfo
-cp      $PCPINFO  pcpinfo
-cp_vrfy $OBERROR  errtable
+cp_vrfy ${ANAVINFO} anavinfo
+cp_vrfy ${BERROR}   berror_stats
+cp_vrfy $SATINFO    satinfo
+cp_vrfy $CONVINFO   convinfo
+cp_vrfy $OZINFO     ozinfo
+cp_vrfy $PCPINFO    pcpinfo
+cp_vrfy $OBERROR    errtable
 cp_vrfy $ATMS_BEAMWIDTH atms_beamwidth.txt
-
-cp_vrfy ${FIX_GSI}/hybens_info_rrfs hybens_info
+cp_vrfy ${HYBENSINFO} hybens_info
 
 # Get aircraft reject list and surface uselist
 cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
-
-sfcuselists=gsd_sfcobs_uselist.txt
-sfcuselists_path=${SFCOBS_USELIST}
-cp_vrfy ${sfcuselists_path}/${sfcuselists} gsd_sfcobs_uselist.txt
+cp_vrfy ${SFCOBS_USELIST}/current_mesonet_uselist.txt gsd_sfcobs_uselist.txt
 cp_vrfy ${FIX_GSI}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
-
 
 #-----------------------------------------------------------------------
 #
@@ -469,7 +463,7 @@ grid_ratio=1
 cloudanalysistype=0
 
 # Build the GSI namelist on-the-fly
-. ${fixgriddir}/gsiparm.anl.sh
+. ${USHDIR}/templates/gsiparm.anl.sh
 cat << EOF > gsiparm.anl
 $gsi_namelist
 EOF
@@ -523,8 +517,8 @@ Call to executable to run GSI returned with nonzero exit code."
 #
 
 if [ ${BKTYPE} -eq 1 ]; then  # cold start, put analysis back to current INPUT 
-  cp ${ANALWORKDIR}/fv3_dynvars                  ${bkpath}/gfs_data.tile7.halo0.nc
-  cp ${ANALWORKDIR}/fv3_sfcdata                  ${bkpath}/sfc_data.tile7.halo0.nc
+  cp_vrfy ${ANALWORKDIR}/fv3_dynvars                  ${bkpath}/gfs_data.tile7.halo0.nc
+  cp_vrfy ${ANALWORKDIR}/fv3_sfcdata                  ${bkpath}/sfc_data.tile7.halo0.nc
 else                          # cycling
   cp_vrfy ${ANALWORKDIR}/fv3_dynvars             ${bkpath}/fv_core.res.tile1.nc
   cp_vrfy ${ANALWORKDIR}/fv3_tracer              ${bkpath}/fv_tracer.res.tile1.nc

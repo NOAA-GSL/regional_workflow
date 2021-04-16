@@ -55,7 +55,7 @@ specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-valid_args=( "CYCLE_DIR" "ANALWORKDIR" "CYCLE_ROOT")
+valid_args=( "CYCLE_DIR" "ANALWORKDIR" "FG_ROOT")
 process_args valid_args "$@"
 #
 #-----------------------------------------------------------------------
@@ -137,7 +137,7 @@ if [ ${BKTYPE} -eq 1 ]; then  # cold start, use prepare cold strat initial files
   fi
 else
   YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${DA_CYCLE_INTERV} hours ago"`
-  bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/RESTART  # cycling, use background from RESTART
+  bkpath=${FG_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/RESTART  # cycling, use background from RESTART
 
 #   let us figure out which backgound is available
   restart_prefix=${YYYYMMDD}.${HH}0000.
@@ -150,7 +150,7 @@ else
     else
       n=$((n + ${DA_CYCLE_INTERV}))
       YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${n} hours ago"`
-      bkpath=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/RESTART  # cycling, use background from RESTART
+      bkpath=${FG_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/RESTART  # cycling, use background from RESTART
       if [ ${n} -eq ${FCST_LEN_HRS} ]; then
         restart_prefix=""
       fi
@@ -167,7 +167,7 @@ else
     cp_vrfy ${bkpath}/${restart_prefix}fv_core.res.nc             fv_core.res.nc
     cp_vrfy ${bkpath}/${restart_prefix}fv_srf_wnd.res.tile1.nc    fv_srf_wnd.res.tile1.nc
     cp_vrfy ${bkpath}/${restart_prefix}phy_data.nc                phy_data.nc
-    cp_vrfy ${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/INPUT/gfs_ctrl.nc  gfs_ctrl.nc
+    cp_vrfy ${FG_ROOT}/${YYYYMMDDHHmInterv}/fcst_fv3lam/INPUT/gfs_ctrl.nc  gfs_ctrl.nc
   else
     print_err_msg_exit "Error: cannot find background: ${checkfile}"
   fi
@@ -180,6 +180,16 @@ fi
 #
 #-----------------------------------------------------------------------
 
+if [ "${NET}" = "RTMA" ]; then
+    #find a bdry file last modified before current cycle time and size > 100M 
+    #to make sure it exists and was written out completely. 
+    TIME1HAGO=`date -d "${START_DATE}" +"%Y-%m-%d %H:%M:%S"`
+    bdryfile0=${FG_ROOT}/`cd $FG_ROOT;find . -name "gfs_bndy.tile7.000.nc" ! -newermt "$TIME1HAGO" -size +100M | xargs ls -1rt |tail -n 1`
+    bdryfile1=`echo $bdryfile0 | sed -e "s/gfs_bndy.tile7.000.nc/gfs_bndy.tile7.001.nc/"`
+    ln_vrfy -snf ${bdryfile0} .
+    ln_vrfy -snf ${bdryfile1} .
+
+else
   num_fhrs=( "${#FCST_LEN_HRS_CYCLES[@]}" )
   ihh=`expr ${HH} + 0`
   if [ ${num_fhrs} -gt ${ihh} ]; then
@@ -194,7 +204,7 @@ fi
   bndy_prefix=gfs_bndy.tile7
   n=0
   YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${n} hours ago"`
-  lbcs_path=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/lbcs
+  lbcs_path=${FG_ROOT}/${YYYYMMDDHHmInterv}/lbcs
   while [[ $n -le 12 ]] ; do
     last_bdy_time=$(( n + ${FCST_LEN_HRS_thiscycle} ))
     last_bdy=`printf %3.3i $last_bdy_time`
@@ -205,30 +215,31 @@ fi
     else
       n=$((n + 1))
       YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${n} hours ago"`
-      lbcs_path=${CYCLE_ROOT}/${YYYYMMDDHHmInterv}/lbcs
+      lbcs_path=${FG_ROOT}/${YYYYMMDDHHmInterv}/lbcs
     fi
   done
 #
-relative_or_null="--relative"
-nb=1
-if [ -r "${checkfile}" ]; then
-  while [ $nb -le ${FCST_LEN_HRS_thiscycle} ]
-  do
-    bdy_time=$(( ${n} + ${nb} ))
-    this_bdy=`printf %3.3i $bdy_time`
-    local_bdy=`printf %3.3i $nb`
-    ln_vrfy -sf ${relative_or_null} ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.${local_bdy}.nc
-    nb=$((nb + 1))
-  done
+  relative_or_null="--relative"
+  nb=1
+  if [ -r "${checkfile}" ]; then
+    while [ $nb -le ${FCST_LEN_HRS_thiscycle} ]
+    do
+      bdy_time=$(( ${n} + ${nb} ))
+      this_bdy=`printf %3.3i $bdy_time`
+      local_bdy=`printf %3.3i $nb`
+      ln_vrfy -sf ${relative_or_null} ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.${local_bdy}.nc
+      nb=$((nb + 1))
+    done
 # check 0-h boundary condition
-  if [ ! -f "${bndy_prefix}.000.nc" ]; then
-    this_bdy=`printf %3.3i ${n}`
-    cp_vrfy ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.000.nc 
+    if [ ! -f "${bndy_prefix}.000.nc" ]; then
+      this_bdy=`printf %3.3i ${n}`
+      cp_vrfy ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.000.nc 
+    fi
+  else
+    print_err_msg_exit "Error: cannot find boundary file: ${checkfile}"
   fi
-else
-  print_err_msg_exit "Error: cannot find boundary file: ${checkfile}"
-fi
 
+fi 
 #
 #-----------------------------------------------------------------------
 #
