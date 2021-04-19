@@ -118,7 +118,11 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #-----------------------------------------------------------------------
 #
 # go to INPUT directory.
-# prepare initial conditions
+# prepare initial conditions for 
+#     cold start if BKTYPE=1 
+#     warm start if BKTYPE=0
+#       the previous 6 cycles are searched to find the restart files
+#       valid at this time from the closet previous cycle.
 #
 #-----------------------------------------------------------------------
 
@@ -176,7 +180,10 @@ fi
 #-----------------------------------------------------------------------
 #
 # go to INPUT directory.
-# prepare boundary conditions
+# prepare boundary conditions:
+#       the previous 12 cycles are searched to find the boundary files
+#       that can cover the forecast length.
+#       The 0-h boundary is copied and others are linked.
 #
 #-----------------------------------------------------------------------
 
@@ -202,10 +209,11 @@ else
 
 #   let us figure out which boundary file is available
   bndy_prefix=gfs_bndy.tile7
-  n=0
+  n=${EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS}
+  end_search_hr=$(( 12 + ${EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS} ))
   YYYYMMDDHHmInterv=`date +%Y%m%d%H -d "${START_DATE} ${n} hours ago"`
   lbcs_path=${FG_ROOT}/${YYYYMMDDHHmInterv}/lbcs
-  while [[ $n -le 12 ]] ; do
+  while [[ $n -le ${end_search_hr} ]] ; do
     last_bdy_time=$(( n + ${FCST_LEN_HRS_thiscycle} ))
     last_bdy=`printf %3.3i $last_bdy_time`
     checkfile=${lbcs_path}/${bndy_prefix}.${last_bdy}.nc
@@ -227,7 +235,11 @@ else
       bdy_time=$(( ${n} + ${nb} ))
       this_bdy=`printf %3.3i $bdy_time`
       local_bdy=`printf %3.3i $nb`
-      ln_vrfy -sf ${relative_or_null} ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.${local_bdy}.nc
+
+      if [ -f "${lbcs_path}/${bndy_prefix}.${this_bdy}.nc" ]; then
+        ln_vrfy -sf ${relative_or_null} ${lbcs_path}/${bndy_prefix}.${this_bdy}.nc ${bndy_prefix}.${local_bdy}.nc
+      fi
+
       nb=$((nb + 1))
     done
 # check 0-h boundary condition

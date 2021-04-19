@@ -1200,7 +1200,7 @@ if [ "${RUN_ENVIR}" = "nco" ]; then
   COMROOT="$PTMP/com"
   COMOUT_BASEDIR="$COMROOT/$NET/$envir"
 
-  LOGDIR="${PTMP}/logs/${NET}/${RUN}.@Y@m@d/@H"
+  LOGDIR="${COMROOT}/logs/${NET}/${RUN}.@Y@m@d/@H"
 
 else
 
@@ -2661,6 +2661,15 @@ EXTRN_MDL_SYSBASEDIR_ICS="${EXTRN_MDL_SYSBASEDIR_ICS}"
 #
 #-----------------------------------------------------------------------
 #
+# Shift back in time (in units of hours) of the starting time of the ex-
+# ternal model specified in EXTRN_MDL_NAME_LBCS.
+#
+#-----------------------------------------------------------------------
+#
+EXTRN_MDL_ICS_OFFSET_HRS="${EXTRN_MDL_ICS_OFFSET_HRS}"
+#
+#-----------------------------------------------------------------------
+#
 # If USE_USER_STAGED_EXTRN_FILES is set to "FALSE", this is the system 
 # directory in which the workflow scripts will look for the files generated 
 # by the external model specified in EXTRN_MDL_NAME_LBCS.  These files 
@@ -2679,6 +2688,7 @@ EXTRN_MDL_SYSBASEDIR_LBCS="${EXTRN_MDL_SYSBASEDIR_LBCS}"
 #-----------------------------------------------------------------------
 #
 EXTRN_MDL_LBCS_OFFSET_HRS="${EXTRN_MDL_LBCS_OFFSET_HRS}"
+EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS="${EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS}"
 #
 #-----------------------------------------------------------------------
 #

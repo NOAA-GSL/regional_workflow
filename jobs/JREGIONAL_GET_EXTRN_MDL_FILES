@@ -178,7 +178,7 @@ check_var_valid_value "ICS_OR_LBCS" "valid_vals_ICS_OR_LBCS"
 #
 if [ "${ICS_OR_LBCS}" = "ICS" ]; then
   anl_or_fcst="ANL"
-  time_offset_hrs="0"
+  time_offset_hrs="${EXTRN_MDL_ICS_OFFSET_HRS}"
   lbs_spec_intvl_hrs="${LBC_SPEC_INTVL_HRS}"
   boundary_len_hrs="0"
 elif [ "${ICS_OR_LBCS}" = "LBCS" ]; then

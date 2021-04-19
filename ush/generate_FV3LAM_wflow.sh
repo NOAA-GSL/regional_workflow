@@ -286,7 +286,9 @@ settings="\
   'extrn_mdl_name_lbcs': ${EXTRN_MDL_NAME_LBCS}
   'extrn_mdl_sysbasedir_ics': ${EXTRN_MDL_SYSBASEDIR_ICS}
   'extrn_mdl_sysbasedir_lbcs': ${EXTRN_MDL_SYSBASEDIR_LBCS}
+  'extrn_mdl_ics_offset_hrs': ${EXTRN_MDL_ICS_OFFSET_HRS}
   'extrn_mdl_lbcs_offset_hrs': ${EXTRN_MDL_LBCS_OFFSET_HRS}
+  'extrn_mdl_lbcs_search_offset_hrs': ${EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS}
   'bc_update_interval': ${LBC_SPEC_INTVL_HRS}
 #
 # Parameters that determine the set of cycles to run.

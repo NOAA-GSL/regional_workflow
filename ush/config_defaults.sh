@@ -101,6 +101,11 @@ RUN_ENVIR="nco"
 # If this is not set or set to an empty string, it will be (re)set to a 
 # machine-dependent value.
 #
+# QUEUE_ANALYSIS:
+# The queue or QOS to which the task that runs a analysis is submitted.  
+# If this is not set or set to an empty string, it will be (re)set to a 
+# machine-dependent value.
+#
 # mach_doc_end
 #
 #-----------------------------------------------------------------------
@@ -433,6 +438,60 @@ FCST_LEN_HRS_CYCLES=( )
 DA_CYCLE_INTERV="3"
 RESTART_INTERVAL="3,6"
 
+#-----------------------------------------------------------------------
+#
+# Set cycle definition for each group.  The cycle definition sets the cycle
+# time that the group will run. It has two way to set up:
+#  1) 00 HHs DDs MMs YYYYs *
+#       HHs can be "01-03/01" or "01,02,03" or "*"
+#       DDs,MMs can be "01-03" or "01,02,03" or "*"
+#       YYYYs can be "2020-2021" or "2020,2021" or "*"
+#  2)   start_time(YYYYMMDDHH00) end_time(YYYYMMDDHH00) interval(HH:MM:SS)
+#       for example: 202104010000 202104310000 12:00:00
+#  The default cycle definition is:
+#     "00 01 01 01 2100 *"
+#  which will likely never get to run.
+#
+# Definitions:
+#
+# AT_START_CYCLEDEF:
+# cycle definition for "at start" group
+# This group runs: make_grid, make_orog, make_sfc_climo
+#
+# INITIAL_CYCLEDEF:
+# cycle definition for "initial" group
+# This group runs get_extrn_ics, make_ics
+#
+# BOUNDARY_CYCLEDEF:
+# cycle definition for "boundary" group
+# This group runs: get_extrn_lbcs,make_lbcs
+#
+# BOUNDARY_LONG_CYCLEDEF:
+# cycle definition for "boundary_long" group
+# This group runs: get_extrn_lbcs_long,make_lbcs
+#
+# PREP_COLDSTART_CYCLEDEF:
+# cycle definition for "prep_coldstart" group
+# This group runs: prep_coldstart
+#
+# PREP_WARMSTART_CYCLEDEF:
+# cycle definition for "prep_warmstart" group
+# This group runs: prep_warmstart
+#
+# ANALYSIS_CYCLEDEF:
+# cycle definition for "analysis" group
+# This group runs: anal_gsi_input
+#
+# FORECAST_CYCLEDEF:
+# cycle definition for "forecast" group
+# This group runs: run_fcst, run_post, python_skewt, run_ncl, run_ncl_zip, run_clean
+#
+# ARCHIVE_CYCLEDEF:
+# cycle definition for "archive" group
+# This group runs: run_archive
+#
+#-----------------------------------------------------------------------
+#
 AT_START_CYCLEDEF="00 01 01 01 2100 *"
 INITIAL_CYCLEDEF="00 01 01 01 2100 *"
 BOUNDARY_CYCLEDEF="00 01 01 01 2100 *"
@@ -497,6 +556,9 @@ SFCOBS_USELIST="/home/amb-verif/ruc_madis_surface/mesonet_uselists"
 # lateral boundary condition (LBC) files will be generated for input into
 # the forecast model.
 #
+# EXTRN_MDL_ICS_OFFSET_HRS:
+#  initial file offset hours.
+#
 # LBC_SPEC_INTVL_HRS:
 # The interval (in integer hours) with which LBC files will be generated.
 # We will refer to this as the boundary update interval.  Note that the
@@ -508,6 +570,13 @@ SFCOBS_USELIST="/home/amb-verif/ruc_madis_surface/mesonet_uselists"
 #
 # EXTRN_MDL_LBCS_OFFSET_HRS:
 #  boundary file offset hours.
+#
+# EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS:
+#  When search boundary conditions from previous cycles in prep_start stemp, 
+#  the search will start at cycle before (this parameter) of current cycle.
+#  For example: 0 means search start at the same cycle lbcs directory.
+#               1 means search start at 1-h previous cycle  lbcs directory.
+#               2 means search start at 2-h previous cycle  lbcs directory.
 #
 # FV3GFS_FILE_FMT_ICS:
 # If using the FV3GFS model as the source of the ICs (i.e. if EXTRN_MDL_NAME_ICS
@@ -523,8 +592,10 @@ SFCOBS_USELIST="/home/amb-verif/ruc_madis_surface/mesonet_uselists"
 #
 EXTRN_MDL_NAME_ICS="FV3GFS"
 EXTRN_MDL_NAME_LBCS="FV3GFS"
+EXTRN_MDL_ICS_OFFSET_HRS="0"
 LBC_SPEC_INTVL_HRS="6"
-EXTRN_MDL_LBCS_OFFSET_HRS=""
+EXTRN_MDL_LBCS_OFFSET_HRS="0"
+EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS="0"
 FV3GFS_FILE_FMT_ICS="nemsio"
 FV3GFS_FILE_FMT_LBCS="nemsio"
 #

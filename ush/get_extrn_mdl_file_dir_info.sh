@@ -270,7 +270,9 @@ fi
 #
   lbc_spec_fhrs=( "" )
 
-  if [ "${anl_or_fcst}" = "FCST" ]; then
+  if [ "${anl_or_fcst}" = "ANL" ]; then
+    ic_spec_fhrs=$(( 0 + time_offset_hrs ))
+  elif [ "${anl_or_fcst}" = "FCST" ]; then
 
     LBC_SPEC_FCST_HRS=($( seq 0 ${lbs_spec_intvl_hrs} \
                           ${boundary_len_hrs} ))
@@ -289,6 +291,7 @@ fi
     done
 
   fi
+
 #
 #-----------------------------------------------------------------------
 #
@@ -337,7 +340,7 @@ fi
 #
   "ANL")
 
-    fcst_hh="00"
+    fcst_hh=$( printf "%02d" "${ic_spec_fhrs}" )
     fcst_mn="00"
 
     case "${extrn_mdl_name}" in
@@ -382,11 +385,11 @@ fi
 #        fns=( "gfs.t${hh}z.pgrb2.0p25.f000" )  # Get only 0.25 degree files for now.
 
         if [ "${MACHINE}" = "JET" ]; then
-          fns_on_disk=( "${yy}${ddd}${hh}${fcst_mn}0000" )
+          fns_on_disk=( "${yy}${ddd}${hh}0${fcst_mn}0${fcst_hh}" )
         else
-          fns_on_disk=( "gfs.t${hh}z.pgrb2.0p25.f000" )  # Get only 0.25 degree files for now.
+          fns_on_disk=( "gfs.t${hh}z.pgrb2.0p25.f${fcst_hh}" )  # Get only 0.25 degree files for now.
         fi
-        fns_in_arcv=( "gfs.t${hh}z.pgrb2.0p25.f000" )  # Get only 0.25 degree files for now.
+        fns_in_arcv=( "gfs.t${hh}z.pgrb2.0p25.f${fcst_hh}" )  # Get only 0.25 degree files for now.
 
       fi
       ;;
