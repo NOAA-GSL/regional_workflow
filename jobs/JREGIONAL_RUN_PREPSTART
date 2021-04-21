@@ -3,7 +3,7 @@
 #
 #-----------------------------------------------------------------------
 #
-# This J-JOB script prepares initial and boundary conditions for
+# This J-JOB script stages initial and boundary conditions for
 #      the analysis and model of the cycle it is running. The initial
 #      could come from external model or previous cycles forecast.
 #      The boundary could come from previous many cycles.

@@ -296,7 +296,7 @@ ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2  $
 # Remap North America output grids for 130-CONUS and 242-AK
 if [ ${NET} = "RRFS_NA_13km" ]; then
 
-  cd ${comout}
+  cd_vrfy ${comout}
 
   grid_specs_130="lambert:265:25.000000 233.862000:451:13545.000000 16.281000:337:13545.000000"
   grid_specs_242="nps:225:60.000000 187.000000:553:11250.000000 30.000000:425:11250.000000"

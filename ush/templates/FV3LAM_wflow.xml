@@ -40,7 +40,7 @@ Workflow task names.
 <!ENTITY PREP_COLDSTART_TN "{{ prep_coldstart }}">
 <!ENTITY PREP_WARMSTART_TN "{{ prep_warmstart }}">
 
-<!ENTITY RUN_PREPSTART_TN "run_prepstart">
+<!ENTITY RUN_PREPSTART_TN  "run_prepstart">
 <!ENTITY RUN_ANAL_TN       "run_anal_gsi">
 <!ENTITY RUN_BUFR_TN       "run_bufr">
 <!ENTITY RUN_NCL_TN        "run_ncl">

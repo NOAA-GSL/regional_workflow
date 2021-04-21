@@ -274,6 +274,10 @@ fi
     ic_spec_fhrs=$(( 0 + time_offset_hrs ))
   elif [ "${anl_or_fcst}" = "FCST" ]; then
 
+# offset is to go back to a previous cycle (for example 3-h) and 
+# use the forecast (3-h) from that cycle valid at this cycle. 
+# Here calculates the forecast and it is adding.
+
     lbc_spec_fcst_hrs=($( seq 0 ${lbs_spec_intvl_hrs} \
                           ${boundary_len_hrs} ))
 

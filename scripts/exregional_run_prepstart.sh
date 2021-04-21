@@ -74,28 +74,6 @@ print_input_args valid_args
 #
 #-----------------------------------------------------------------------
 #
-case $MACHINE in
-#
-"WCOSS_C" | "WCOSS")
-#
-  ;;
-#
-"THEIA")
-#
-  ;;
-#
-"HERA")
-  ;;
-#
-"JET")
-  ;;
-#
-"ODIN")
-#
-  ;;
-#
-esac
-#
 #-----------------------------------------------------------------------
 #
 # Extract from CDATE the starting year, month, day, and hour of the
@@ -148,7 +126,7 @@ else
 #   But the restart files for the forecast length has a name like: fv_core.res.tile1.nc
 #   So the defination of restart_prefix needs a "." at the end.
 #
-  restart_prefix=${YYYYMMDD}.${HH}0000.
+  restart_prefix="${YYYYMMDD}.${HH}0000."
   n=${DA_CYCLE_INTERV}
   while [[ $n -le 6 ]] ; do
     checkfile=${bkpath}/${restart_prefix}fv_core.res.tile1.nc
@@ -265,7 +243,7 @@ fi
 #
 print_info_msg "
 ========================================================================
-ANALYSIS GSI completed successfully!!!
+Prepare start completed successfully!!!
 
 Exiting script:  \"${scrfunc_fn}\"
 In directory:    \"${scrfunc_dir}\"
