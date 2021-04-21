@@ -693,6 +693,7 @@ PARMDIR="$HOMErrfs/parm"
 MODULES_DIR="$HOMErrfs/modulefiles"
 EXECDIR="${SR_WX_APP_TOP_DIR}/bin"
 TEMPLATE_DIR="$USHDIR/templates"
+OBSPATH="/public/data/grids/rap/obs"
 
 case $MACHINE in
 
@@ -2468,6 +2469,16 @@ NDIGITS_ENSMEM_NAMES="${NDIGITS_ENSMEM_NAMES}"
 ENSMEM_NAMES=( $( printf "\"%s\" " "${ENSMEM_NAMES[@]}" ))
 FV3_NML_ENSMEM_FPS=( $( printf "\"%s\" " "${FV3_NML_ENSMEM_FPS[@]}" ))
 #
+# for data assimilation
+OBSPATH="${OBSPATH}"
+OBSPATH_NSSLMOSIAC="${OBSPATH_NSSLMOSIAC}"
+LIGHTNING_ROOT="${LIGHTNING_ROOT}"
+ENKF_FCST="${ENKF_FCST}"
+ 
+FIX_GSI="${FIX_GSI}"
+FIX_CRTM="${FIX_CRTM}"
+AIRCRAFT_REJECT="${FIX_GSI}"
+SFCOBS_USELIST="${FIX_GSI}"
 #-----------------------------------------------------------------------
 #
 # Files.

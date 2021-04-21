@@ -225,6 +225,12 @@ EXPT_SUBDIR=""
 # 
 #   $PTMP/com/$NET/$envir/$RUN.$yyyymmdd/$hh
 #
+# Setup default observation locations for data assimilation:
+#
+#    OBSPATH:   observation BUFR file path
+#    OBSPATH_NSSLMOSIAC: location of NSSL radar reflectivity
+#    LIGHTNING_ROOT: location of lightning observations
+#    ENKF_FCSTL: location of global ensemble forecast
 #-----------------------------------------------------------------------
 #
 COMINgfs="/base/path/of/directory/containing/gfs/input/files"
@@ -234,6 +240,10 @@ NET="rrfs"
 envir="para"
 RUN="experiment_name"
 PTMP="/base/path/of/directory/containing/postprocessed/output/files"
+OBSPATH="/public/data/grids/rap/obs"
+OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
+LIGHTNING_ROOT="/public/data/lightning"
+ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm"
 
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
@@ -1076,6 +1086,13 @@ SFC_CLIMO_FIELDS=( \
 # The location on disk of the static surface climatology input fields, used by 
 # sfc_climo_gen. These files are only used if RUN_TASK_MAKE_SFC_CLIMO=TRUE
 #
+# FIX_GSI:
+# System directory in which the fixed
+# files that are needed to run the GSI are located
+#
+# FIX_CRTM:
+# System directory in which the CRTM coefficient files are located
+#
 # FNGLAC, ..., FNMSKH:
 # Names of (some of the) global data files that are assumed to exist in 
 # a system directory specified (this directory is machine-dependent; 
@@ -1129,6 +1146,8 @@ SFC_CLIMO_FIELDS=( \
 FIXgsm=""
 TOPO_DIR=""
 SFC_CLIMO_INPUT_DIR=""
+FIX_GSI=""
+FIX_CRTM=""
 
 FNGLAC="global_glacier.2x2.grb"
 FNMXIC="global_maxice.2x2.grb"
@@ -1237,6 +1256,10 @@ MAKE_ICS_TN="make_ics"
 MAKE_LBCS_TN="make_lbcs"
 RUN_FCST_TN="run_fcst"
 RUN_POST_TN="run_post"
+
+ANAL_GSI_INPUT_TN="anal_gsi_input"
+ANAL_GSI_RESTART_TN="anal_gsi_restart"
+
 #
 # Number of nodes.
 #
@@ -1249,6 +1272,11 @@ NNODES_MAKE_ICS="4"
 NNODES_MAKE_LBCS="4"
 NNODES_RUN_FCST=""  # This is calculated in the workflow generation scripts, so no need to set here.
 NNODES_RUN_POST="2"
+NNODES_RUN_ANAL="16"
+#
+# Number of cores.
+#
+NCORES_RUN_ANAL="4"
 #
 # Number of MPI processes per node.
 #
@@ -1285,6 +1313,7 @@ MAXTRIES_MAKE_ICS="1"
 MAXTRIES_MAKE_LBCS="1"
 MAXTRIES_RUN_FCST="1"
 MAXTRIES_RUN_POST="1"
+MAXTRIES_ANAL_GSI="1"
 #
 #-----------------------------------------------------------------------
 #
@@ -1459,4 +1488,7 @@ GWD_HRRRsuite_BASEDIR=""
 # Add option for whether or not to run it in real-time
 #
 RUN_REALTIME="FALSE"
-
+#
+# Add option to run gsi for obs verif
+RUN_GSI="FALSE"
+RESTART_INTERVAL=0

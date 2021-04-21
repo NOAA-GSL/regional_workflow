@@ -60,7 +60,7 @@ the specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-ANALWORKDIR=${CYCLE_DIR}/anal_gsi
+ANALWORKDIR=${CYCLE_DIR}/anal_gsi/${ANAL_DATE}
 rm -fr ${ANALWORKDIR}
 mkdir_vrfy -p ${ANALWORKDIR}
 #

@@ -217,6 +217,8 @@ settings="\
   'make_lbcs_tn': ${MAKE_LBCS_TN}
   'run_fcst_tn': ${RUN_FCST_TN}
   'run_post_tn': ${RUN_POST_TN}
+  'anal_gsi_input': ${ANAL_GSI_INPUT_TN}
+  'anal_gsi_restart': ${ANAL_GSI_RESTART_TN}
 #
 # Number of nodes to use for each task.
 #
@@ -271,6 +273,7 @@ settings="\
   'maxtries_make_lbcs': ${MAXTRIES_MAKE_LBCS}
   'maxtries_run_fcst': ${MAXTRIES_RUN_FCST}
   'maxtries_run_post': ${MAXTRIES_RUN_POST}
+  'maxtries_anal_gsi': ${MAXTRIES_ANAL_GSI}
 #
 # Flags that specify whether to run the preprocessing tasks.
 #
@@ -289,6 +292,7 @@ settings="\
   'ncl_workdir_root': ${NCL_WORKDIR_ROOT}
   'comout_basedir': ${COMOUT_BASEDIR}
   'cycle_basedir': ${CYCLE_BASEDIR}
+  'obspath': ${OBSPATH}
   'global_var_defns_fp': ${GLOBAL_VAR_DEFNS_FP}
   'load_modules_run_task_fp': ${LOAD_MODULES_RUN_TASK_FP}
 #
@@ -331,6 +335,7 @@ settings="\
   'post_ensmem_subdir_00': ${post_ensmem_subdir_00}
   'ensmem_name_00': ${ensmem_name_00}
   'run_control': ${RUN_CONTROL}
+  'run_gsi': ${RUN_GSI}
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "
