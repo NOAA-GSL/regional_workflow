@@ -274,10 +274,10 @@ fi
     ic_spec_fhrs=$(( 0 + time_offset_hrs ))
   elif [ "${anl_or_fcst}" = "FCST" ]; then
 
-    LBC_SPEC_FCST_HRS=($( seq 0 ${lbs_spec_intvl_hrs} \
+    lbc_spec_fcst_hrs=($( seq 0 ${lbs_spec_intvl_hrs} \
                           ${boundary_len_hrs} ))
 
-    lbc_spec_fhrs=( "${LBC_SPEC_FCST_HRS[@]}" )
+    lbc_spec_fhrs=( "${lbc_spec_fcst_hrs[@]}" )
 #
 # Add the temporal offset specified in time_offset_hrs (assumed to be in 
 # units of hours) to the the array of LBC update forecast hours to make

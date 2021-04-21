@@ -55,7 +55,7 @@ specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-valid_args=( "CYCLE_DIR" "ANALWORKDIR" "FG_ROOT")
+valid_args=( "cycle_dir" "analworkdir" )
 process_args valid_args "$@"
 #
 #-----------------------------------------------------------------------
@@ -84,7 +84,7 @@ case $MACHINE in
 # Needed to change to the experiment directory because the module files
 # for the CCPP-enabled version of FV3 have been copied to there.
 
-    cd_vrfy ${CYCLE_DIR}
+    cd_vrfy ${cycle_dir}
   
     set +x
     source ./module-setup.sh
@@ -193,10 +193,10 @@ YYYYMMDD=${YYYYMMDDHH:0:8}
 #
 #-----------------------------------------------------------------------
 
-cd_vrfy ${ANALWORKDIR}
+cd_vrfy ${analworkdir}
 
 fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
-bkpath=${CYCLE_DIR}/fcst_fv3lam/INPUT
+bkpath=${cycle_dir}/fcst_fv3lam/INPUT
 # decide background type
 if [ -r "${bkpath}/phy_data.nc" ]; then
   BKTYPE=0              # warm start
@@ -480,7 +480,7 @@ GSI_EXEC="${EXECDIR}/gsi.x"
 if [ -f $GSI_EXEC ]; then
   print_info_msg "$VERBOSE" "
 Copying the GSI executable to the run directory..."
-  cp_vrfy ${GSI_EXEC} ${ANALWORKDIR}/gsi.x
+  cp_vrfy ${GSI_EXEC} ${analworkdir}/gsi.x
 else
   print_err_msg_exit "\
 The GSI executable specified in GSI_EXEC does not exist:
@@ -517,12 +517,12 @@ Call to executable to run GSI returned with nonzero exit code."
 #
 
 if [ ${BKTYPE} -eq 1 ]; then  # cold start, put analysis back to current INPUT 
-  cp_vrfy ${ANALWORKDIR}/fv3_dynvars                  ${bkpath}/gfs_data.tile7.halo0.nc
-  cp_vrfy ${ANALWORKDIR}/fv3_sfcdata                  ${bkpath}/sfc_data.tile7.halo0.nc
+  cp_vrfy ${analworkdir}/fv3_dynvars                  ${bkpath}/gfs_data.tile7.halo0.nc
+  cp_vrfy ${analworkdir}/fv3_sfcdata                  ${bkpath}/sfc_data.tile7.halo0.nc
 else                          # cycling
-  cp_vrfy ${ANALWORKDIR}/fv3_dynvars             ${bkpath}/fv_core.res.tile1.nc
-  cp_vrfy ${ANALWORKDIR}/fv3_tracer              ${bkpath}/fv_tracer.res.tile1.nc
-  cp_vrfy ${ANALWORKDIR}/fv3_sfcdata             ${bkpath}/sfc_data.nc
+  cp_vrfy ${analworkdir}/fv3_dynvars             ${bkpath}/fv_core.res.tile1.nc
+  cp_vrfy ${analworkdir}/fv3_tracer              ${bkpath}/fv_tracer.res.tile1.nc
+  cp_vrfy ${analworkdir}/fv3_sfcdata             ${bkpath}/sfc_data.nc
 fi
 
 #-----------------------------------------------------------------------
@@ -569,7 +569,7 @@ if [ $netcdf_diag = ".true." ]; then
    if [ -f $CAT_EXEC ]; then
       print_info_msg "$VERBOSE" "
         Copying the ncdiag_cat executable to the run directory..."
-      cp_vrfy ${CAT_EXEC} ${ANALWORKDIR}/ncdiag_cat.x
+      cp_vrfy ${CAT_EXEC} ${analworkdir}/ncdiag_cat.x
    else
       print_err_msg_exit "\
         The ncdiag_cat executable specified in CAT_EXEC does not exist:

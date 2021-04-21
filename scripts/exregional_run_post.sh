@@ -59,7 +59,7 @@ valid_args=( \
 "cdate" \
 "run_dir" \
 "postprd_dir" \
-"COMOUT" \
+"comout" \
 "fhr_dir" \
 "fhr" \
 )
@@ -286,17 +286,17 @@ wgrib2 -match "APCP|parmcat=16 parm=196|PRATE" ${bgrd3d} -grib ${bgsfc}
 # space inserted between the dd and hh.  If so, just use "$yyyymmdd $hh"
 # instead of calling sed.
 basetime=$( date +%y%j%H%M -d "${yyyymmdd} ${hh}" )
-cp_vrfy ${bgdawp} ${COMOUT}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
-cp_vrfy ${bgrd3d} ${COMOUT}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
-cp_vrfy ${bgsfc}  ${COMOUT}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
-ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 ${COMOUT}/BGDAWP_${basetime}${post_fhr}00
-ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 ${COMOUT}/BGRD3D_${basetime}${post_fhr}00
-ln_vrfy -sf --relative ${COMOUT}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2  ${COMOUT}/BGSFC_${basetime}${post_fhr}00
+cp_vrfy ${bgdawp} ${comout}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2
+cp_vrfy ${bgrd3d} ${comout}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2
+cp_vrfy ${bgsfc}  ${comout}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2
+ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgdawpf${fhr}.${tmmark}.grib2 ${comout}/BGDAWP_${basetime}${post_fhr}00
+ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgrd3df${fhr}.${tmmark}.grib2 ${comout}/BGRD3D_${basetime}${post_fhr}00
+ln_vrfy -sf --relative ${comout}/${NET}.t${cyc}z.bgsfcf${fhr}.${tmmark}.grib2  ${comout}/BGSFC_${basetime}${post_fhr}00
 
 # Remap North America output grids for 130-CONUS and 242-AK
 if [ ${NET} = "RRFS_NA_13km" ]; then
 
-  cd ${COMOUT}
+  cd ${comout}
 
   grid_specs_130="lambert:265:25.000000 233.862000:451:13545.000000 16.281000:337:13545.000000"
   grid_specs_242="nps:225:60.000000 187.000000:553:11250.000000 30.000000:425:11250.000000"
