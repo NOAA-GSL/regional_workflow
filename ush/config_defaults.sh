@@ -1388,7 +1388,7 @@ MAXTRIES_RUN_ANAL="1"
 # Space-separated list of strings, e.g., ( "130" "242" "clue" )
 # Default is no additional grids
 #
-# Current options as of 23 App 2021:
+# Current options as of 23 Apr 2021:
 #  "130"   (CONUS 13.5 km)
 #  "200"   (Puerto Rico 16 km)
 #  "221"   (North America 32 km)
