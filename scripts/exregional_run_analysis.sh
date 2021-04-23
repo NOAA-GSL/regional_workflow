@@ -262,10 +262,12 @@ done
 anavinfo=${FIX_GSI}/anavinfo_fv3lam_hrrr
 BERROR=${FIX_GSI}/rap_berror_stats_global_RAP_tune
 SATINFO=${FIX_GSI}/global_satinfo.txt
-CONVINFO=${fixgriddir}/nam_regional_convinfo_RAP.txt
+#CONVINFO=${fixgriddir}/nam_regional_convinfo_RAP.txt
+CONVINFO=${fixgriddir}/HRRRENS_regional_convinfo.3km.txt
 OZINFO=${FIX_GSI}/global_ozinfo.txt
 PCPINFO=${FIX_GSI}/global_pcpinfo.txt
-OBERROR=${FIX_GSI}/nam_errtable.r3dv
+#OBERROR=${FIX_GSI}/nam_errtable.r3dv
+OBERROR=${FIX_GSI}/HRRRENS_errtable.r3dv
 ATMS_BEAMWIDTH=${FIX_GSI}/atms_beamwidth.txt
 
 # Fixed fields
