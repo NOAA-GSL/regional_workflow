@@ -127,7 +127,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 ]>
 
 {%- if run_realtime %}
-<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="3" cyclelifespan="01:00:00:00">
+<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="3" cyclelifespan="02:00:00:00">
 {%- else %}
 <workflow realtime="F" scheduler="&SCHED;" cyclethrottle="3" >
 {%- endif %}
