@@ -179,17 +179,17 @@ fi
 # link/copy observation files to working directory
 #
 #-----------------------------------------------------------------------
-PROCESS_RADARREF_PATH=${CYCLE_DIR}/process_radarref
-PROCESS_LIGHTNING_PATH=${CYCLE_DIR}/process_lightning
+process_radarref_path=${CYCLE_DIR}/process_radarref
+process_lightning_path=${CYCLE_DIR}/process_lightning
 
-obs_file=${PROCESS_RADARREF_PATH}/RefInGSI3D.dat
+obs_file=${process_radarref_path}/RefInGSI3D.dat
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "RefInGSI3D.dat_01"
 else
    print_info_msg "$VERBOSE" "Warning: ${obs_file} does not exist!"
 fi
 
-obs_file=${PROCESS_RADARREF_PATH}/LightningInFV3LAM.dat
+obs_file=${process_lightning_path}/LightningInFV3LAM.dat
 if [ -r "${obs_file}" ]; then
    cp_vrfy "${obs_file}" "LightningInGSI.dat_01"
 else
@@ -202,10 +202,10 @@ fi
 # Create links to BUFR table, which needed for generate the BUFR file
 #
 #-----------------------------------------------------------------------
-BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
+bufr_table=${fixdir}/prepobs_prep_RAP.bufrtable
 
 # Fixed fields
-cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
+cp_vrfy $bufr_table prepobs_prep.bufrtable
 
 #
 #-----------------------------------------------------------------------
@@ -215,16 +215,16 @@ cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 #-----------------------------------------------------------------------
 #
 
-EXEC="${EXECDIR}/ref2tten.exe"
+exect="${EXECDIR}/ref2tten.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${exect} ]; then
   print_info_msg "$VERBOSE" "
 Copying the radar refl tten  executable to the run directory..."
-  cp_vrfy ${EXEC} ${workdir}/ref2ttenfv3lam.exe
+  cp_vrfy ${exect} ${workdir}/ref2ttenfv3lam.exe
 else
   print_err_msg_exit "\
-The radar refl tten executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The radar refl tten executable specified in exect does not exist:
+  exect = \"$exect\"
 Build radar refl tten and rerun."
 fi
 #

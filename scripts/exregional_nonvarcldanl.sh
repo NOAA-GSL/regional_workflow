@@ -42,7 +42,7 @@ print_info_msg "
 Entering script:  \"${scrfunc_fn}\"
 In directory:     \"${scrfunc_dir}\"
 
-This is the ex-script for the task that conduct no-var cloud analysis
+This is the ex-script for the task that conduct non-var cloud analysis
 with FV3 for the specified cycle.
 ========================================================================"
 #
@@ -142,12 +142,8 @@ Getting into working directory for radar tten process ..."
 workdir=${WORKDIR}
 cd_vrfy ${workdir}
 
-fixdir=$FIX_GSI
 fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
-print_info_msg "$VERBOSE" "fixdir is $fixdir"
 print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
-
-pwd
 
 #
 #-----------------------------------------------------------------------
@@ -177,15 +173,15 @@ fi
 #
 #-----------------------------------------------------------------------
 
-PROCESS_BUFR_PATH=${CYCLE_DIR}/process_bufr
+process_bufr_path=${CYCLE_DIR}/process_bufr
 
-obs_files_source[0]=${PROCESS_BUFR_PATH}/LightningInFV3LAM.dat
+obs_files_source[0]=${process_bufr_path}/LightningInFV3LAM.dat
 obs_files_target[0]=LightningInFV3LAM.dat
 
-obs_files_source[1]=${PROCESS_BUFR_PATH}/NASALaRC_cloud4fv3.bin
+obs_files_source[1]=${process_bufr_path}/NASALaRC_cloud4fv3.bin
 obs_files_target[1]=NASALaRC_cloud4fv3.bin
 
-obs_files_source[2]=${PROCESS_BUFR_PATH}/fv3_metarcloud.bin
+obs_files_source[2]=${process_bufr_path}/fv3_metarcloud.bin
 obs_files_target[2]=fv3_metarcloud.bin
 
 obs_number=${#obs_files_source[@]}
@@ -249,16 +245,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/fv3sar_novarcldana.exe"
+exect="fv3lam_nonvarcldana.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
-Copying the noVar Cloud Analysis executable to the run directory..."
-  cp_vrfy ${EXEC} ${workdir}
+Copying the nonVar Cloud Analysis executable to the run directory..."
+  cp_vrfy ${EXECDIR}/${exect} ${workdir}
 else
   print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build executable and rerun."
 fi
 #
@@ -266,11 +262,11 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-# Run the novar cloud analysis application.  
+# Run the non-var cloud analysis application.  
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./fv3sar_novarcldana.exe > stdout 2>&1 || print_err_msg_exit "\
+$APRUN ./${exect} > stdout 2>&1 || print_err_msg_exit "\
 Call to executable to run No Var Cloud Analysis returned with nonzero exit code."
 
 #

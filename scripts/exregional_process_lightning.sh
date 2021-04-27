@@ -221,16 +221,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_Lightning_nc.exe"
+exect="process_Lightning_nc.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
 Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}
+  cp_vrfy ${EXECDIR}/${exect} ${WORKDIR}
 else
   print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build lightning process and rerun."
 fi
 #
@@ -241,7 +241,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_Lightning_nc.exe < lightning.namelist > stdout 2>&1 || print_err_msg "\
+$APRUN ./${exect} < lightning.namelist > stdout 2>&1 || print_err_msg "\
 Call to executable to run lightning (nc) process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------

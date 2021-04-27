@@ -146,10 +146,8 @@ Getting into working directory for BUFR obseration process ..."
 
 cd ${WORKDIR}
 
-fixdir=$FIX_GSI
 fixgriddir=$FIX_GSI/${PREDEF_GRID_NAME}
 
-print_info_msg "$VERBOSE" "fixdir is $fixdir"
 print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 
 #
@@ -168,7 +166,7 @@ cp_vrfy ${fixgriddir}/geo_em.d01.nc          geo_em.d01.nc
 #   copy bufr table
 #
 #-----------------------------------------------------------------------
-BUFR_TABLE=${fixdir}/prepobs_prep_RAP.bufrtable
+BUFR_TABLE=${FIX_GSI}/prepobs_prep_RAP.bufrtable
 cp_vrfy $BUFR_TABLE prepobs_prep.bufrtable
 
 #
@@ -220,16 +218,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_Lightning_bufr.exe"
+exect="process_Lightning_bufr.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
 Copying the lightning process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}
+  cp_vrfy ${EXECDIR}/${exect} ${WORKDIR}/${exect}
 else
   print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build lightning process and rerun."
 fi
 #
@@ -241,7 +239,7 @@ fi
 #-----------------------------------------------------------------------
 #
 if [ $run_lightning ]; then
-   $APRUN ./process_Lightning_bufr.exe > stdout_lightning_bufr 2>&1 || print_err_msg "\
+   $APRUN ./${exect} > stdout_lightning_bufr 2>&1 || print_err_msg "\
    Call to executable to run lightning process returned with nonzero exit code."
 fi
 
@@ -295,16 +293,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_larccld.exe"
+exect="process_larccld.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
 Copying the NASA LaRC cloud process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_larccld.exe
+  cp_vrfy ${EXECDIR}/${exect} ${WORKDIR}/${exect}
 else
   print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build lightning process and rerun."
 fi
 #
@@ -316,7 +314,7 @@ fi
 #-----------------------------------------------------------------------
 #
 if [ $run_cloud ]; then
-  $APRUN ./process_larccld.exe > stdout_nasalarc 2>&1 || print_err_msg "\
+  $APRUN ./${exect} > stdout_nasalarc 2>&1 || print_err_msg "\
   Call to executable to run NASA LaRC Cloud process returned with nonzero exit code."
 fi
 
@@ -364,16 +362,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_metarcld.exe"
+exect="process_metarcld.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
 Copying the METAR cloud process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}/process_metarcld.exe
+  cp_vrfy ${EXECDIR}/${exect} ${WORKDIR}/${exect}
 else
   print_err_msg_exit "\
-The executable specified in EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build lightning process and rerun."
 fi
 #
@@ -385,7 +383,7 @@ fi
 #-----------------------------------------------------------------------
 #
 if [ $run_metar ]; then
-  $APRUN ./process_metarcld.exe > stdout_metarcld 2>&1 || print_err_msg "\
+  $APRUN ./${exect} > stdout_metarcld 2>&1 || print_err_msg "\
   Call to executable to run METAR cloud process returned with nonzero exit code."
 fi
 

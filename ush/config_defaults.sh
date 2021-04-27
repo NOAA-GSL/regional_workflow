@@ -1417,7 +1417,7 @@ PROCESS_RADAR_REF_TN="process_radarref"
 PROCESS_LIGHTNING_TN="process_lightning"
 PROCESS_BUFR_TN="process_bufr"
 RADAR_REFL2TTEN_TN="radar_refl2tten"
-CLDANL_NOVAR_TN="cldanl_novar"
+CLDANL_NONVAR_TN="cldanl_nonvar"
 #
 # Number of nodes.
 #
@@ -1436,7 +1436,7 @@ NNODES_PROC_RADAR="2"
 NNODES_PROC_LIGHTNING="1"
 NNODES_PROC_BUFR="1"
 NNODES_RUN_REF2TTEN="1"
-NNODES_RUN_NOVARCLDANL="1"
+NNODES_RUN_NONVARCLDANL="1"
 #
 # Number of cores.
 #
@@ -1459,7 +1459,7 @@ PPN_PROC_RADAR="24"
 PPN_PROC_LIGHTNING="1"
 PPN_PROC_BUFR="1"
 PPN_RUN_REF2TTEN="1"
-PPN_RUN_NOVARCLDANL="1"
+PPN_RUN_NONVARCLDANL="1"
 #
 # Walltimes.
 #
@@ -1478,12 +1478,12 @@ WTIME_PROC_RADAR="00:10:00"
 WTIME_PROC_LIGHTNING="00:10:00"
 WTIME_PROC_BUFR="00:10:00"
 WTIME_RUN_REF2TTEN="00:10:00"
-WTIME_RUN_NOVARCLDANL="00:20:00"
+WTIME_RUN_NONVARCLDANL="00:20:00"
 #
 # Memory.
 #
 MEMO_RUN_REF2TTEN="10G"
-MEMO_RUN_NOVARCLDANL="20G"
+MEMO_RUN_NONVARCLDANL="20G"
 #
 # Maximum number of attempts.
 #
@@ -1503,7 +1503,7 @@ MAXTRIES_PROCESS_RADARREF="1"
 MAXTRIES_PROCESS_LIGHTNING="1"
 MAXTRIES_PROCESS_BUFR="1"
 MAXTRIES_RADAR_REF2TTEN="1"
-MAXTRIES_CLDANL_NOVAR="1"
+MAXTRIES_CLDANL_NONVAR="1"
 #
 #-----------------------------------------------------------------------
 #
@@ -1663,6 +1663,19 @@ COMPILER="intel"
 #-----------------------------------------------------------------------
 #
 GWD_HRRRsuite_BASEDIR=""
+#-----------------------------------------------------------------------
+#
+# Parameters for analysis options
+# DO_NONVAR_CLDANAL: 
+#     Flag turn on the non-var cloud analysis.
+# DO_REFL2TTEN: 
+#     Flag turn on the radar reflectivity to temperature tendenecy.
+#
+#-----------------------------------------------------------------------
+#
+DO_NONVAR_CLDANAL="FALSE"
+DO_REFL2TTEN="FALSE"
+#
 #-----------------------------------------------------------------------
 #
 # Parameters for observation preprocess.

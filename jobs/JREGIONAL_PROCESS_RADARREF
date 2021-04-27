@@ -62,9 +62,9 @@ preprocess with FV3 for the specified cycle.
 #
 #-----------------------------------------------------------------------
 #
-WORKDIR=${CYCLE_DIR}/process_radarref
-rm -fr ${WORKDIR}
-mkdir_vrfy -p ${WORKDIR}
+workdir=${CYCLE_DIR}/process_radarref
+rm -fr ${workdir}
+mkdir_vrfy -p ${workdir}
 #
 #-----------------------------------------------------------------------
 #
@@ -74,7 +74,7 @@ mkdir_vrfy -p ${WORKDIR}
 #-----------------------------------------------------------------------
 #
 $SCRIPTSDIR/exregional_process_radarref.sh \
-  CYCLE_DIR="${CYCLE_DIR}" WORKDIR="${WORKDIR}" || \
+  CYCLE_DIR="${CYCLE_DIR}" WORKDIR="${workdir}" || \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
 #

@@ -197,7 +197,7 @@ settings="\
   'process_lightning': ${PROCESS_LIGHTNING_TN}
   'process_bufr': ${PROCESS_BUFR_TN}
   'radar_refl2tten': ${RADAR_REFL2TTEN_TN}
-  'cldanl_novar': ${CLDANL_NOVAR_TN}
+  'cldanl_nonvar': ${CLDANL_NONVAR_TN}
   'tag': ${TAG}
 #
 # Number of nodes to use for each task.
@@ -217,7 +217,7 @@ settings="\
   'nnodes_proc_lightning': ${NNODES_PROC_LIGHTNING}
   'nnodes_proc_bufr': ${NNODES_PROC_BUFR}
   'nnodes_run_ref2tten': ${NNODES_RUN_REF2TTEN}
-  'nnodes_run_novarcldanl': ${NNODES_RUN_NOVARCLDANL}
+  'nnodes_run_nonvarcldanl': ${NNODES_RUN_NONVARCLDANL}
 #
 # Number of cores used for a task
 #
@@ -244,7 +244,7 @@ settings="\
   'ppn_proc_lightning': ${PPN_PROC_LIGHTNING}
   'ppn_proc_bufr': ${PPN_PROC_BUFR}
   'ppn_run_ref2tten': ${PPN_RUN_REF2TTEN}
-  'ppn_run_novarcldanl': ${PPN_RUN_NOVARCLDANL}
+  'ppn_run_nonvarcldanl': ${PPN_RUN_NONVARCLDANL}
 #
 # Maximum wallclock time for each task.
 #
@@ -263,12 +263,12 @@ settings="\
   'wtime_proc_lightning': ${WTIME_PROC_LIGHTNING}
   'wtime_proc_bufr': ${WTIME_PROC_BUFR}
   'wtime_run_ref2tten': ${WTIME_RUN_REF2TTEN}
-  'wtime_run_novarcldanl': ${WTIME_RUN_NOVARCLDANL}
+  'wtime_run_nonvarcldanl': ${WTIME_RUN_NONVARCLDANL}
 #
 # Maximum memory for each task.
 #
   'memo_run_ref2tten': ${MEMO_RUN_REF2TTEN}
-  'memo_run_novarcldanl': ${MEMO_RUN_NOVARCLDANL}
+  'memo_run_nonvarcldanl': ${MEMO_RUN_NONVARCLDANL}
 #
 # Maximum number of tries for each task.
 #
@@ -287,7 +287,7 @@ settings="\
   'maxtries_process_lightning': ${MAXTRIES_PROCESS_LIGHTNING}
   'maxtries_process_bufr': ${MAXTRIES_PROCESS_BUFR}
   'maxtries_radar_ref2tten': ${MAXTRIES_RADAR_REF2TTEN}
-  'maxtries_cldanl_novar': ${MAXTRIES_CLDANL_NOVAR}
+  'maxtries_cldanl_nonvar': ${MAXTRIES_CLDANL_NONVAR}
 #
 # Flags that specify whether to run the preprocessing tasks.
 #
@@ -360,6 +360,8 @@ settings="\
 #
   'do_dacycle': ${DO_DACYCLE}
   'da_cycle_interval_hrs': ${DA_CYCLE_INTERV}
+  'do_nonvar_cldanal': ${DO_NONVAR_CLDANAL}
+  'do_refl2tten': ${DO_REFL2TTEN}
 #
 #  retrospective experiments
 #

@@ -154,10 +154,7 @@ print_info_msg "$VERBOSE" "fixgriddir is $fixgriddir"
 #
 #-----------------------------------------------------------------------
 
-FV3SARPATH=${CYCLE_DIR}
 cp_vrfy ${fixgriddir}/fv3_grid_spec          fv3sar_grid_spec.nc
-
-
 
 #
 #-----------------------------------------------------------------------
@@ -254,16 +251,16 @@ EOF
 #
 #-----------------------------------------------------------------------
 #
-EXEC="${EXECDIR}/process_NSSL_mosaic.exe"
+exect="${EXECDIR}/process_NSSL_mosaic.exe"
 
-if [ -f $EXEC ]; then
+if [ -f ${EXECDIR}/$exect ]; then
   print_info_msg "$VERBOSE" "
 Copying the radar process  executable to the run directory..."
-  cp_vrfy ${EXEC} ${WORKDIR}
+  cp_vrfy ${EXECDIR}/${exect} ${WORKDIR}
 else
   print_err_msg_exit "\
-The executable specified in GSI_EXEC does not exist:
-  EXEC = \"$EXEC\"
+The executable specified in GSI_exect does not exist:
+  exect = \"${EXECDIR}/$exect\"
 Build radar process and rerun."
 fi
 #
@@ -274,7 +271,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-$APRUN ./process_NSSL_mosaic.exe > stdout 2>&1 || print_err_msg "\
+$APRUN ./${exect} > stdout 2>&1 || print_err_msg "\
 Call to executable to run radar refl process returned with nonzero exit code."
 #
 #-----------------------------------------------------------------------
