@@ -1,0 +1,109 @@
+MACHINE="jet"
+ACCOUNT="nrtrr"
+#RESERVATION="rrfsdet"
+EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km"
+#EXPT_BASEDIR="/home/rtrr/RRFS"
+EXPT_SUBDIR="RRFS_NA_3km_dev1"
+
+if [[ -n $RESERVATION ]] ; then
+  ACCOUNT=rtrr
+  SERVICE_ACCOUNT=nrtrr
+  PARTITION_DEFAULT=kjet
+  PARTITION_FCST=kjet
+  PARTITION_GRAPHICS=kjet
+  PARTITION_ANALYSIS=kjet
+fi
+
+FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
+FIXgsm=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_am.20210128
+GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
+
+VERBOSE="TRUE"
+
+RUN_ENVIR="nco"
+PREEXISTING_DIR_METHOD="rename"
+
+PREDEF_GRID_NAME=RRFS_NA_3km
+
+DO_DACYCLE="FALSE"
+
+QUILTING="TRUE"
+CCPP_PHYS_SUITE="FV3_HRRR"
+
+EXTRN_MDL_ICS_OFFSET_HRS="0"
+BOUNDARY_LEN_HRS="12"
+LBC_SPEC_INTVL_HRS="6"
+EXTRN_MDL_LBCS_OFFSET_HRS="0"
+EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS="0"
+
+FCST_LEN_HRS="12"
+FCST_LEN_HRS_CYCLES=(12)
+
+HALO_BLEND=10
+
+NNODES_MAKE_ICS="12"
+NNODES_MAKE_LBCS="12"
+PPN_MAKE_ICS="4"
+PPN_MAKE_LBCS="4"
+WTIME_MAKE_LBCS="01:00:00"
+
+WTIME_RUN_FCST="04:30:00"
+#OMP_STACKSIZE_RUN_FCST="2048m"
+
+NNODES_RUN_POST="4"
+
+DATE_FIRST_CYCL="20210427"
+DATE_LAST_CYCL="20210427"
+CYCL_HRS=( "00" )
+
+EXTRN_MDL_NAME_ICS="FV3GFS"
+EXTRN_MDL_NAME_LBCS="FV3GFS"
+
+FV3GFS_FILE_FMT_ICS="grib2"
+FV3GFS_FILE_FMT_LBCS="grib2"
+
+envir="para"
+
+NET="RRFS_NA_3km"
+TAG="RRFS_dev1_NA_3km"
+
+USE_CUSTOM_POST_CONFIG_FILE="TRUE"
+CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-13km-NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
+ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_na_3km_dev1"
+NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
+NCL_HOME="/home/rtrr/RRFS/graphics"
+NCL_REGION="conus"
+MODEL="RRFS_NA_3km"
+
+#
+# In NCO mode, the following don't need to be explicitly set to "FALSE" 
+# in this configuration file because the experiment generation script
+# will do this (along with printing out an informational message).
+#
+#RUN_TASK_MAKE_GRID="FALSE"
+#RUN_TASK_MAKE_OROG="FALSE"
+#RUN_TASK_MAKE_SFC_CLIMO="FALSE"
+
+RUN="RRFS_NA_3km_dev1"
+COMINgfs=""
+
+STMP="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km/ptmp"  # Path to directory STMP that mostly contains input files.
+#STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+#PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+
+#
+# In NCO mode, the user must manually (e.g. after doing the build step)
+# create the symlink "${FIXrrfs}/fix_sar" that points to EMC's FIXLAM
+# directory on the machine.  For example, on hera, the symlink's target
+# needs to be
+#
+#   /scratch2/NCEPDEV/fv3-cam/emc.campara/fix_fv3cam/fix_sar
+#
+# The experiment generation script will then set FIXLAM to 
+#
+#   FIXLAM="${FIXrrfs}/fix_lam/${EMC_GRID_NAME}"
+#
+# where EMC_GRID_NAME has the value set above.
+#
+
