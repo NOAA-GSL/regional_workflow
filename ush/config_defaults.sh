@@ -442,6 +442,8 @@ EXTRN_MDL_NAME_LBCS="FV3GFS"
 LBC_SPEC_INTVL_HRS="6"
 FV3GFS_FILE_FMT_ICS="nemsio"
 FV3GFS_FILE_FMT_LBCS="nemsio"
+EXTRN_MDL_ICS_OFFSET_HRS=""
+EXTRN_MDL_LBCS_OFFSET_HRS=""
 #
 #-----------------------------------------------------------------------
 #

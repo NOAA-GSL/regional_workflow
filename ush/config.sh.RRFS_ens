@@ -2,7 +2,7 @@ MACHINE="jet"
 ACCOUNT="nrtrr"
 ACCOUNT_RES="rtwrfruc"
 EXPT_BASEDIR="/home/wrfruc/RRFSE"
-EXPT_BASEDIR="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE"
+EXPT_BASEDIR="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE"
 EXPT_SUBDIR="RRFS_ens"
 
 FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_lam.20210128
@@ -10,6 +10,7 @@ FIXgsm=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_am.20210128
 
 FIX_GSI=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_gsi
 FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
+GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_lam.20210128
 
 VERBOSE="TRUE"
 RUN_REALTIME=TRUE
@@ -26,6 +27,7 @@ FCST_LEN_HRS_00Z="60"
 FCST_LEN_HRS_12Z="48"
 LBC_SPEC_INTVL_HRS="3"
 
+DT_ATMOS=40
 HALO_BLEND=30
 
 RUN_GSI="TRUE"
@@ -34,8 +36,8 @@ NCORES_RUN_ANAL=240
 
 WTIME_RUN_FCST="03:30:00"
 
-DATE_FIRST_CYCL="20210320"
-DATE_LAST_CYCL="20220319"
+DATE_FIRST_CYCL="20210424"
+DATE_LAST_CYCL="20220424"
 
 CYCL_HRS=( "00" "12" )
 
@@ -52,7 +54,7 @@ NET="RRFSE_CONUS"
 #NCL_REGION="conus"
 MODEL="RRFSE"
 
-RUN="RRFS_ens"
+RUN="${EXPT_SUBDIR}"
 COMINgfs=""
 
 USE_CUSTOM_POST_CONFIG_FILE="TRUE"
@@ -61,8 +63,8 @@ CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/wrfruc/RRFSE/ufs-srweather-app/src/EMC_post
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
-STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/FV3LAM-GSL.0310/RRFSE/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
+STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
 
 DO_ENSEMBLE=TRUE
 NUM_ENS_MEMBERS=9

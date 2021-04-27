@@ -320,6 +320,10 @@ settings="\
 #
   'fcst_len_hrs': ${FCST_LEN_HRS}
 #
+# LBCs interval
+#
+  'lbc_spec_intvl_hrs': ${LBC_SPEC_INTVL_HRS}
+#
 # Ensemble-related parameters.
 #
   'do_ensemble': ${DO_ENSEMBLE}
