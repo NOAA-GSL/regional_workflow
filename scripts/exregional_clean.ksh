@@ -30,7 +30,7 @@ for onetime in ${XX[*]};do
 done
 
 # Delete netCDF files
-deletetime=`date +%Y%m%d%H -d "${currentime} 36 hours ago"`
+deletetime=`date +%Y%m%d%H -d "${currentime} 48 hours ago"`
 echo "Deleting netCDF files before ${deletetime}..."
 cd ${CYCLE_BASEDIR}
 set -A XX `ls -d 20* | sort -r`

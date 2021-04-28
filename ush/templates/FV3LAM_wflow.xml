@@ -921,6 +921,26 @@ only checking for sfc here, and assuming that bgdawp are also available -->
      </task>
 </metatask>
 
+<!--
+************************************************************************
+************************************************************************
+-->
+ <task name="&ARCHIVE_TN;" cycledefs="archive" maxtries="{{ maxtries_run_post }}">
+
+   &RSRV_HPSS;
+
+    <command>&JOBSDIR;/../scripts/exregional_archive.ksh</command>
+    <cores>1</cores>
+    <walltime>08:00:00</walltime>
+    <memory>24G</memory>
+    <jobname>rrfse_&ARCHIVE_TN;</jobname>
+    <join><cyclestr>&LOGDIR;/&ARCHIVE_TN;_@Y@m@d@H.log</cyclestr></join>
+ 
+    <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
+ 
+  </task>
+
+
 {%- endif %}
 
 </workflow>

@@ -515,6 +515,7 @@ done
 # Delete/Unlink unneeded files
 rm -f obs*
 rm -f pe*
+rm -f gsi.x
 find *.bin -maxdepth 1 -exec unlink '{}' \;
 
 #

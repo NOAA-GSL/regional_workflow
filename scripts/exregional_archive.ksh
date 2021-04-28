@@ -28,14 +28,33 @@ if [[ $runcount -gt 0 ]];then
       cp -rsv ${COMOUT_BASEDIR}/${onerun}/nclprd/* $COMOUT_BASEDIR/stage/$year$month$day$hour/nclprd
     fi
 
-    set -A YY `ls -d ${COMOUT_BASEDIR}/${onerun}/*bg*tm*`
-    postcount=${#YY[*]}
-    echo $postcount
-    if [[ $postcount -gt 0 ]];then
-      echo "GRIB-2..."
-      mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/postprd
-      cp -rsv ${COMOUT_BASEDIR}/${onerun}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/postprd 
+    if [[ -d ${CYCLE_BASEDIR}/${onerun}/anal_gsi ]];then
+      echo "GSI Diag ..."
+      mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
+      cp -rsv ${CYCLE_BASEDIR}/${onerun}/anal_gsi/* $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
     fi
+
+    for memID in {1..9}; do
+      ensmem=mem${memID}
+    
+      set -A YY `ls -d ${COMOUT_BASEDIR}/${onerun}/${ensmem}/*bg*tm*`
+      postcount=${#YY[*]}
+      echo $postcount
+      if [[ $postcount -gt 0 ]];then
+        echo "GRIB-2 for ${ensmem} ..."
+        mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd
+        cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd 
+      fi
+
+      if [[ -e ${CYCLE_BASEDIR}/${onerun}/${ensmem}/INPUT/gfs_data.tile7.halo0.nc ]]; then
+         echo "INPUT  for ${ensmem} ..."
+         mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input
+         cp -rvL ${CYCLE_BASEDIR}/${onerun}/${ensmem}/INPUT $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input
+         cp -v ${CYCLE_BASEDIR}/${onerun}/${ensmem}/input.nml $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
+         cp -v ${CYCLE_BASEDIR}/${onerun}/${ensmem}/model_configure $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
+      fi
+
+    done
 
     if [[ -e ${COMOUT_BASEDIR}/stage/$year$month$day$hour ]];then
       cd ${COMOUT_BASEDIR}/stage
