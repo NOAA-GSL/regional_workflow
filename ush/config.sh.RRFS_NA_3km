@@ -1,8 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
-#RESERVATION="rrfsdet"
-EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km"
-#EXPT_BASEDIR="/home/rtrr/RRFS"
+RESERVATION="rrfsdet"
+EXPT_BASEDIR="/home/rtrr/RRFS"
 EXPT_SUBDIR="RRFS_NA_3km_dev1"
 
 if [[ -n $RESERVATION ]] ; then
@@ -18,6 +17,9 @@ FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 FIXgsm=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_am.20210128
 GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 
+FIX_GSI=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_gsi
+FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
+
 VERBOSE="TRUE"
 
 RUN_ENVIR="nco"
@@ -32,13 +34,26 @@ CCPP_PHYS_SUITE="FV3_HRRR"
 
 EXTRN_MDL_ICS_OFFSET_HRS="0"
 BOUNDARY_LEN_HRS="12"
-LBC_SPEC_INTVL_HRS="6"
-EXTRN_MDL_LBCS_OFFSET_HRS="0"
+BOUNDARY_LONG_LEN_HRS="3"
+LBC_SPEC_INTVL_HRS="3"
+EXTRN_MDL_LBCS_OFFSET_HRS="6"
 EXTRN_MDL_LBCS_SEARCH_OFFSET_HRS="0"
 
-FCST_LEN_HRS="12"
-FCST_LEN_HRS_CYCLES=(12)
+INITIAL_CYCLEDEF="00 00,12 * * 2021 *"
+BOUNDARY_CYCLEDEF="00 00,12 * * 2021 *"
+#BOUNDARY_LONG_CYCLEDEF="00 00,12 * * 2021 *"              <!-- placeholder only; not presently needed for this config -->
+PREP_COLDSTART_CYCLEDEF="00 00,12 * * 2021 *"
+#PREP_WARMSTART_CYCLEDEF="00 00-02,04-14,16-23 * * 2021 *" <!-- placeholder only; not presently needed for this config -->
+#ANALYSIS_CYCLEDEF="00 00-23 * * 2021 *"                   <!-- placeholder only; not presently needed for this config -->
+FORECAST_CYCLEDEF="00 00,12 * * 2021 *"
+ARCHIVE_CYCLEDEF="00 07 * * 2021 *"
 
+FCST_LEN_HRS="12"
+FCST_LEN_HRS_CYCLES=(12 3 3 12 3 3 24 3 3 12 3 3 12 3 3 12 3 3 24 3 3 12 3 3)
+DA_CYCLE_INTERV="1"
+RESTART_INTERVAL="1 2"
+
+NCORES_RUN_ANAL=240
 HALO_BLEND=10
 
 NNODES_MAKE_ICS="12"
@@ -68,7 +83,7 @@ NET="RRFS_NA_3km"
 TAG="RRFS_dev1_NA_3km"
 
 USE_CUSTOM_POST_CONFIG_FILE="TRUE"
-CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-13km-NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
+CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-3km-NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_na_3km_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
@@ -87,10 +102,8 @@ MODEL="RRFS_NA_3km"
 RUN="RRFS_NA_3km_dev1"
 COMINgfs=""
 
-STMP="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/BMC/rtwbl/kenyon/test_na3km/ptmp"  # Path to directory STMP that mostly contains input files.
-#STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-#PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)

@@ -505,6 +505,7 @@ MODULES_RUN_TASK_FP script.
       <and>
         <timedep><cyclestr offset="&START_TIME_CONVENTIONAL;">@Y@m@d@H@M00</cyclestr></timedep>
         <taskdep task="&MAKE_ICS_TN;"/>
+        <taskdep task="&MAKE_LBCS_TN;"/>
       </and>
     </dependency>
 
