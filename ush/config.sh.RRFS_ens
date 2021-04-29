@@ -2,7 +2,6 @@ MACHINE="jet"
 ACCOUNT="nrtrr"
 ACCOUNT_RES="rtwrfruc"
 EXPT_BASEDIR="/home/wrfruc/RRFSE"
-EXPT_BASEDIR="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE"
 EXPT_SUBDIR="RRFS_ens"
 
 FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/wrfruc/RRFSE/fix/fix_lam.20210128
@@ -63,9 +62,6 @@ CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/wrfruc/RRFSE/ufs-srweather-app/src/EMC_post
 
 STMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/mnt/lfs4/BMC/wrfruc/RRFSE/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
-
-STMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/HFIP/gsihyb/Chunhua.Zhou/RRFSE/NCO_dirs/ptmp"  # Path to directory PTMP in which the experiment's output files will be placed.
 
 DO_ENSEMBLE=TRUE
 NUM_ENS_MEMBERS=9
