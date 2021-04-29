@@ -78,31 +78,17 @@ case $MACHINE in
 #
 "WCOSS_C" | "WCOSS")
 #
-
-  if [ "${USE_CCPP}" = "TRUE" ]; then
-  
-# Needed to change to the experiment directory because the module files
-# for the CCPP-enabled version of FV3 have been copied to there.
-
-    cd_vrfy ${cycle_dir}
-  
-    set +x
-    source ./module-setup.sh
-    module use $( pwd -P )
-    module load modules.fv3
-    module list
-    set -x
-  
-  else
-  
-    . /apps/lmod/lmod/init/sh
-    module purge
-    module use /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
-    module load intel/16.1.150 impi/5.1.1.109 netcdf/4.3.0 
-    module list
-  
-  fi
-
+  module load NCO/4.7.0
+  module list
+  ulimit -s unlimited
+  ulimit -a
+  APRUN="mpirun -l -np ${PE_MEMBER01}"
+  ;;
+#
+"WCOSS_DELL_P3")
+#
+  module load NCO/4.7.0
+  module list
   ulimit -s unlimited
   ulimit -a
   APRUN="mpirun -l -np ${PE_MEMBER01}"
@@ -222,18 +208,14 @@ loops="009"    # or 009s for GFSv15
 ens_type="nc"  # or nemsio for GFSv15
 foundens=false
 for loop in $loops; do
-  for timelist in `ls ${ENKF_FCST}/*.gdas.t*z.atmf${loop}.mem080.${ens_type}`; do
-    availtimeyy=`basename ${timelist} | cut -c 1-2`
-    availtimeyyyy=20${availtimeyy}
-    availtimejjj=`basename ${timelist} | cut -c 3-5`
-    availtimemm=`date -d "${availtimeyyyy}0101 +$(( 10#${availtimejjj} - 1 )) days" +%m`
-    availtimedd=`date -d "${availtimeyyyy}0101 +$(( 10#${availtimejjj} - 1 )) days" +%d`
-    availtimehh=`basename ${timelist} | cut -c 6-7`
-    availtime=${availtimeyyyy}${availtimemm}${availtimedd}${availtimehh}
-    avail_time=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
-    avail_time=`date -d "${avail_time}"`
+  for timelist in `ls ${ENKF_FCST}/enkfgdas.*/*/atmos/mem080/gdas*.atmf${loop}.${ens_type}`; do
+    availtimeyyyymmdd=`echo ${timelist} | cut -d'/' -f9 | cut -c 10-17`
+    availtimehh=`echo ${timelist} | cut -d'/' -f10`
+    availtime=${availtimeyyyymmdd}${availtimehh}
+    AVAIL_TIME=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
+    AVAIL_TIME=`date -d "${AVAIL_TIME}"`
 
-    stamp_avail=`date -d "${avail_time} ${loop} hours" +%s`
+    stamp_avail=`date -d "${AVAIL_TIME} ${loop} hours" +%s`
 
     hourDiff=`echo "($stampcycle - $stamp_avail) / (60 * 60 )" | bc`;
     if [[ ${stampcycle} -lt ${stamp_avail} ]]; then
@@ -242,16 +224,19 @@ for loop in $loops; do
 
     if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
        minHourDiff=${hourDiff}
-       enkfcstname=${availtimeyy}${availtimejjj}${availtimehh}00.gdas.t${availtimehh}z.atmf${loop}
+       enkfcstname=gdas.t${availtimehh}z.atmf${loop}
+       EYYYYMMDD=$(echo ${availtime} | cut -c1-8)
+       EHH=$(echo ${availtime} | cut -c9-10)
        foundens=true
     fi
   done
 done
 
-if [ $foundens ]; then
-  ls ${ENKF_FCST}/${enkfcstname}.mem0??.${ens_type} >> filelist03
+if [ ${foundens} ]
+then
+  ls ${ENKF_FCST}/enkfgdas.${EYYYYMMDD}/${EHH}/atmos/mem???/${enkfcstname}.nc > filelist03
 else
-  cat "no ens found" >> filelist03
+  more "no enkfgdas file " > filelist03
 fi
 
 #
@@ -276,6 +261,7 @@ if [[ ${nummem} -eq 80 ]]; then
   print_info_msg "$VERBOSE" " Cycle ${YYYYMMDDHH}: GSI hybrid uses ${memname} with n_ens=${nummem}" 
 fi
 
+ifhyb=.false.
 
 #
 #-----------------------------------------------------------------------
@@ -293,7 +279,7 @@ cp_vrfy ${fixgriddir}/fv3_grid_spec                fv3_grid_spec
 
 if [ ${BKTYPE} -eq 1 ]; then  # cold start uses background from INPUT
   cp_vrfy ${bkpath}/gfs_data.tile7.halo0.nc        gfs_data.tile7.halo0.nc_b
-  ${NCKS} -A -v  phis ${fixgriddir}/phis.nc        gfs_data.tile7.halo0.nc_b
+  ncks -A -v  phis ${fixgriddir}/phis.nc           gfs_data.tile7.halo0.nc_b
 
   cp_vrfy ${bkpath}/sfc_data.tile7.halo0.nc        fv3_sfcdata
   cp_vrfy gfs_data.tile7.halo0.nc_b                fv3_dynvars
@@ -322,13 +308,13 @@ sed -i "s/hh/${HH}/"     coupler.res
 #
 #-----------------------------------------------------------------------
 
-obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.prepbufr.tm00
+obs_files_source[0]=${OBSPATH}/rap.${YYYYMMDD}/rap.t${HH}z.prepbufr.tm00
 obs_files_target[0]=prepbufr
 
-obs_files_source[1]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.satwnd.tm00.bufr_d
+obs_files_source[1]=${OBSPATH}/rap.${YYYYMMDD}/rap.t${HH}z.satwnd.tm00.bufr_d
 obs_files_target[1]=satwndbufr
 
-obs_files_source[2]=${OBSPATH}/${YYYYMMDDHH}.rap.t${HH}z.nexrad.tm00.bufr_d
+obs_files_source[2]=${OBSPATH}/rap.${YYYYMMDD}/rap.t${HH}z.nexrad.tm00.bufr_d
 obs_files_target[2]=l2rwbufr
 
 obs_number=${#obs_files_source[@]}
