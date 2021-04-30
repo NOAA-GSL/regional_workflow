@@ -28,10 +28,10 @@ if [[ $runcount -gt 0 ]];then
       cp -rsv ${COMOUT_BASEDIR}/${onerun}/nclprd/* $COMOUT_BASEDIR/stage/$year$month$day$hour/nclprd
     fi
 
-    if [[ -d ${CYCLE_BASEDIR}/${onerun}/anal_gsi ]];then
+    if [[ -d ${CYCLE_BASEDIR}/$year$month$day$hour/anal_gsi ]];then
       echo "GSI Diag ..."
       mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
-      cp -rsv ${CYCLE_BASEDIR}/${onerun}/anal_gsi/* $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
+      cp -rsv ${CYCLE_BASEDIR}/$year$month$day$hour/anal_gsi/* $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
     fi
 
     for memID in {1..9}; do
@@ -46,12 +46,12 @@ if [[ $runcount -gt 0 ]];then
         cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd 
       fi
 
-      if [[ -e ${CYCLE_BASEDIR}/${onerun}/${ensmem}/INPUT/gfs_data.tile7.halo0.nc ]]; then
+      if [[ -e ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/INPUT/gfs_data.tile7.halo0.nc ]]; then
          echo "INPUT  for ${ensmem} ..."
          mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input
-         cp -rvL ${CYCLE_BASEDIR}/${onerun}/${ensmem}/INPUT $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input
-         cp -v ${CYCLE_BASEDIR}/${onerun}/${ensmem}/input.nml $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
-         cp -v ${CYCLE_BASEDIR}/${onerun}/${ensmem}/model_configure $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
+         cp -rsv ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/INPUT $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input
+         cp -rsv ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/input.nml $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
+         cp -rsv ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/model_configure $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/input 
       fi
 
     done
