@@ -5,17 +5,17 @@ currentime=`date`
 . ${GLOBAL_VAR_DEFNS_FP}
 
 # Delete ptmp directories
-#deletetime=`date +%Y%m%d -d "${currentime} 72 hours ago"`
-#echo "Deleting ptmp directories before ${deletetime}..."
-#cd ${COMOUT_BASEDIR}
-#set -A XX `ls -d ${RUN}.20* | sort -r`
-#for dir in ${XX[*]};do
-#  onetime=`echo $dir | cut -d'.' -f2`
-#  if [[ ${onetime} -le ${deletetime} ]]; then
-#    rm -rf ${COMOUT_BASEDIR}/${RUN}.${onetime}${SLASH_ENSMEM_SUBDIR}
-#    echo "Deleted ${COMOUT_BASEDIR}/${RUN}.${onetime}${SLASH_ENSMEM_SUBDIR}"
-#  fi
-#done
+deletetime=`date +%Y%m%d -d "${currentime} 72 hours ago"`
+echo "Deleting ptmp directories before ${deletetime}..."
+cd ${COMOUT_BASEDIR}
+set -A XX `ls -d ${RUN}.20* | sort -r`
+for dir in ${XX[*]};do
+  onetime=`echo $dir | cut -d'.' -f2`
+  if [[ ${onetime} -le ${deletetime} ]]; then
+    rm -rf ${COMOUT_BASEDIR}/${RUN}.${onetime}
+    echo "Deleted ${COMOUT_BASEDIR}/${RUN}.${onetime}"
+  fi
+done
 
 # Delete stmp directories
 deletetime=`date +%Y%m%d%H -d "${currentime} 72 hours ago"`
@@ -45,26 +45,26 @@ for onetime in ${XX[*]};do
 done
 
 # Delete old log files
-#deletetime=`date +%Y%m%d%H -d "${currentime} 72 hours ago"`
-#echo "Deleting log files before ${deletetime}..."
+deletetime=`date +%Y%m%d%H -d "${currentime} 72 hours ago"`
+echo "Deleting log files before ${deletetime}..."
 
 # Remove template date from last two levels
-#logs=`echo ${LOGDIR} | rev | cut -f 3- -d / | rev`
-#cd ${logs}
-#pwd
-#set -A XX `ls -d ${RUN}.20*/* | sort -r`
-#for onetime in ${XX[*]}; do
-#  # Remove slash and RUN from directory to get time
-#  filetime=${onetime/\//}
-#  filetime=${filetime##*.}
-#  # Remove cycle subdir from path
-#  logsdate=${onetime%%/*}
-#  if [[ ${filetime} -le ${deletetime} ]]; then
-#    echo "Deleting files from ${logs}/${onetime}${SLASH_ENSMEM_SUBDIR}"
-#    rm -rf ${onetime}${SLASH_ENSMEM_SUBDIR}
-#    # Remove an empty date directory
-#    [ "$(ls -A $logsdate)" ] || rmdir $logsdate
-#  fi
-#done
+logs=`echo ${LOGDIR} | rev | cut -f 3- -d / | rev`
+cd ${logs}
+pwd
+set -A XX `ls -d ${RUN}.20*/* | sort -r`
+for onetime in ${XX[*]}; do
+  # Remove slash and RUN from directory to get time
+  filetime=${onetime/\//}
+  filetime=${filetime##*.}
+  # Remove cycle subdir from path
+  logsdate=${onetime%%/*}
+  if [[ ${filetime} -le ${deletetime} ]]; then
+    echo "Deleting files from ${logs}/${onetime}"
+    rm -rf ${onetime}
+    # Remove an empty date directory
+    [ "$(ls -A $logsdate)" ] || rmdir $logsdate
+  fi
+done
 
 exit 0
