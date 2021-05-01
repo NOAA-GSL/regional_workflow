@@ -304,7 +304,7 @@ if [ ${#ADDNL_OUTPUT_GRIDS[@]} -gt 0 ]; then
   grid_specs_242="nps:225:60.000000 187.000000:553:11250.000000 30.000000:425:11250.000000"
   grid_specs_243="latlon 190.0:126:0.400 10.000:101:0.400"
   grid_specs_clue="lambert:262.5:38.5 239.891:1620:3000.0 20.971:1120:3000.0"
-  grid_specs_hrrr="lambert:-97.5:38.5 -122.72:1799:3000.0 21.128:1059:3000.0"
+  grid_specs_hrrr="lambert:-97.5:38.5 -122.7195:1799:3000.0 21.13812:1059:3000.0"
   grid_specs_hrrre="lambert:-97.5:38.5 -122.71953:1800:3000.0 21.138123:1060:3000.0"
 
   for grid in ${ADDNL_OUTPUT_GRIDS[@]}
@@ -314,7 +314,7 @@ if [ ${#ADDNL_OUTPUT_GRIDS[@]} -gt 0 ]; then
       
       eval grid_specs=\$grid_specs_${grid}
       subdir=${postprd_dir}/${grid}_grid
-      mkdir -p ${subdir}
+      mkdir -p ${subdir}/${fhr}
       bg_remap=${subdir}/${NET}.t${cyc}z.bg${leveltype}f${fhr}.${tmmark}.grib2
 
       # Interpolate fields to new grid
@@ -324,15 +324,15 @@ if [ ${#ADDNL_OUTPUT_GRIDS[@]} -gt 0 ]; then
         -new_grid_interpolation bilinear \
         -if ":(WEASD|APCP|NCPCP|ACPCP|SNOD):" -new_grid_interpolation budget -fi \
         -if ":(NCONCD|NCCICE|SPNCR|CLWMR|CICE|RWMR|SNMR|GRLE|PMTF|PMTC|REFC|CSNOW|CICEP|CFRZR|CRAIN|LAND|ICEC|TMP:surface|VEG|CCOND|SFEXC|MSLMA|PRES:tropopause|LAI|HPBL|HGT:planetary boundary layer):" -new_grid_interpolation neighbor -fi \
-        -new_grid ${grid_specs} ${subdir}/tmp_${grid}.grib2 &
+        -new_grid ${grid_specs} ${subdir}/${fhr}/tmp_${grid}.grib2 &
       wait 
 
       # Merge vector field records
-      wgrib2 ${subdir}/tmp_${grid}.grib2 -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" -submsg_uv ${bg_remap} &
+      wgrib2 ${subdir}/${fhr}/tmp_${grid}.grib2 -new_grid_vectors "UGRD:VGRD:USTM:VSTM:VUCSH:VVCSH" -submsg_uv ${bg_remap} &
       wait 
 
       # Remove temporary files
-      rm -f ${subdir}/tmp_${grid}.grib2
+      rm -f ${subdir}/${fhr}/tmp_${grid}.grib2
 
       # Link output for transfer from Jet to web
       ln -fs ${bg_remap} ${subdir}/BG${leveltype^^}_${basetime}${post_fhr}00
