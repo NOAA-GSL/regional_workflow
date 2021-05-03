@@ -190,7 +190,6 @@ settings="\
   'make_lbcs_tn': ${MAKE_LBCS_TN}
   'run_fcst_tn': ${RUN_FCST_TN}
   'run_post_tn': ${RUN_POST_TN}
-  'run_post_long_tn': ${RUN_POST_LONG_TN}
   'anal_gsi': ${ANAL_GSI_TN}
   'prep_coldstart': ${PREP_COLDSTART_TN}
   'prep_warmstart': ${PREP_WARMSTART_TN}

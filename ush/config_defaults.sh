@@ -1427,7 +1427,6 @@ MAKE_ICS_TN="make_ics"
 MAKE_LBCS_TN="make_lbcs"
 RUN_FCST_TN="run_fcst"
 RUN_POST_TN="run_post"
-RUN_POST_LONG_TN="run_post_long"
 
 ANAL_GSI_TN="anal_gsi_input"
 PREP_COLDSTART_TN="prep_coldstart"
