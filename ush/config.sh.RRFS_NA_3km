@@ -11,6 +11,8 @@ if [[ -n $RESERVATION ]] ; then
   PARTITION_FCST=kjet
   PARTITION_GRAPHICS=kjet
   PARTITION_ANALYSIS=kjet
+else
+  PARTITION_DEFAULT=kjet
 fi
 
 FIXLAM_NCO_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
