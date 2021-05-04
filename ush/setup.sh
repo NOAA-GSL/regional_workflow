@@ -2479,6 +2479,9 @@ FIX_GSI="${FIX_GSI}"
 FIX_CRTM="${FIX_CRTM}"
 AIRCRAFT_REJECT="${FIX_GSI}"
 SFCOBS_USELIST="${FIX_GSI}"
+
+ADDNL_OUTPUT_GRIDS=( $(printf "\"%s\" " "${ADDNL_OUTPUT_GRIDS[@]}" ))
+#
 #-----------------------------------------------------------------------
 #
 # Files.
