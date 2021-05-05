@@ -118,8 +118,9 @@
 "gfs_dyn",     "ps",          "pressfc",   "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "hs",          "hgtsfc",    "fv3_history",    "all",  .false.,  "none",  2
 "gfs_phys",    "refl_10cm"    "refl_10cm"  "fv3_history",    "all",  .false.,  "none",  2
-#"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
-#"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
+"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
+"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
+"gfs_dyn",     "pfnh",        "pfnh",      "fv3_history",    "all",  .false.,  "none",  2
 
 "gfs_dyn",   "wmaxup",        "upvvelmax",   "fv3_history",           "all",  .false.,  "none", 2
 "gfs_dyn",   "wmaxdn",        "dnvvelmax",   "fv3_history",           "all",  .false.,  "none", 2
@@ -130,6 +131,20 @@
 "gfs_dyn",   "maxvort01",     "maxvort01",   "fv3_history",           "all",  .false.,  "none", 2
 "gfs_dyn",   "maxvort02",     "maxvort02",   "fv3_history",           "all",  .false.,  "none", 2
 "gfs_dyn",   "maxvorthy1",    "maxvorthy1",  "fv3_history",           "all",  .false.,  "none", 2
+
+"gfs_dyn",     "ustm",        "ustm",        "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "vstm",        "vstm",        "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "srh01",       "srh01",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "srh03",       "srh03",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "u10max",      "u10max",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "v10max",      "v10max",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "spd10max",    "spd10max",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "refdmax",     "refdmax",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "refdmax263k", "refdmax263k", "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "t02max",      "t02max",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "t02min",      "t02min",      "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "rh02max",     "rh02max",     "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "rh02min",     "rh02min",     "fv3_history2d",  "all",  .false.,  "none",  2
 
 "gfs_phys",  "ALBDO_ave",     "albdo_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcp_ave",   "cprat_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
@@ -174,6 +189,7 @@
 "gfs_phys",  "v-gwd_ave",     "v-gwd_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "dusfc",         "uflx_ave",    "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "dvsfc",         "vflx_ave",    "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "cldfra",        "cldfra",      "fv3_history2d",         "all",  .false.,  "none",  2
 #"gfs_phys",  "cnvw",          "cnvcldwat",   "fv3_history2d",         "all",  .false.,  "none",  2
 
 "gfs_phys",    "psurf",       "pressfc",   "fv3_history2d",  "all",  .false.,  "none",  2
