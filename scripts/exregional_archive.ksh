@@ -43,7 +43,9 @@ if [[ $runcount -gt 0 ]];then
       if [[ $postcount -gt 0 ]];then
         echo "GRIB-2 for ${ensmem} ..."
         mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd
+        mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
         cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd 
+        cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/hrrr_grid/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
       fi
 
       if [[ -e ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/INPUT/gfs_data.tile7.halo0.nc ]]; then
