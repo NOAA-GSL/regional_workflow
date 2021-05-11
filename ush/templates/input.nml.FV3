@@ -142,7 +142,7 @@
     do_skeb = .false.
     do_sppt = .false.
     dspheat = .true.
-    fhcyc = 24.0
+    fhcyc = 72.0
     fhlwr = 1200.0
     fhswr = 1200.0
     fhzero = 1.0
