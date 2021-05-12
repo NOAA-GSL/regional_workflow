@@ -207,37 +207,77 @@ minHourDiff=100
 loops="009"    # or 009s for GFSv15
 ens_type="nc"  # or nemsio for GFSv15
 foundens=false
-for loop in $loops; do
-  for timelist in `ls ${ENKF_FCST}/enkfgdas.*/*/atmos/mem080/gdas*.atmf${loop}.${ens_type}`; do
-    availtimeyyyymmdd=`echo ${timelist} | cut -d'/' -f9 | cut -c 10-17`
-    availtimehh=`echo ${timelist} | cut -d'/' -f10`
-    availtime=${availtimeyyyymmdd}${availtimehh}
-    AVAIL_TIME=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
-    AVAIL_TIME=`date -d "${AVAIL_TIME}"`
+cat "no ens found" >> filelist03
 
-    stamp_avail=`date -d "${AVAIL_TIME} ${loop} hours" +%s`
+case $MACHINE in
 
-    hourDiff=`echo "($stampcycle - $stamp_avail) / (60 * 60 )" | bc`;
-    if [[ ${stampcycle} -lt ${stamp_avail} ]]; then
-       hourDiff=`echo "($stamp_avail - $stampcycle) / (60 * 60 )" | bc`;
-    fi
+"WCOSS_C" | "WCOSS" | "WCOSS_DELL_P3")
 
-    if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
-       minHourDiff=${hourDiff}
-       enkfcstname=gdas.t${availtimehh}z.atmf${loop}
-       EYYYYMMDD=$(echo ${availtime} | cut -c1-8)
-       EHH=$(echo ${availtime} | cut -c9-10)
-       foundens=true
-    fi
+  for loop in $loops; do
+    for timelist in `ls ${ENKF_FCST}/enkfgdas.*/*/atmos/mem080/gdas*.atmf${loop}.${ens_type}`; do
+      availtimeyyyymmdd=`echo ${timelist} | cut -d'/' -f9 | cut -c 10-17`
+      availtimehh=`echo ${timelist} | cut -d'/' -f10`
+      availtime=${availtimeyyyymmdd}${availtimehh}
+      avail_time=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
+      avail_time=`date -d "${avail_time}"`
+
+      stamp_avail=`date -d "${avail_time} ${loop} hours" +%s`
+
+      hourDiff=`echo "($stampcycle - $stamp_avail) / (60 * 60 )" | bc`;
+      if [[ ${stampcycle} -lt ${stamp_avail} ]]; then
+         hourDiff=`echo "($stamp_avail - $stampcycle) / (60 * 60 )" | bc`;
+      fi
+
+      if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
+         minHourDiff=${hourDiff}
+         enkfcstname=gdas.t${availtimehh}z.atmf${loop}
+         eyyyymmdd=$(echo ${availtime} | cut -c1-8)
+         ehh=$(echo ${availtime} | cut -c9-10)
+         foundens=true
+      fi
+    done
   done
-done
 
-if [ ${foundens} ]
-then
-  ls ${ENKF_FCST}/enkfgdas.${EYYYYMMDD}/${EHH}/atmos/mem???/${enkfcstname}.nc > filelist03
-else
-  more "no enkfgdas file " > filelist03
-fi
+  if [ ${foundens} ]
+  then
+    ls ${ENKF_FCST}/enkfgdas.${eyyyymmdd}/${ehh}/atmos/mem???/${enkfcstname}.nc > filelist03
+  fi
+
+  ;;
+"JET")
+
+  for loop in $loops; do
+    for timelist in `ls ${ENKF_FCST}/*.gdas.t*z.atmf${loop}.mem080.${ens_type}`; do
+      availtimeyy=`basename ${timelist} | cut -c 1-2`
+      availtimeyyyy=20${availtimeyy}
+      availtimejjj=`basename ${timelist} | cut -c 3-5`
+      availtimemm=`date -d "${availtimeyyyy}0101 +$(( 10#${availtimejjj} - 1 )) days" +%m`
+      availtimedd=`date -d "${availtimeyyyy}0101 +$(( 10#${availtimejjj} - 1 )) days" +%d`
+      availtimehh=`basename ${timelist} | cut -c 6-7`
+      availtime=${availtimeyyyy}${availtimemm}${availtimedd}${availtimehh}
+      avail_time=`echo "${availtime}" | sed 's/\([[:digit:]]\{2\}\)$/ \1/'`
+      avail_time=`date -d "${avail_time}"`
+
+      stamp_avail=`date -d "${avail_time} ${loop} hours" +%s`
+
+      hourDiff=`echo "($stampcycle - $stamp_avail) / (60 * 60 )" | bc`;
+      if [[ ${stampcycle} -lt ${stamp_avail} ]]; then
+         hourDiff=`echo "($stamp_avail - $stampcycle) / (60 * 60 )" | bc`;
+      fi
+
+      if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
+         minHourDiff=${hourDiff}
+         enkfcstname=${availtimeyy}${availtimejjj}${availtimehh}00.gdas.t${availtimehh}z.atmf${loop}
+         foundens=true
+      fi
+    done
+  done
+
+  if [ $foundens ]; then
+    ls ${ENKF_FCST}/${enkfcstname}.mem0??.${ens_type} >> filelist03
+  fi
+
+esac
 
 #
 #-----------------------------------------------------------------------
