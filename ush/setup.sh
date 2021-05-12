@@ -1195,9 +1195,7 @@ FIXcrtm="${EXPTDIR}/fix_crtm"
 if [ "${RUN_ENVIR}" = "nco" ]; then
 
   CYCLE_BASEDIR="$STMP/tmpnwprd/$RUN"
-  if [ "${NEW_STMP}" = "TRUE" ]; then
-    check_for_preexist_dir_file "${CYCLE_BASEDIR}" "${PREEXISTING_DIR_METHOD}"
-  fi
+  check_for_preexist_dir_file "${CYCLE_BASEDIR}" "${PREEXISTING_DIR_METHOD}"
   COMROOT="$PTMP/com"
   COMOUT_BASEDIR="$COMROOT/$NET/$envir"
 
@@ -2487,6 +2485,9 @@ FIX_CRTM="${FIX_CRTM}"
 AIRCRAFT_REJECT="${AIRCRAFT_REJECT}"
 SFCOBS_USELIST="${SFCOBS_USELIST}"
 
+RADARREFL_MINS=( $(printf "\"%s\" " "${RADARREFL_MINS[@]}" ))
+RADARREFL_TIMELEVEL=( $(printf "\"%s\" " "${RADARREFL_TIMELEVEL[@]}" ))
+ADDNL_OUTPUT_GRIDS=( $(printf "\"%s\" " "${ADDNL_OUTPUT_GRIDS[@]}" ))
 #
 #-----------------------------------------------------------------------
 #
