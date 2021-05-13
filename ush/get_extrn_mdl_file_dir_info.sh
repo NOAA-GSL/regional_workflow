@@ -391,7 +391,6 @@ fi
         if [ "${MACHINE}" = "JET" ]; then
           fns_on_disk=( "${yy}${ddd}${hh}0${fcst_mn}0${fcst_hh}" )
         else
-         # fns_on_disk=( "gfs.t${hh}z.pgrb2.0p25.f000")  # Get only 0.25 degree files for now.
           fns_on_disk=( "gfs.t${hh}z.pgrb2.0p25.f0${fcst_hh}" "gfs.t${hh}z.sfcf0${fcst_hh}.nc")  # use netcdf
         fi
         fns_in_arcv=( "gfs.t${hh}z.pgrb2.0p25.f0${fcst_hh}" )  # Get only 0.25 degree files for now.
