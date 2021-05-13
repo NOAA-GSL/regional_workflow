@@ -301,8 +301,6 @@ if [[ ${nummem} -eq 80 ]]; then
   print_info_msg "$VERBOSE" " Cycle ${YYYYMMDDHH}: GSI hybrid uses ${memname} with n_ens=${nummem}" 
 fi
 
-ifhyb=.false.
-
 #
 #-----------------------------------------------------------------------
 #
@@ -352,13 +350,27 @@ if [[ ${HH} -eq '00' || ${HH} -eq '12' ]]; then
   obs_source=rap_e
 fi
 
-obs_files_source[0]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.prepbufr.tm00
+case $MACHINE in
+
+"WCOSS_C" | "WCOSS" | "WCOSS_DELL_P3")
+   obsfileprefix=${obs_source}
+   obspath_tmp=${OBSPATH}/${obs_source}.${YYYYMMDD}
+
+  ;;
+"JET")
+   obsfileprefix=${YYYYMMDDHH}.${obs_source}
+   obspath_tmp=${OBSPATH}
+
+esac
+
+
+obs_files_source[0]=${obspath_tmp}/${obsfileprefix}.t${HH}z.prepbufr.tm00
 obs_files_target[0]=prepbufr
 
-obs_files_source[1]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.satwnd.tm00.bufr_d
+obs_files_source[1]=${obspath_tmp}/${obsfileprefix}.t${HH}z.satwnd.tm00.bufr_d
 obs_files_target[1]=satwndbufr
 
-obs_files_source[2]=${OBSPATH}/${YYYYMMDDHH}.${obs_source}.t${HH}z.nexrad.tm00.bufr_d
+obs_files_source[2]=${obspath_tmp}/${obsfileprefix}.t${HH}z.nexrad.tm00.bufr_d
 obs_files_target[2]=l2rwbufr
 
 obs_number=${#obs_files_source[@]}
