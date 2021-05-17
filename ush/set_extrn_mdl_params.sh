@@ -1,6 +1,4 @@
 #
-set -x
-
 #-----------------------------------------------------------------------
 #
 # This file defines and then calls a function that sets parameters 
