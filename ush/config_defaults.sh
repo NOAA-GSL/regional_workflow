@@ -669,9 +669,9 @@ NOMADS_file_type="nemsio"
 #-----------------------------------------------------------------------
 #
 USE_USER_STAGED_EXTRN_FILES="FALSE"
-EXTRN_MDL_SOURCE_BASEDIR_ICS="/base/dir/containing/user/staged/extrn/mdl/files/for/ICs"
+EXTRN_MDL_SOURCE_BASEDIR_ICS=""
 EXTRN_MDL_FILES_ICS=( "ICS_file1" "ICS_file2" "..." )
-EXTRN_MDL_SOURCE_BASEDIR_LBCS="/base/dir/containing/user/staged/extrn/mdl/files/for/LBCs"
+EXTRN_MDL_SOURCE_BASEDIR_LBCS=""
 EXTRN_MDL_FILES_LBCS=( "LBCS_file1" "LBCS_file2" "..." )
 #
 #-----------------------------------------------------------------------
@@ -1009,6 +1009,9 @@ ESGgrid_WIDE_HALO_WIDTH=""
 # BLOCKSIZE:
 # The amount of data that is passed into the cache at a time.
 #
+# FH_DFI_RADAR (hour):
+# The forecast period of using radar tten.
+#
 # Here, we set these parameters to null strings.  This is so that, for 
 # any one of these parameters:
 #
@@ -1033,6 +1036,7 @@ DT_ATMOS=""
 LAYOUT_X=""
 LAYOUT_Y=""
 BLOCKSIZE=""
+FH_DFI_RADAR=(-20000000000)
 #
 #-----------------------------------------------------------------------
 #
