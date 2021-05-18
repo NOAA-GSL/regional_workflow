@@ -221,6 +221,7 @@ settings="\
   'make_ics_tn': ${MAKE_ICS_TN}
   'make_lbcs_tn': ${MAKE_LBCS_TN}
   'run_fcst_tn': ${RUN_FCST_TN}
+  'run_fcst_long_tn': ${RUN_FCST_LONG_TN}
   'run_post_tn': ${RUN_POST_TN}
   'anal_gsi_input': ${ANAL_GSI_INPUT_TN}
   'anal_gsi_restart': ${ANAL_GSI_RESTART_TN}

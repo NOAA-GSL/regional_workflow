@@ -1257,6 +1257,7 @@ GET_EXTRN_LBCS_TN="get_extrn_lbcs"
 MAKE_ICS_TN="make_ics"
 MAKE_LBCS_TN="make_lbcs"
 RUN_FCST_TN="run_fcst"
+RUN_FCST_LONG_TN="run_fcst_long"
 RUN_POST_TN="run_post"
 
 ANAL_GSI_INPUT_TN="anal_gsi_input"
@@ -1302,7 +1303,7 @@ WTIME_GET_EXTRN_LBCS="00:45:00"
 WTIME_MAKE_ICS="00:30:00"
 WTIME_MAKE_LBCS="00:30:00"
 WTIME_RUN_FCST="04:30:00"
-WTIME_RUN_POST="00:35:00"
+WTIME_RUN_POST="00:45:00"
 #
 # Maximum number of attempts.
 #
