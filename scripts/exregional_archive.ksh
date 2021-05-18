@@ -31,7 +31,9 @@ if [[ $runcount -gt 0 ]];then
     if [[ -d ${CYCLE_BASEDIR}/$year$month$day$hour/anal_gsi ]];then
       echo "GSI Diag ..."
       mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
+      mkdir -p $COMOUT_BASEDIR/../../../../../staged_data/$year$month$day$hour/anal_gsi
       cp -rsv ${CYCLE_BASEDIR}/$year$month$day$hour/anal_gsi/* $COMOUT_BASEDIR/stage/$year$month$day$hour/anal_gsi
+      cp -rv ${CYCLE_BASEDIR}/$year$month$day$hour/anal_gsi/* $COMOUT_BASEDIR/../../../../../staged_data/$year$month$day$hour/anal_gsi
     fi
 
     for memID in {1..9}; do
@@ -44,8 +46,10 @@ if [[ $runcount -gt 0 ]];then
         echo "GRIB-2 for ${ensmem} ..."
         mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd
         mkdir -p $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
+        mkdir -p $COMOUT_BASEDIR/../../../../../staged_data/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
         cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd 
         cp -rsv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/hrrr_grid/*bg*tm* $COMOUT_BASEDIR/stage/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
+        cp -rv ${COMOUT_BASEDIR}/${onerun}/${ensmem}/hrrr_grid/*bgsfc*tm* $COMOUT_BASEDIR/../../../../../staged_data/$year$month$day$hour/${ensmem}/postprd/hrrr_grid
       fi
 
       if [[ -e ${CYCLE_BASEDIR}/$year$month$day$hour/${ensmem}/INPUT/gfs_data.tile7.halo0.nc ]]; then
