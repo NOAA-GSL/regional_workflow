@@ -2,9 +2,9 @@
 
 module load hpss
 
-day=`date -u "+%d" -d "-1 day"`
-month=`date -u "+%m" -d "-1 day"`
-year=`date -u "+%Y" -d "-1 day"`
+day=`date -u "+%d" -d "-2 day"`
+month=`date -u "+%m" -d "-2 day"`
+year=`date -u "+%Y" -d "-2 day"`
 
 . ${GLOBAL_VAR_DEFNS_FP}
 
