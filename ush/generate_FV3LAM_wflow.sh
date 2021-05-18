@@ -842,7 +842,7 @@ if [ "${DO_DACYCLE}" = "true" ]; then
      'warm_start' : true,
    }
  'gfs_physics_nml': {
-    'fh_dfi_radar': [${FH_DFI_RADAR[@]}],
+    'fh_dfi_radar': [${FH_DFI_RADAR}],
   }"
  
  $USHDIR/set_namelist.py -q \
