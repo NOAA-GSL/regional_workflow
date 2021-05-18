@@ -1009,8 +1009,10 @@ ESGgrid_WIDE_HALO_WIDTH=""
 # BLOCKSIZE:
 # The amount of data that is passed into the cache at a time.
 #
-# FH_DFI_RADAR (hour):
-# The forecast period of using radar tten.
+# FH_DFI_RADAR:
+# The forecast period of using radar tten. Array of 5:
+# (0.0,0.25,0.5,0.75,1.0) to use radar tten in the first hour of the
+# forecast with reading new observed tten every 15 minutes.
 #
 # Here, we set these parameters to null strings.  This is so that, for 
 # any one of these parameters:
