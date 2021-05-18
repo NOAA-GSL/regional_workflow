@@ -1010,9 +1010,11 @@ ESGgrid_WIDE_HALO_WIDTH=""
 # The amount of data that is passed into the cache at a time.
 #
 # FH_DFI_RADAR:
-# The forecast period of using radar tten. Array of 5:
-# (0.0,0.25,0.5,0.75,1.0) to use radar tten in the first hour of the
-# forecast with reading new observed tten every 15 minutes.
+# the forecast hour to use radar tten, this is used  to set the fh_dfi_radar 
+# parameter in input.nml, e.g. FH_DFI_RADAR="0.0,0.25,0.5,0.75,1.0"
+# will set fh_dfi_radar = 0.0,0.25,0.5,0.75,1.0 in input.nml* and
+# it tells the model to read at the 0, 15, 30, 45 minutes,
+# and apply radar tten from 0-60 minutes of forecasts.
 #
 # Here, we set these parameters to null strings.  This is so that, for 
 # any one of these parameters:
