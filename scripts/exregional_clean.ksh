@@ -5,7 +5,7 @@ currentime=`date`
 . ${GLOBAL_VAR_DEFNS_FP}
 
 # Delete ptmp directories
-deletetime=`date +%Y%m%d -d "${currentime} 72 hours ago"`
+deletetime=`date +%Y%m%d -d "${currentime} 96 hours ago"`
 echo "Deleting ptmp directories before ${deletetime}..."
 cd ${COMOUT_BASEDIR}
 set -A XX `ls -d ${RUN}.20* | sort -r`
@@ -30,7 +30,7 @@ for onetime in ${XX[*]};do
 done
 
 # Delete netCDF files
-deletetime=`date +%Y%m%d%H -d "${currentime} 48 hours ago"`
+deletetime=`date +%Y%m%d%H -d "${currentime} 60 hours ago"`
 echo "Deleting netCDF files before ${deletetime}..."
 cd ${CYCLE_BASEDIR}
 set -A XX `ls -d 20* | sort -r`
@@ -45,7 +45,7 @@ for onetime in ${XX[*]};do
 done
 
 # Delete old log files
-deletetime=`date +%Y%m%d%H -d "${currentime} 72 hours ago"`
+deletetime=`date +%Y%m%d%H -d "${currentime} 96 hours ago"`
 echo "Deleting log files before ${deletetime}..."
 
 # Remove template date from last two levels
