@@ -516,6 +516,7 @@ done
 rm -f obs*
 rm -f pe*
 rm -f gsi.x
+rm -f fv3_grid_spec berror_stats satbias* gfs_data.tile7.halo0.nc_b
 find *.bin -maxdepth 1 -exec unlink '{}' \;
 
 #
