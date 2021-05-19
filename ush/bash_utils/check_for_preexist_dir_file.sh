@@ -135,7 +135,7 @@ where the arguments are defined as follows:
          local old_indx=$( printf "%03d" "$i" )
          local old_dir_or_file="${dir_or_file}/old${old_indx}"
          while [ -d "${old_dir_or_file}" ]; do
-         i=$[$i+1]
+           i=$[$i+1]
            old_indx=$( printf "%03d" "$i" )
            old_dir_or_file="${dir_or_file}/old${old_indx}"
          done
