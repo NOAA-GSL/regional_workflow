@@ -31,6 +31,9 @@ PREEXISTING_DIR_METHOD="upgrade"
 PREDEF_GRID_NAME=RRFS_CONUS_3km
 ADDNL_OUTPUT_GRIDS=( "hrrr" )
 
+TILE_LABELS="CONUS REGIONS"
+TILE_SETS="full NE,NC,NW,SE,SC,SW"
+
 DO_DACYCLE="true"
 #DO_RETRO="true"
 #LBCS_ICS_ONLY="true"
@@ -62,7 +65,7 @@ if [[ $DO_RETRO == "true" ]] ; then
     OBSPATH=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/obs_rap
     OBSPATH_NSSLMOSIAC=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/reflectivity
     LIGHTNING_ROOT=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/lightning/vaisala/netcdf/
-    ENKF_FCST=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/enkf/atm 
+    ENKF_FCST=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/enkf/atm
   fi
 
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
@@ -146,6 +149,17 @@ COMINgfs=""
 
 STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
 PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+
+if [[ $DO_RETRO == "true" ]] ; then
+  CLEAN_OLDPROD_HRS="240"
+  CLEAN_OLDLOG_HRS="240"
+  CLEAN_OLDRUN_HRS="6"
+  CLEAN_OLDFCST_HRS="6"
+  if [[ $LBCS_ICS_ONLY == "true" ]]; then
+    CLEAN_OLDRUN_HRS="7777"
+    CLEAN_OLDFCST_HRS="7777"
+  fi
+fi
 
 #
 # In NCO mode, the user must manually (e.g. after doing the build step)
