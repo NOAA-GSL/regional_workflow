@@ -56,7 +56,6 @@ boundary condition files for the FV3 will be generated.
 #-----------------------------------------------------------------------
 #
 valid_args=( \
-"ics_or_lbcs" \
 "extrn_mdl_cdate" \
 )
 process_args valid_args "$@"
@@ -71,9 +70,53 @@ process_args valid_args "$@"
 #
 print_input_args valid_args
 
+
+get_files() {
+
+  files=$1
+  for file in ${files[@]} ; do
+    wget $file
+    wait
+  done
+
+}
+
+hh=${extrn_mdl_cdate:8:2}
 case ${EXTRN_MDL_NAME_ICS} in 
 
-  "
+  "FV3GFS")
+    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/gfs.${extrn_mdl_cdate}/${hh}/atmos"
+    urlb=$urla
+    filea="gfs.t${hh}z.pgrb2.0p25.f0"
+    fileb="gfs.t${hh}z.pgrb2b.0p25.f0"
+    combined_file=${filea}FHR_tmp
+    ;;
+  "GEFS")
+    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${extrn_mdl_cdate}/${hh}/atmos/pgrb2ap5"
+    urlb="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${extrn_mdl_cdate}/${hh}/atmos/pgrb2bp5"
+    filea="gep${GEFS_MEMBER}.pgrb2ap5.t${hh}z.pgrb2a.0p50.f0"
+    fileb="gep${GEFS_MEMBER}.pgrb2bp5.t${hh}z.pgrb2b.0p50.f0"
+    combined_file="gep${GEFS_MEMBER}.t${hh}z.pgrb2.0p50.f0FHR"
+    ;;
 
+esac
 
+last_hour=$(( FCST_LEN_HRS + EXTRN_MDL_LBCS_OFFSET_HRS ))
+
+for fhr in $(seq -w $EXTRN_MDL_LBCS_OFFSET_HRS $LBC_SPEC_INTVL_HRS ) ; do 
+
+  outfile=${combined_file/FHR/$fhr}
+  get_files ${urla}/${filea}${fhr} ${urlb}/${fileb}${fhr}
+  cat ${filea}${fhr} ${fileb}${fhr} > ${outfile}
+
+  if [ ${EXTRN_MDL_NAME_ICS} = "FV3GFS" ] ; then
+
+    # Use wgrib2 to remove duplicate entries from the GFS files
+    wgrib2 ${combined_file/FHR/$fhr} -submsg 1 | \
+      ${USHDIR}/grib2_unique.pl | \
+      wgrib2 -i ${combined_file/FHR/$fhr} -GRIB ${outfile/_tmp/}
+    rm -rf ${outfile}
+  fi
+
+done
 

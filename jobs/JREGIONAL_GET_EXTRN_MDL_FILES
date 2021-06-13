@@ -192,7 +192,7 @@ fi
 #
 #-----------------------------------------------------------------------
 #
-extrn_mdl_staging_dir="${CYCLE_DIR}/${EXTRN_MDL_NAME}/for_${ICS_OR_LBCS}"
+extrn_mdl_staging_dir="${CYCLE_DIR}/${EXTRN_MDL_NAME}"
 mkdir_vrfy -p "${extrn_mdl_staging_dir}"
 cd_vrfy "${extrn_mdl_staging_dir}"
 #
@@ -203,9 +203,15 @@ cd_vrfy "${extrn_mdl_staging_dir}"
 #-----------------------------------------------------------------------
 #
 
+yyyy=${CDATE:0:4}
+mm=${CDATE:4:2}
+dd=${CDATE:6:2}
+hh=${CDATE:8:2}
+yyyymmdd=${CDATE:0:8}
+
+extrn_mdl_cdate=$( $DATE_UTIL --utc --date "${yyyymmdd} ${hh} UTC - ${EXTRN_MDL_LBCS_OFFSET_HRS} hours" "+%Y%m%d%H" )
+
 $SCRIPTSDIR/exregional_download_extrn_mdl_files.sh \
-  ics_or_lbcs="${ICS_OR_LBCS}" \
-  use_user_staged_extrn_files="${USE_USER_STAGED_EXTRN_FILES}" \
   extrn_mdl_cdate="${extrn_mdl_cdate}" \
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
