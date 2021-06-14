@@ -155,37 +155,6 @@ esac
 #
 #-----------------------------------------------------------------------
 #
-# Check whether the environment variable ICS_OR_LBCS is set to a valid
-# value.  This variable specifies whether we are getting the external
-# model files for the purpose of generating initial conditions (ICs) or
-# lateral boundary condtions (LBCs) for the forecast model.
-#
-#-----------------------------------------------------------------------
-#
-valid_vals_ICS_OR_LBCS=( "ICS" "LBCS" )
-check_var_valid_value "ICS_OR_LBCS" "valid_vals_ICS_OR_LBCS"
-#
-#-----------------------------------------------------------------------
-#
-# Set the parameter anl_or_fcst that determines whether we want to get 
-# analysis or forecast files.  This depends on whether we want these files 
-# to generate initial condition and surface field files or lateral boundary 
-# condition files.  Also, set time_offset_hrs, which is the offset in 
-# hours between the current cycle's starting time and the starting time 
-# of the external model providing the LBCs.
-#
-#-----------------------------------------------------------------------
-#
-if [ "${ICS_OR_LBCS}" = "ICS" ]; then
-  anl_or_fcst="ANL"
-  time_offset_hrs="6"
-elif [ "${ICS_OR_LBCS}" = "LBCS" ]; then
-  anl_or_fcst="FCST"
-  time_offset_hrs="${EXTRN_MDL_LBCS_OFFSET_HRS}"
-fi
-#
-#-----------------------------------------------------------------------
-#
 # Set the name of and then create the directory in which to stage the 
 # external model files for the current cycle (if it doesn't already exist).  
 # Then change location to that directory.
@@ -195,6 +164,7 @@ fi
 extrn_mdl_staging_dir="${CYCLE_DIR}/${EXTRN_MDL_NAME}"
 mkdir_vrfy -p "${extrn_mdl_staging_dir}"
 cd_vrfy "${extrn_mdl_staging_dir}"
+pwd
 #
 #-----------------------------------------------------------------------
 #
@@ -211,8 +181,8 @@ yyyymmdd=${CDATE:0:8}
 
 extrn_mdl_cdate=$( $DATE_UTIL --utc --date "${yyyymmdd} ${hh} UTC - ${EXTRN_MDL_LBCS_OFFSET_HRS} hours" "+%Y%m%d%H" )
 
-$SCRIPTSDIR/exregional_download_extrn_mdl_files.sh \
-  extrn_mdl_cdate="${extrn_mdl_cdate}" \
+$SCRIPTSDIR/exregional_download_extrn_mdl_file.sh \
+  extrn_mdl_cdate="${extrn_mdl_cdate}" ||
 print_err_msg_exit "\
 Call to ex-script corresponding to J-job \"${scrfunc_fn}\" failed."
 #

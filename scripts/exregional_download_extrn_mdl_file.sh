@@ -70,10 +70,11 @@ process_args valid_args "$@"
 #
 print_input_args valid_args
 
+set -x
 
 get_files() {
 
-  files=$1
+  files=("$@")
   for file in ${files[@]} ; do
     wget $file
     wait
@@ -82,18 +83,22 @@ get_files() {
 }
 
 hh=${extrn_mdl_cdate:8:2}
+yyyymmdd=${extrn_mdl_cdate:0:8}
 case ${EXTRN_MDL_NAME_ICS} in 
 
   "FV3GFS")
-    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/gfs.${extrn_mdl_cdate}/${hh}/atmos"
+    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/gfs.${yyyymmdd}/${hh}/atmos"
+    urla="https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.${yyyymmdd}/${hh}/atmos"
     urlb=$urla
     filea="gfs.t${hh}z.pgrb2.0p25.f0"
     fileb="gfs.t${hh}z.pgrb2b.0p25.f0"
     combined_file=${filea}FHR_tmp
     ;;
   "GEFS")
-    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${extrn_mdl_cdate}/${hh}/atmos/pgrb2ap5"
-    urlb="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${extrn_mdl_cdate}/${hh}/atmos/pgrb2bp5"
+    urla="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${yyyymmdd}/${hh}/atmos/pgrb2ap5"
+    urlb="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${yyyymmdd}/${hh}/atmos/pgrb2bp5"
+    urla="https://noa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2ap5"
+    urlb="https://noa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2bp5"
     filea="gep${GEFS_MEMBER}.pgrb2ap5.t${hh}z.pgrb2a.0p50.f0"
     fileb="gep${GEFS_MEMBER}.pgrb2bp5.t${hh}z.pgrb2b.0p50.f0"
     combined_file="gep${GEFS_MEMBER}.t${hh}z.pgrb2.0p50.f0FHR"
@@ -102,12 +107,18 @@ case ${EXTRN_MDL_NAME_ICS} in
 esac
 
 last_hour=$(( FCST_LEN_HRS + EXTRN_MDL_LBCS_OFFSET_HRS ))
+last_hour=$(printf "%02d" $last_hour) 
 
-for fhr in $(seq -w $EXTRN_MDL_LBCS_OFFSET_HRS $LBC_SPEC_INTVL_HRS ) ; do 
+extrn_mdl_fns=()
+bcs_fhrs=($(seq -w $EXTRN_MDL_LBCS_OFFSET_HRS $LBC_SPEC_INTVL_HRS $last_hour ))
+
+for fhr in ${bcs_fhrs[@]} ; do
 
   outfile=${combined_file/FHR/$fhr}
   get_files ${urla}/${filea}${fhr} ${urlb}/${fileb}${fhr}
   cat ${filea}${fhr} ${fileb}${fhr} > ${outfile}
+
+  rm -rf ${filea}${fhr} ${fileb}${fhr}
 
   if [ ${EXTRN_MDL_NAME_ICS} = "FV3GFS" ] ; then
 
@@ -118,5 +129,11 @@ for fhr in $(seq -w $EXTRN_MDL_LBCS_OFFSET_HRS $LBC_SPEC_INTVL_HRS ) ; do
     rm -rf ${outfile}
   fi
 
+  extrn_mdl_fns+=("${outfile/_tmp/}")
 done
+
+var_defs="extrn_mdl_var_defns.sh"
+echo EXTRN_MDL_CDATE=$extrn_mdl_cdate > $var_defs
+echo EXTRN_MDL_FNS=\( ${extrn_mdl_fns[@]} \) >> $var_defs
+echo EXTRN_MDL_LBC_SPEC_FHRS=\( ${bcs_fhrs[@]:1} \) >> $var_defs
 
