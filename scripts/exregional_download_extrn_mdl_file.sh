@@ -76,7 +76,7 @@ get_files() {
 
   files=("$@")
   for file in ${files[@]} ; do
-    wget $file
+    wget $file || exit 1
     wait
   done
 
@@ -97,10 +97,10 @@ case ${EXTRN_MDL_NAME_ICS} in
   "GEFS")
     urla="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${yyyymmdd}/${hh}/atmos/pgrb2ap5"
     urlb="https://ftp.ncep.noaa.gov/data/nccf/com/gens/prod/gefs.${yyyymmdd}/${hh}/atmos/pgrb2bp5"
-    urla="https://noa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2ap5"
-    urlb="https://noa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2bp5"
-    filea="gep${GEFS_MEMBER}.pgrb2ap5.t${hh}z.pgrb2a.0p50.f0"
-    fileb="gep${GEFS_MEMBER}.pgrb2bp5.t${hh}z.pgrb2b.0p50.f0"
+    urla="https://noaa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2ap5"
+    urlb="https://noaa-gefs-pds.s3.amazonaws.com/gefs.${yyyymmdd}/${hh}/atmos/pgrb2bp5"
+    filea="gep${GEFS_MEMBER}.t${hh}z.pgrb2a.0p50.f0"
+    fileb="gep${GEFS_MEMBER}.t${hh}z.pgrb2b.0p50.f0"
     combined_file="gep${GEFS_MEMBER}.t${hh}z.pgrb2.0p50.f0FHR"
     ;;
 
