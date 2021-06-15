@@ -4,7 +4,7 @@ WORKFLOW_MANAGER="rocoto"
 SCHED="slurm"
 
 EXPT_BASEDIR="/lustre"
-EXPT_SUBDIR="GEFS02"
+EXPT_SUBDIR="RRFS_mem__MEMBER__"
 
 RUN_CMD_UTILS="srun --mpi=pmi2"
 RUN_CMD_FCST="srun --mpi=pmi2"
@@ -30,7 +30,7 @@ BUILD_ENV_FN="build_aws_intel.env"
 
 # Copied directly from setup.sh HERA settings
 DO_ENSEMBLE="TRUE"
-NUM_ENS_MEMBERS="3"
+NUM_ENS_MEMBERS="1"
 NDIGITS_ENSMEM_NAMES="2"
 
 # Get external model files staged on disk
@@ -39,8 +39,8 @@ COMINgfs="/lustre/data/gefs"
 VERBOSE="TRUE"
 
 PREDEF_GRID_NAME="RRFS_NA_3km"
-NET="RRFS_NA_GEFS02"
-RUN="RRFS_NA_GEFS02"
+NET="RRFS___MEMBER__"
+RUN="RRFS___MEMBER__"
 
 EXTRN_MDL_NAME_ICS="GEFS"
 EXTRN_MDL_NAME_LBCS="GEFS"
@@ -58,7 +58,7 @@ PREEXISTING_DIR_METHOD="rename"
 
 QUILTING="TRUE"
 
-SUITES=( FV3_GFS_v15_thompson_mynn rrfs_gfsv16 nssl_mp_no_nsst )
+SUITES=( __CCPPSUITE__ )
 FCST_LEN_HRS="3"
 LBC_SPEC_INTVL_HRS="3"
 
