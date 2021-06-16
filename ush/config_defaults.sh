@@ -1353,6 +1353,7 @@ DO_ENSEMBLE="FALSE"
 NUM_ENS_MEMBERS="1"
 NDIGITS_ENSMEM_NAMES=${#NUM_ENS_MEMBERS}
 GEFS_MEMBER="01"
+ENS_IDX_START="1"
 #
 #-----------------------------------------------------------------------
 #

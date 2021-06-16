@@ -32,6 +32,7 @@ BUILD_ENV_FN="build_aws_intel.env"
 DO_ENSEMBLE="TRUE"
 NUM_ENS_MEMBERS="1"
 NDIGITS_ENSMEM_NAMES="2"
+ENS_IDX_START="__MEMBER__"
 
 # Get external model files staged on disk
 COMINgfs="/lustre/data/gfs"
