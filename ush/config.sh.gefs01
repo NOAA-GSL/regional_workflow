@@ -3,7 +3,7 @@ ACCOUNT="an_account"
 WORKFLOW_MANAGER="rocoto"
 SCHED="slurm"
 
-EXPT_BASEDIR="/lustre"
+EXPT_BASEDIR="/lustre/FFAIR"
 EXPT_SUBDIR="RRFS_mem__MEMBER__"
 
 RUN_CMD_UTILS="srun --mpi=pmi2"
@@ -17,6 +17,11 @@ LAYOUT_Y="36"
 BLOCKSIZE="35"
 WRTCMP_write_groups="1"
 WRTCMP_write_tasks_per_group="144"
+
+NNODES_MAKE_LBCS="2"
+PPN_MAKE_LBCS="18"
+NNODES_MAKE_ICS="1"
+PPN_MAKE_ICS="36"
 
 PARTITION_DEFAULT=
 QUEUE_DEFAULT=
@@ -34,7 +39,7 @@ NUM_ENS_MEMBERS="1"
 NDIGITS_ENSMEM_NAMES="2"
 
 # Get external model files staged on disk
-COMINgfs="/lustre/data/gefs"
+COMINgfs="/lustre/FFAIR/data/gefs"
 
 VERBOSE="TRUE"
 
@@ -68,11 +73,11 @@ DATE_FIRST_CYCL="20210603"
 DATE_LAST_CYCL="20210603"
 CYCL_HRS=( "00" )
 
-STMP="/lustre/stmp"
-PTMP="/lustre/ptmp"
+STMP="/lustre/FFAIR/stmp"
+PTMP="/lustre/FFAIR/ptmp"
 
 # The following are specifically for AWS using Parallel Works
-FIXgsm=${FIXgsm:-"/lustre/NCEPDEV/global/glopara/fix/fix_am"}
-TOPO_DIR=${TOPO_DIR:-"/lustre/NCEPDEV/global/glopara/fix/fix_orog"}
-SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/lustre/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
-FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/lustre/NCEPDEV/global/glopara/fix"}
+FIXgsm=${FIXgsm:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_am"}
+TOPO_DIR=${TOPO_DIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_orog"}
+SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
+FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix"}

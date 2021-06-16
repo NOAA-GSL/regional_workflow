@@ -468,6 +468,9 @@ case $MACHINE in
   "LINUX")
     WORKFLOW_MANAGER=${WORKFLOW_MANAGER:-"none"}
     SCHED=${SCHED:-"none"}
+    PARTITION_DEFAULT=${PARTITION_DEFAULT:-"misccomp"}
+    PARTITION_HPSS=${PARTITION_HPSS:-"service"}
+    PARTITION_FCST=${PARTITION_FCST:-"forecast"}
     ;;
 
 esac
