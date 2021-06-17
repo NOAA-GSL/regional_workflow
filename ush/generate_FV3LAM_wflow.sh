@@ -228,6 +228,7 @@ settings="\
   'wtime_make_lbcs': ${WTIME_MAKE_LBCS}
   'wtime_run_fcst': ${WTIME_RUN_FCST}
   'wtime_run_post': ${WTIME_RUN_POST}
+  'wtime_upload': ${WTIME_RUN_POST}
 #
 # Maximum number of tries for each task.
 #
@@ -286,6 +287,7 @@ settings="\
   'ensmem_indx_name': ${ensmem_indx_name}
   'uscore_ensmem_name': ${uscore_ensmem_name}
   'slash_ensmem_subdir': ${slash_ensmem_subdir}
+  'ens_idx': $(( 10#${ENS_IDX_START##+(0)} ))
 " # End of "settings" variable.
 
 print_info_msg $VERBOSE "

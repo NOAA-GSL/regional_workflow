@@ -12,7 +12,8 @@ for suite in FV3_GFS_v15_thompson_mynn rrfs_gfsv16 nssl_mp_no_nsst ; do
     sed s/__MEMBER__/$member/g $config_file > config.sh
     sed -i s/__CCPPSUITE__/$suite/g config.sh
 
-    ./generate_FV3LAM_wflow.sh
+    ./generate_FV3LAM_wflow.sh || exit 1
+    wait
     ((mem+=1))
   done
 done

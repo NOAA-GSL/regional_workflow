@@ -64,12 +64,13 @@ renames grib files, and uploads them to the S3 Bucket.
 input_dir="${CYCLE_DIR}${SLASH_ENSMEM_SUBDIR}"
 
 if [ "${RUN_ENVIR}" = "nco" ]; then
-  COMOUT="${COMOUT_BASEDIR}/$RUN.$PDY/$cyc${SLASH_ENSMEM_SUBDIR}"
+  COMOUT="${COMOUT_BASEDIR}/$RUN.$PDY/${CDATE:8:2}${SLASH_ENSMEM_SUBDIR}"
   output_dir="$COMOUT"
 else
   output_dir="${run_dir}/subset"
 fi
 mkdir_vrfy -p "${output_dir}"
+cd_vrfy "${output_dir}"
 
 #
 #-----------------------------------------------------------------------
@@ -78,7 +79,7 @@ mkdir_vrfy -p "${output_dir}"
 #
 #-----------------------------------------------------------------------
 #
-fhr=$( printf "%s" "${fhr}" | $SED -n -r -e "s/^([0-9]+)$/\1/p" )
+fhr=$( printf "%s" "${FHR}" | $SED -n -r -e "s/^([0-9]+)$/\1/p" )
 if [ -z "$fhr" ]; then
   print_err_msg_exit "\
 The forecast hour (fhr) must be a non-empty string consisting of only 

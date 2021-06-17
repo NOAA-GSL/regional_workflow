@@ -30,6 +30,7 @@ Workflow task names.
 <!ENTITY MAKE_LBCS_TN      "{{ make_lbcs_tn }}">
 <!ENTITY RUN_FCST_TN       "{{ run_fcst_tn }}">
 <!ENTITY RUN_POST_TN       "{{ run_post_tn }}">
+<!ENTITY SAVE_AND_SHIP_TN  "save_and_ship">
 
 <!--
 Flags that specify whether to run the preprocessing tasks.
@@ -79,6 +80,7 @@ RUN_FCST_TN task.
 <!ENTITY RSRV_FCST    "<account>&ACCOUNT;</account><queue>&QUEUE_FCST;</queue>">
 {%- endif %}
 
+<!ENTITY RSRV_SERVICE "<account>&ACCOUNT;</account><queue>&QUEUE_HPSS;</queue>">
 ]>
 
 <workflow realtime="F" scheduler="&SCHED;" cyclethrottle="20">
@@ -248,10 +250,11 @@ MODULES_RUN_TASK_FP script.
   <metatask name="run_ensemble">
 
     <var name="{{ ensmem_indx_name }}">
-{%- for m in range(ens_idx, num_ens_members+1) -%}
+{%- for m in range(ens_idx, [num_ens_members, ens_idx]|max +1) -%}
   {%- set fmtstr=" %0"~ndigits_ensmem_names~"d" -%}
   {{- fmtstr%m -}}
 {%- endfor %} </var>
+    <var name="idx"> {%- for m in range(1, num_ens_members+1) -%}{{ m }}{%- endfor -%}</var>
 {%- endif %}
 
   <task name="&MAKE_ICS_TN;{{ uscore_ensmem_name }}" maxtries="{{ maxtries_make_ics }}">
@@ -270,7 +273,8 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
-    <envar><name>ENSMEM_INDX</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
+    <envar><name>ENSMEM_INDX</name><value><cyclestr>#idx#</cyclestr></value></envar>
+    <envar><name>MEMBER</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
 
     <dependency>
       <and>
@@ -314,7 +318,8 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
-    <envar><name>ENSMEM_INDX</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
+    <envar><name>MEMBER</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
+    <envar><name>ENSMEM_INDX</name><value><cyclestr>#idx#</cyclestr></value></envar>
 
 
     <dependency>
@@ -363,7 +368,8 @@ MODULES_RUN_TASK_FP script.
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
     <envar><name>CYCLE_DIR</name><value><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H</cyclestr></value></envar>
     <envar><name>SLASH_ENSMEM_SUBDIR</name><value><cyclestr>{{ slash_ensmem_subdir }}</cyclestr></value></envar>
-    <envar><name>ENSMEM_INDX</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
+    <envar><name>MEMBER</name><value><cyclestr>#{{ ensmem_indx_name }}#</cyclestr></value></envar>
+    <envar><name>ENSMEM_INDX</name><value><cyclestr>#idx#</cyclestr></value></envar>
   
     <dependency>
       <and>
@@ -381,7 +387,7 @@ MODULES_RUN_TASK_FP script.
   <metatask>
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
-    <task name="subset_and_ship_f#fhr#">
+    <task name="subset_and_ship_f#fhr#" maxtries=2>
 
       &RSRV_SERVICE;
       <command>&LOAD_MODULES_RUN_TASK_FP; "&SAVE_AND_SHIP_TN;" "&JOBSDIR;/JREGIONAL_SUBSET_AND_SHIP"</command>
@@ -402,11 +408,11 @@ MODULES_RUN_TASK_FP script.
         <or>
           <taskdep task="&RUN_FCST_TN;{{ uscore_ensmem_name }}"/>
           <and>
-            <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/dynf#fhr#.nc</cyclestr></datadep>
-            <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H{{ slash_ensmem_subdir }}/phyf#fhr#.nc</cyclestr></datadep>
+	    <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H/mem#mem#/PRSLEV.GrbF#fhr#</cyclestr></datadep>
           </and>
         </or>
       </dependency>
+    </task>
   </metatask>
 
 <!--

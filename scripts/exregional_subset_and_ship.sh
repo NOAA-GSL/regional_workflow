@@ -72,7 +72,7 @@ process_args valid_args "$@"
 #
 print_input_args valid_args
 
-def check_upload() {
+check_upload() {
 
   local file_path file_size stat
 
@@ -86,6 +86,7 @@ def check_upload() {
   else
     echo $file_path was uploaded to the bucket with file size $file_size.
   fi
+
 }
 
 
@@ -126,13 +127,13 @@ fields_file=/contrib/rpanda/parm/testbed.txt
 #----------------------------------------------------------------------
 source /contrib/.aws/bdp.key
 
-post_stat=$(aws s3 cp ${post_file} ${s3_post_grib_pfx}/${s3_file}) &
+post_stat=$(echo aws s3 cp ${post_path} ${s3_post_grib_pfx}/${s3_file})
 
 # Check the contents of the grib file
 #----------------------------------------------------------------------
-wgrib2 -v $post_file  > tmp.txt
+wgrib2 -v $post_path  > tmp.txt
 if [ "$?" -ne 0 ]; then
-  echo "$post_file did not validate; skipping upload to S3"
+  echo "$post_path did not validate; skipping upload to S3"
   wait # Let the post file finish upload before exiting
   check_upload $post_stat $post_path
   exit 1
@@ -151,7 +152,7 @@ wgrib2 ${post_tmp_file} | \
   grep -F -f ${fields_file} | \
   wgrib2 -i -grib ${s3_reduce_file} ${post_tmp_file}
 
-post_reduce_stat=$(aws s3 cp ${s3_reduce_file} ${s3_post_grib_pfx}/${s3_reduce_file}) &
+post_reduce_stat=$(echo aws s3 cp ${s3_reduce_file} ${s3_post_grib_pfx}/${s3_reduce_file})
 wait
 
 # Report on upload status
