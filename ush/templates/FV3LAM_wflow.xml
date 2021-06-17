@@ -30,7 +30,7 @@ Workflow task names.
 <!ENTITY MAKE_LBCS_TN      "{{ make_lbcs_tn }}">
 <!ENTITY RUN_FCST_TN       "{{ run_fcst_tn }}">
 <!ENTITY RUN_POST_TN       "{{ run_post_tn }}">
-<!ENTITY SAVE_AND_SHIP_TN  "save_and_ship">
+<!ENTITY SUBSET_AND_SHIP_TN  "subset_and_ship">
 
 <!--
 Flags that specify whether to run the preprocessing tasks.
@@ -390,11 +390,11 @@ MODULES_RUN_TASK_FP script.
     <task name="subset_and_ship_f#fhr#" maxtries=2>
 
       &RSRV_SERVICE;
-      <command>&LOAD_MODULES_RUN_TASK_FP; "&SAVE_AND_SHIP_TN;" "&JOBSDIR;/JREGIONAL_SUBSET_AND_SHIP"</command>
+      <command>&LOAD_MODULES_RUN_TASK_FP; "&SUBSET_AND_SHIP_TN;" "&JOBSDIR;/JREGIONAL_SUBSET_AND_SHIP"</command>
       <nodes>1:ppn=1</nodes>
       <walltime>{{ wtime_upload }}</walltime>
-      <jobname>&SAVE_AND_SHIP_TN;{{ uscore_ensmem_name }}_f#fhr#</jobname>
-      <join><cyclestr>&LOGDIR;/&SAVE_AND_SHIP_TN;{{ uscore_ensmem_name }}_f#fhr#_@Y@m@d@H.log</cyclestr></join>
+      <jobname>&SUBSET_AND_SHIP_TN;{{ uscore_ensmem_name }}_f#fhr#</jobname>
+      <join><cyclestr>&LOGDIR;/&SUBSET_AND_SHIP_TN;{{ uscore_ensmem_name }}_f#fhr#_@Y@m@d@H.log</cyclestr></join>
 
       <envar><name>GLOBAL_VAR_DEFNS_FP</name><value>&GLOBAL_VAR_DEFNS_FP;</value></envar>
       <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
