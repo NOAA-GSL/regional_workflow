@@ -387,7 +387,7 @@ MODULES_RUN_TASK_FP script.
   <metatask>
     <var name="fhr"> {% for h in range(0, fcst_len_hrs+1) %}{{ " %03d" % h  }}{% endfor %} </var>
 
-    <task name="subset_and_ship_f#fhr#" maxtries=2>
+    <task name="subset_and_ship_f#fhr#" maxtries="2">
 
       &RSRV_SERVICE;
       <command>&LOAD_MODULES_RUN_TASK_FP; "&SUBSET_AND_SHIP_TN;" "&JOBSDIR;/JREGIONAL_SUBSET_AND_SHIP"</command>
