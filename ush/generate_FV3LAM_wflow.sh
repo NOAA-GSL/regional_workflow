@@ -228,7 +228,7 @@ settings="\
   'wtime_make_lbcs': ${WTIME_MAKE_LBCS}
   'wtime_run_fcst': ${WTIME_RUN_FCST}
   'wtime_run_post': ${WTIME_RUN_POST}
-  'wtime_upload': ${WTIME_RUN_POST}
+  'wtime_upload': ${WTIME_UPLOAD}
 #
 # Maximum number of tries for each task.
 #

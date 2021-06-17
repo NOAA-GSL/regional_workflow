@@ -407,9 +407,7 @@ MODULES_RUN_TASK_FP script.
       <dependency>
         <or>
           <taskdep task="&RUN_FCST_TN;{{ uscore_ensmem_name }}"/>
-          <and>
-	    <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H/mem#mem#/PRSLEV.GrbF#fhr#</cyclestr></datadep>
-          </and>
+	  <datadep age="05:00"><cyclestr>&CYCLE_BASEDIR;/@Y@m@d@H/mem#mem#/PRSLEV.GrbF#fhr#</cyclestr></datadep>
         </or>
       </dependency>
     </task>
