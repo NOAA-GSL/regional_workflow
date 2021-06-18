@@ -246,6 +246,7 @@ case $MACHINE in
   done
 
   if [ $foundens ]; then
+    enkfcstname=gdas
     ls ${ENKF_FCST}/${enkfcstname}.mem0??.${ens_type} >> filelist03
   fi
 
