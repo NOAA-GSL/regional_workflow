@@ -20,6 +20,19 @@ GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 FIX_GSI=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_gsi
 FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
 
+if [[ $MACHINE == "orion" ]] ; then
+  ACCOUNT=ztrr
+  QUEUE_ANALYSIS="batch"
+  FIXLAM_NCO_BASEDIR=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_lam.20210128
+  FIXgsm=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_am.20210128
+  GWD_HRRRsuite_BASEDIR=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_lam.20210128
+
+  FIX_GSI=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_gsi
+  FIX_CRTM=/work/noaa/wrfruc/mhu/rrfs/data/fix/CRTM_v2.3.0
+  AIRCRAFT_REJECT=${FIX_GSI}
+  SFCOBS_USELIST=${FIX_GSI}
+fi
+
 VERBOSE="TRUE"
 
 RUN_ENVIR="nco"
@@ -52,6 +65,13 @@ CYCLEMONTH="5-7"
 #CYCLEDAY="1-4"
 
 if [[ $DO_RETRO == "true" ]] ; then
+
+  if [[ $MACHINE == "orion" ]] ; then
+    EXTRN_MDL_SOURCE_BASEDIR_ICS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
+    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
+    OBSPATH=/work/noaa/wrfruc/mhu/rrfs/data/obs_rap
+  fi
+
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     PREEXISTING_DIR_METHOD="rename"
     INITIAL_CYCLEDEF="00 03,15 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"

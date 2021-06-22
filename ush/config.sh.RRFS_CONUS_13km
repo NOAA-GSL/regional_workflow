@@ -20,6 +20,20 @@ GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 FIX_GSI=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_gsi
 FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
 OBSPATH_NSSLMOSIAC=/public/data/radar/nssl/mrms/conus
+
+
+if [[ $MACHINE == "orion" ]] ; then
+  QUEUE_ANALYSIS="batch"
+  FIXLAM_NCO_BASEDIR=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_lam.20210128
+  FIXgsm=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_am.20210128
+  GWD_HRRRsuite_BASEDIR=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_lam.20210128
+
+  FIX_GSI=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_gsi
+  FIX_CRTM=/work/noaa/wrfruc/mhu/rrfs/data/fix/CRTM_v2.3.0
+  AIRCRAFT_REJECT=${FIX_GSI}
+  SFCOBS_USELIST=${FIX_GSI}
+fi
+
 RADARREFL_TIMELEVEL=(0 15 30 45)
 FH_DFI_RADAR="0.0,0.25,0.5"
 
@@ -66,20 +80,26 @@ if [[ $DO_RETRO == "true" ]] ; then
     LIGHTNING_ROOT=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/lightning/vaisala/netcdf/
     ENKF_FCST=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/enkf/atm
   fi
+  if [[ $MACHINE == "orion" ]] ; then
+    EXTRN_MDL_SOURCE_BASEDIR_ICS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
+    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
+    OBSPATH=/work/noaa/wrfruc/mhu/rrfs/data/obs_rap
+    OBSPATH_NSSLMOSIAC=/work/noaa/wrfruc/mhu/rrfs/data/reflectivity
+    LIGHTNING_ROOT=/work/noaa/wrfruc/mhu/rrfs/data/lightning/vaisala/netcdf/
+  fi
 
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     PREEXISTING_DIR_METHOD="rename"
-    INITIAL_CYCLEDEF="00 10,22 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
-    BOUNDARY_CYCLEDEF="00 00-02/01,04-08/01,10-14/01,16-20/01,22,23 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
-    BOUNDARY_LONG_CYCLEDEF="00 03,09,15,21 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
+    INITIAL_CYCLEDEF="00 03,15 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
+    BOUNDARY_CYCLEDEF="00 00,06,12,18 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
   else
     PREEXISTING_DIR_METHOD="upgrade"
-    PREP_COLDSTART_CYCLEDEF="00 10,22 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
-    PREP_WARMSTART_CYCLEDEF="00 00-09/01,11-21/01,23 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
+    PREP_COLDSTART_CYCLEDEF="00 03,15 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
+    PREP_WARMSTART_CYCLEDEF="00 04-14,16-23 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
     ANALYSIS_CYCLEDEF="00 00-23/01 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
     FORECAST_CYCLEDEF="00 00-23/01 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
     POSTPROC_CYCLEDEF="00 00-23/01 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
-    POSTPROC_LONG_CYCLEDEF="00 00,06,12,18 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
+    POSTPROC_LONG_CYCLEDEF="00 03-23/03 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
   fi
 else
   INITIAL_CYCLEDEF="00 09,21 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
@@ -129,8 +149,8 @@ fi
 WTIME_RUN_FCST="02:45:00"
 WTIME_MAKE_LBCS="02:00:00"
 
-EXTRN_MDL_NAME_ICS="RAP"
-EXTRN_MDL_NAME_LBCS="RAP"
+EXTRN_MDL_NAME_ICS="FV3GFS"
+EXTRN_MDL_NAME_LBCS="FV3GFS"
 
 envir="para"
 
@@ -157,8 +177,8 @@ MODEL="RRFS_13km"
 RUN="RRFS_13km"
 COMINgfs=""
 
-STMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
+PTMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
 
 if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDPROD_HRS="240"
