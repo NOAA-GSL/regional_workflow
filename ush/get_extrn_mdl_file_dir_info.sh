@@ -396,6 +396,9 @@ fi
         fi
         fns_in_arcv=( "gfs.t${hh}z.pgrb2.0p25.f0${fcst_hh}" )  # Get only 0.25 degree files for now.
 
+      elif [ "${fv3gfs_file_fmt}" = "netcdf" ]; then
+        fns_on_disk=( "gdas.t${hh}z.atmf0${fcst_hh}.nc" "gdas.t${hh}z.sfcf0${fcst_hh}.nc")  # use netcdf
+        fns_in_arcv=( "gfs.t${hh}z.pgrb2.0p25.f0${fcst_hh}" )  # Get only 0.25 degree files for now.
       fi
       ;;
 
@@ -480,7 +483,13 @@ and analysis or forecast (anl_or_fcst):
           fns_on_disk=( "${fcst_hhh[@]/#/$prefix}" )
           fns_in_arcv=( "${fcst_hhh[@]/#/$prefix}" )
         fi
-
+      elif [ "${fv3gfs_file_fmt}" = "netcdf" ]; then
+        fcst_hhh=( $( printf "%03d " "${lbc_spec_fhrs[@]}" ) )
+        postfix=".nc"
+        prefix="gdas.t${hh}z.atmf"
+        fns_on_disk_tmp=( "${fcst_hhh[@]/#/${prefix}}" )
+        fns_on_disk=( "${fns_on_disk_tmp[@]/%/${postfix}}" )
+        fns_in_arcv=( "${fcst_hhh[@]/#/${prefix}}" )
       fi
       ;;
 
@@ -613,7 +622,7 @@ has not been specified for this external model and machine combination:
       sysdir="$sysbasedir/gfs.${yyyymmdd}/${hh}"
       ;;
     "ORION")
-      sysdir="$sysbasedir"
+      sysdir="$sysbasedir/gdas.${yyyymmdd}/${hh}/atmos"
       ;;
     "JET")
       sysdir="$sysbasedir"
@@ -811,6 +820,10 @@ has not been specified for this external model:
       fi
 
     elif [ "${fv3gfs_file_fmt}" = "grib2" ]; then
+
+      arcv_fns="${arcv_fns}gfs_pgrb2"
+
+    elif [ "${fv3gfs_file_fmt}" = "netcdf" ]; then
 
       arcv_fns="${arcv_fns}gfs_pgrb2"
 

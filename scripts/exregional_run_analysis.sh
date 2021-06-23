@@ -343,7 +343,8 @@ case $MACHINE in
   ;;
 "ORION" )
    obs_source=rap
-   obsfileprefix=${YYYYMMDDHH}.${obs_source}
+   #obsfileprefix=${YYYYMMDDHH}.${obs_source}
+   obsfileprefix=rap.${YYYYMMDD}/${obs_source}
    obspath_tmp=${OBSPATH}
 
 esac
