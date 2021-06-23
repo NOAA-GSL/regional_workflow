@@ -110,6 +110,14 @@ case $MACHINE in
   APRUN="srun"
   ;;
 #
+"ORION")
+  ulimit -s unlimited
+  ulimit -a
+  export OMP_NUM_THREADS=1
+  export OMP_STACKSIZE=1024M
+  APRUN="srun"
+  ;;
+#
 "JET")
   ulimit -s unlimited
   ulimit -a
@@ -247,6 +255,7 @@ case $MACHINE in
   done
 
   if [ $foundens ]; then
+    enkfcstname=gdas
     ls ${ENKF_FCST}/${enkfcstname}.mem0??.${ens_type} >> filelist03
   fi
 
@@ -328,17 +337,20 @@ case $MACHINE in
 "WCOSS_C" | "WCOSS" | "WCOSS_DELL_P3")
    obsfileprefix=${obs_source}
    obspath_tmp=${OBSPATH}/${obs_source}.${YYYYMMDD}
-
   ;;
 "JET" | "HERA")
    obsfileprefix=${YYYYMMDDHH}.${obs_source}
    obspath_tmp=${OBSPATH}
-
+  ;;
+"ORION" )
+   obs_source=rap
+   #obsfileprefix=${YYYYMMDDHH}.${obs_source}
+   obsfileprefix=rap.${YYYYMMDD}/${obs_source}
+   obspath_tmp=${OBSPATH}
   ;;
 *)
    obsfileprefix=${obs_source}
    obspath_tmp=${OBSPATH}
-   ;;
 esac
 
 
@@ -408,7 +420,15 @@ cp_vrfy ${HYBENSINFO} hybens_info
 
 # Get aircraft reject list and surface uselist
 cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
-cp_vrfy ${SFCOBS_USELIST}/current_mesonet_uselist.txt gsd_sfcobs_uselist.txt
+if [ -r "${SFCOBS_USELIST}/current_mesonet_uselist.txt" ]; then
+  cp_vrfy ${SFCOBS_USELIST}/current_mesonet_uselist.txt gsd_sfcobs_uselist.txt
+else
+  if [ -r "${SFCOBS_USELIST}/gsd_sfcobs_uselist.txt" ]; then
+    cp_vrfy ${SFCOBS_USELIST}/gsd_sfcobs_uselist.txt gsd_sfcobs_uselist.txt
+  else
+    print_info_msg "$VERBOSE" "Warning: gsd_sfcobs_uselist.txt  does not exist!"
+  fi
+fi
 cp_vrfy ${FIX_GSI}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
 
 #-----------------------------------------------------------------------
