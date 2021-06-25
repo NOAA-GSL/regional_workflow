@@ -6,9 +6,11 @@ SCHED="slurm"
 EXPT_BASEDIR="/lustre/FFAIR"
 EXPT_SUBDIR="RRFS_mem__MEMBER__"
 
-RUN_CMD_UTILS="srun --mpi=pmi2"
-RUN_CMD_FCST="srun --mpi=pmi2"
-RUN_CMD_POST="srun --mpi=pmi2"
+RUN_CMD_UTILS="srun -l --mpi=pmi2"
+RUN_CMD_FCST="srun -l --mpi=pmi2"
+RUN_CMD_POST="srun -l --mpi=pmi2"
+
+PRINT_ESMF="FALSE"
 
 NCORES_PER_NODE="36"
 PPN_RUN_FCST="18"

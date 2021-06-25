@@ -33,7 +33,7 @@ valid_vals_CCPP_PHYS_SUITE=( \
 "FV3_GFS_v16beta" \
 "FV3_RRFS_v1beta" \
 "FV3_RRFS_v1alpha" \
-"FV3_GFS_v15_thompson_mynn" \
+"rrfs_thompson_mynn" \
 "rrfs_gfsv16" \
 "nssl_mp_no_nsst" \
 ) 

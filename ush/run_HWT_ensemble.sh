@@ -1,16 +1,10 @@
 #!/bin/bash -l
 
-source /contrib/harrop/ufs-srweather-app-nadomain-gefs/env/build_aws_intel.env
-source /contrib/harrop/ufs-srweather-app-nadomain-gefs/env/wflow_aws.env
+source /lustre/harrop/FFAIR/ufs-srweather-app/env/build_aws_intel.env
+source /lustre/harrop/FFAIR/ufs-srweather-app/env/wflow_aws.env
 module use /contrib/apps/modules
 module load rocoto
 
-
-# Run GEFS01
-rocotorun -w /lustre/GEFS01/FV3LAM_wflow.xml -d /lustre/GEFS01/FV3LAM_wflow.db -v 10
-
-# Run GEFS02
-rocotorun -w /lustre/GEFS02/FV3LAM_wflow.xml -d /lustre/GEFS02/FV3LAM_wflow.db -v 10
-
-# Run GFS
-rocotorun -w /lustre/GFS/FV3LAM_wflow.xml -d /lustre/GFS/FV3LAM_wflow.db -v 10
+for i in `seq 1 9`; do
+    rocotorun -w /lustre/harrop/FFAIR/RRFS_mem0${i}/FV3LAM_wflow.xml -d /lustre/harrop/FFAIR/RRFS_mem0${i}/FV3LAM_wflow.db -v 10
+done

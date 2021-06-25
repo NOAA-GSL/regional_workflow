@@ -28,7 +28,7 @@ Each sub-ensemble will run with varying physics in each member. Here is
 an example of the GFS sub-ensemble, and the same pattern applies to
 each sub-ensemble:
 
-  - Member 1: FV3_GFS_v15_thompson_mynn CCPP Suite
+  - Member 1: rrfs_thompson_mynn CCPP Suite
   - Member 2: GFSv16 (without parameterized convection)
   - Member 3: ???
 

@@ -1212,6 +1212,7 @@ FV3_NML_VARNAME_TO_SFC_CLIMO_FIELD_MAPPING=( \
 
 CYCLEDIR_LINKS_TO_FIXam_FILES_MAPPING=( \
 "aerosol.dat                | global_climaeropac_global.txt" \
+"co2historicaldata_2009.txt | fix_co2_proj/global_co2historicaldata_2009.txt" \
 "co2historicaldata_2010.txt | fix_co2_proj/global_co2historicaldata_2010.txt" \
 "co2historicaldata_2011.txt | fix_co2_proj/global_co2historicaldata_2011.txt" \
 "co2historicaldata_2012.txt | fix_co2_proj/global_co2historicaldata_2012.txt" \
@@ -1221,13 +1222,50 @@ CYCLEDIR_LINKS_TO_FIXam_FILES_MAPPING=( \
 "co2historicaldata_2016.txt | fix_co2_proj/global_co2historicaldata_2016.txt" \
 "co2historicaldata_2017.txt | fix_co2_proj/global_co2historicaldata_2017.txt" \
 "co2historicaldata_2018.txt | fix_co2_proj/global_co2historicaldata_2018.txt" \
+"co2historicaldata_2019.txt | fix_co2_proj/global_co2historicaldata_2019.txt" \
+"co2historicaldata_2020.txt | fix_co2_proj/global_co2historicaldata_2020.txt" \
+"co2historicaldata_2021.txt | fix_co2_proj/global_co2historicaldata_2021.txt" \
 "co2historicaldata_glob.txt | global_co2historicaldata_glob.txt" \
 "co2monthlycyc.txt          | co2monthlycyc.txt" \
 "global_h2oprdlos.f77       | global_h2o_pltc.f77" \
 "global_zorclim.1x1.grb     | global_zorclim.1x1.grb" \
 "sfc_emissivity_idx.txt     | global_sfc_emissivity_idx.txt" \
 "solarconstant_noaa_an.txt  | global_solarconstant_noaa_an.txt" \
-"global_o3prdlos.f77        | " \
+"global_o3prdlos.f77        | global_o3prdlos.f77" \
+"global_hyblev_fcst.txt     | global_hyblev_fcst.txt" \
+"optics_BC.dat              | optics_BC.dat" \
+"optics_DU.dat              | optics_DU.dat" \
+"optics_OC.dat              | optics_OC.dat" \
+"optics_SS.dat              | optics_SS.dat" \
+"optics_SU.dat              | optics_SU.dat" \
+"aeroclim.m01.nc            | aeroclim.m01.nc" \
+"aeroclim.m02.nc            | aeroclim.m02.nc" \
+"aeroclim.m03.nc            | aeroclim.m03.nc" \
+"aeroclim.m04.nc            | aeroclim.m04.nc" \
+"aeroclim.m05.nc            | aeroclim.m05.nc" \
+"aeroclim.m06.nc            | aeroclim.m06.nc" \
+"aeroclim.m07.nc            | aeroclim.m07.nc" \
+"aeroclim.m08.nc            | aeroclim.m08.nc" \
+"aeroclim.m09.nc            | aeroclim.m09.nc" \
+"aeroclim.m10.nc            | aeroclim.m10.nc" \
+"aeroclim.m11.nc            | aeroclim.m11.nc" \
+"aeroclim.m12.nc            | aeroclim.m12.nc" \
+"eta_micro_lookup.dat       | eta_micro_lookup.dat" \
+"freezeH2O.dat              | freezeH2O.dat" \
+"global_co2historicaldata_2021.txt | fix_co2_proj/global_co2historicaldata_2021.txt" \
+"global_glacier.2x2.grb     | global_glacier.2x2.grb" \
+"global_maxice.2x2.grb      | global_maxice.2x2.grb" \
+"global_snoclim.1.875.grb   | global_snoclim.1.875.grb" \
+"global_soilmgldas.t1534.3072.1536.grb | global_soilmgldas.t1534.3072.1536.grb" \
+"nam_micro_lookup.dat       | nam_micro_lookup.dat" \
+"qr_acr_qg.dat              | qr_acr_qg.dat" \
+"qr_acr_qgV2.dat            | qr_acr_qgV2.dat" \
+"qr_acr_qs.dat              | qr_acr_qs.dat" \
+"qr_acr_qsV2.dat            | qr_acr_qsV2.dat" \
+"seaice_newland.grb         | seaice_newland.grb" \
+"CFSR.SEAICE.1982.2012.monthly.clim.grb | CFSR.SEAICE.1982.2012.monthly.clim.grb" \
+"RTGSST.1982.2012.monthly.clim.grb      | RTGSST.1982.2012.monthly.clim.grb" \
+"CCN_ACTIVATE.BIN                       | CCN_ACTIVATE.BIN" \
 )
 #
 #-----------------------------------------------------------------------
