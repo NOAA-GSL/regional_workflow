@@ -1579,7 +1579,7 @@ ADDNL_OUTPUT_GRIDS=( )
 # used for post-processing. This is only used if CUSTOM_POST_CONFIG_FILE
 # is set to "TRUE".
 #
-# POST_FLL_MODEL_NAME
+# POST_FULL_MODEL_NAME
 # The full module name required by UPP and set in the itag file
 #
 #-----------------------------------------------------------------------
@@ -1587,7 +1587,7 @@ ADDNL_OUTPUT_GRIDS=( )
 USE_CUSTOM_POST_CONFIG_FILE="FALSE"
 CUSTOM_POST_CONFIG_FP=""
 CUSTOM_POST_PARAMS_FP=""
-POST_FLL_MODEL_NAME="FV3R"
+POST_FULL_MODEL_NAME="FV3R"
 #
 #-----------------------------------------------------------------------
 #
