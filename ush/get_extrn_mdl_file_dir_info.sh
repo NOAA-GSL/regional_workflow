@@ -825,8 +825,8 @@ has not been specified for this external model:
       arcv_fns="${arcv_fns}gfs_pgrb2"
 
     elif [ "${fv3gfs_file_fmt}" = "netcdf" ]; then
-
-      arcv_fns="${arcv_fns}gfs_pgrb2"
+# we don't know if there are archive for netcdf file. This is to fill in arcv_fns to avoid crash.
+      arcv_fns=""
 
     fi
 

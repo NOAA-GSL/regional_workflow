@@ -1,7 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
 #RESERVATION="rrfsdet"
-EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2"
+EXPT_BASEDIR="YourOwnSpace"
 EXPT_SUBDIR="RRFS_13km"
 
 if [[ -n $RESERVATION ]] ; then
@@ -213,8 +213,8 @@ MODEL="RRFS_13km"
 RUN="RRFS_13km"
 COMINgfs=""
 
-STMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
-PTMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
+STMP="YourOwnSpace"  # Path to directory STMP that mostly contains input files.
+PTMP="YourOwnSpace"  # Path to directory STMP that mostly contains input files.
 
 if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDPROD_HRS="240"

@@ -344,8 +344,8 @@ case $MACHINE in
   ;;
 "ORION" )
    obs_source=rap
-   #obsfileprefix=${YYYYMMDDHH}.${obs_source}
-   obsfileprefix=rap.${YYYYMMDD}/${obs_source}
+   #obsfileprefix=${YYYYMMDDHH}.${obs_source}               # rap observation from JET.
+   obsfileprefix=${obs_source}.${YYYYMMDD}/${obs_source}    # observation from operation.
    obspath_tmp=${OBSPATH}
   ;;
 *)
