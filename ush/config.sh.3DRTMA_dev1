@@ -172,7 +172,7 @@ FCST_LEN_HRS="0"
 POSTPROC_LEN_HRS="0"
 POSTPROC_LONG_LEN_HRS="0"
 
-for i in {0..23}; do FCST_LEN_HRS_CYCLES[$i]=0.0112; done
+for i in {0..23}; do FCST_LEN_HRS_CYCLES[$i]=0.0003; done
 DA_CYCLE_INTERV="1" #need to be 1 to have hourly DA
 RESTART_INTERVAL="1"
 
@@ -203,6 +203,8 @@ TAG="RTMA_dev1" ## used by job names
 IS_RTMA="TRUE"
 NCORES_PER_NODE=40 #kjet
 FG_ROOTDIR="/lfs4/BMC/nrtrr/NCO_dirs/stmp/tmpnwprd/RRFS_dev1" #only needed by RTMA
+DT_ATMOS=1
+MAXTRIES_RUN_FCST="3"
 
 USE_CUSTOM_POST_CONFIG_FILE="TRUE"
 CUSTOM_POST_CONFIG_FP="/lfs4/BMC/nrtrr/RTMA/RTMA-dev1-ufs-srweather-app/regional_workflow/ush/templates/postxconfig-NT-3drtma.txt"
