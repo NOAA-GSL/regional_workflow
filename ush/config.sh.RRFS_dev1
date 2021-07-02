@@ -1,7 +1,7 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
 RESERVATION="rrfsdet"
-EXPT_BASEDIR="/home/rtrr/RRFS"
+EXPT_BASEDIR="/lfs4/BMC/nrtrr/talcott/rrfs/rt"
 EXPT_SUBDIR="RRFS_dev1"
 
 if [[ -n $RESERVATION ]] ; then
@@ -177,14 +177,15 @@ MODEL="RRFS_dev1"
 RUN="RRFS_dev1"
 COMINgfs=""
 
-STMP="/lfs4/BMC/nrtrr/NCO_dirs/stmp"  # Path to directory STMP that mostly contains input files.
-PTMP="/lfs4/BMC/nrtrr/NCO_dirs/ptmp"  # Path to directory STMP that mostly contains input files.
+STMP="/lfs4/BMC/nrtrr/talcott/rrfs/stmp"  # Path to directory STMP that mostly contains input files.
+PTMP="/lfs4/BMC/nrtrr/talcott/rrfs/ptmp"  # Path to directory STMP that mostly contains input files.
 
 if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDPROD_HRS="240"
   CLEAN_OLDLOG_HRS="240"
   CLEAN_OLDRUN_HRS="6"
   CLEAN_OLDFCST_HRS="6"
+  CLEAN_OLDSTMPPOST_HRS="6"
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     CLEAN_OLDRUN_HRS="7777"
     CLEAN_OLDFCST_HRS="7777"
