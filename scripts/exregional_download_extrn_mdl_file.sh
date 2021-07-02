@@ -108,9 +108,11 @@ esac
 
 last_hour=$(( FCST_LEN_HRS + EXTRN_MDL_LBCS_OFFSET_HRS ))
 last_hour=$(printf "%02d" $last_hour) 
+first_hour=$(( EXTRN_MDL_LBCS_OFFSET_HRS + LBC_SPEC_INTVL_HRS ))
+first_hour=$(printf "%02d" $first_hour) 
 
 extrn_mdl_fns=()
-bcs_fhrs=($(seq -w $EXTRN_MDL_LBCS_OFFSET_HRS $LBC_SPEC_INTVL_HRS $last_hour ))
+bcs_fhrs=($(seq -w $first_hour $LBC_SPEC_INTVL_HRS $last_hour ))
 
 for fhr in ${bcs_fhrs[@]} ; do
 
@@ -135,5 +137,5 @@ done
 var_defs="extrn_mdl_var_defns.sh"
 echo EXTRN_MDL_CDATE=$extrn_mdl_cdate > $var_defs
 echo EXTRN_MDL_FNS=\( ${extrn_mdl_fns[@]} \) >> $var_defs
-echo EXTRN_MDL_LBC_SPEC_FHRS=\( ${bcs_fhrs[@]:1} \) >> $var_defs
+echo EXTRN_MDL_LBC_SPEC_FHRS=\( ${bcs_fhrs[@]} \) >> $var_defs
 

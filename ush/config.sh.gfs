@@ -87,3 +87,6 @@ FIXgsm=${FIXgsm:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_am"}
 TOPO_DIR=${TOPO_DIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_orog"}
 SFC_CLIMO_INPUT_DIR=${SFC_CLIMO_INPUT_DIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix/fix_sfc_climo"}
 FIXLAM_NCO_BASEDIR=${FIXLAM_NCO_BASEDIR:-"/lustre/FFAIR/NCEPDEV/global/glopara/fix"}
+
+FNSMCC="global_soilmgldas.t1534.3072.1536.grb"
+

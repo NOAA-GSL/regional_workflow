@@ -89,11 +89,12 @@ function set_FV3nml_stoch_params() {
 #
 #-----------------------------------------------------------------------
 #
-ensmem_name="mem${ENSMEM_INDX}"
+ensmem_name="mem${MEMBER}"
 
 fv3_nml_ensmem_fp="${CYCLE_BASEDIR}/${cdate}/${ensmem_name}/${FV3_NML_FN}"
 
-ensmem_num=$((10#${ENSMEM_INDX} - 1))
+ensmem_idx=$((10#${ENSMEM_INDX} - 1))
+ensmem_num=$((10#${MEMBER} - 1))
 
 iseed_shum=$(( cdate*1000 + ensmem_num*10 + 2 ))
 iseed_skeb=$(( cdate*1000 + ensmem_num*10 + 3 ))
@@ -111,7 +112,7 @@ settings="\
   }"
 
 $USHDIR/set_namelist.py -q \
-                        -n ${FV3_NML_ENSMEM_FPS[${ensmem_num}]} \
+                        -n ${FV3_NML_ENSMEM_FPS[${ensmem_idx}]} \
                         -u "$settings" \
                         -o ${run_dir}/${FV3_NML_FN} || \
   print_err_msg_exit "\
