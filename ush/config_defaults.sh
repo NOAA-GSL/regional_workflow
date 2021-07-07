@@ -561,7 +561,7 @@ BERROR_FN="rap_berror_stats_global_RAP_tune" #under $FIX_GSI
 OBERROR_FN="errtable.rrfs"
 HYBENSINFO_FN="hybens_info.rrfs"
 AIRCRAFT_REJECT="/home/amb-verif/acars_RR/amdar_reject_lists"
-SFCOBS_USELIST="/home/amb-verif/ruc_madis_surface/mesonet_uselists"
+SFCOBS_USELIST="/lfs4/BMC/amb-verif/rap_ops_mesonet_uselists"
 #
 #-----------------------------------------------------------------------
 #
@@ -1796,6 +1796,8 @@ RADARREFL_TIMELEVEL=(0)
 #   the run directory under tmpnwprd directory from cycles older than (current cycle - this hour) will be cleaned 
 # CLEAN_OLDFCST_HRS
 #   the fv3lam forecast netcdf files forecast run directory from cycles older than (current cycle - this hour) will be cleaned 
+# CLEAN_OLDSTMP_HRS
+#   the postprd GRIB-2 files from cycles older than (current cycle - this hour) will be cleaned 
 #-----------------------------------------------------------------------
 #
 
@@ -1803,3 +1805,4 @@ CLEAN_OLDPROD_HRS="72"
 CLEAN_OLDLOG_HRS="48"
 CLEAN_OLDRUN_HRS="72"
 CLEAN_OLDFCST_HRS="24"
+CLEAN_OLDSTMPPOST_HRS="24"
