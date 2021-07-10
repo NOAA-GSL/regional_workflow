@@ -245,6 +245,7 @@ EXPT_SUBDIR=""
 #    OBSPATH_NSSLMOSIAC: location of NSSL radar reflectivity 
 #    LIGHTNING_ROOT: location of lightning observations
 #    ENKF_FCSTL: location of global ensemble forecast
+#    FFG_DIR: location of flash flood guidance for QPF comparison
 #-----------------------------------------------------------------------
 #
 COMINgfs="/base/path/of/directory/containing/gfs/input/files"
@@ -266,6 +267,7 @@ OBSPATH="/public/data/grids/rap/obs"
 OBSPATH_NSSLMOSIAC="/public/data/radar/mrms"
 LIGHTNING_ROOT="/public/data/lightning"
 ENKF_FCST="/lfs4/BMC/public/data/grids/enkf/atm"
+FFG_DIR="/public/data/grids/ncep/ffg/grib2"
 
 #
 #-----------------------------------------------------------------------
@@ -1572,10 +1574,48 @@ ADDNL_OUTPUT_GRIDS=( )
 # used for post-processing. This is only used if CUSTOM_POST_CONFIG_FILE
 # is set to "TRUE".
 #
+# CUSTOM_POST_PARAMS_FP:
+# The full path to the custom post params file, including filename, to be 
+# used for post-processing. This is only used if CUSTOM_POST_CONFIG_FILE
+# is set to "TRUE".
+#
+# POST_FULL_MODEL_NAME
+# The full module name required by UPP and set in the itag file
+#
 #-----------------------------------------------------------------------
 #
 USE_CUSTOM_POST_CONFIG_FILE="FALSE"
 CUSTOM_POST_CONFIG_FP=""
+CUSTOM_POST_PARAMS_FP=""
+POST_FULL_MODEL_NAME="FV3R"
+#
+#-----------------------------------------------------------------------
+#
+# Set the tiles (or subdomains) for creating graphics in a Rocoto metatask.
+# Do not include references to the grids that are produced in separate grib
+# files (set with ADDNL_OUTPUT_GRIDS above). Those will be added in setup.sh
+#
+# TILE_LABELS
+# A space separated list (string is fine, no need for array) of the labels
+# applied to the groupings of tiles to be run as a single batch jobs. For
+# example, you may label the set of tiles SE,NE,SC,NC,SW,NW as "regions", and
+# the full input domain as "full" if you wanted those to run in two domains. The
+# length must match the length of TILE_SETS.
+#
+# TILE_SETS
+# A space separated list of tile groupings to plot. Space-separated sets
+# indicate which ones will be grouped in a single batch job, comma sepated items
+# are the tiles to be plotted in that batch job. For example:
+#    TILE_SETS="full SW,SC,SE NW,NC,NE"
+#    TILE_LABELS="full southern_regions northern_regions"
+# would plot maps for the full domain in a batch job separately from the
+# southern regions, using a third batch job for the northern regions. The
+# space-separated list must match the length of TILE_LABELS.
+#
+#-----------------------------------------------------------------------
+#
+TILE_LABELS="full"
+TILE_SETS="full"
 #
 #-----------------------------------------------------------------------
 #
@@ -1784,6 +1824,8 @@ RADARREFL_TIMELEVEL=(0)
 #   the run directory under tmpnwprd directory from cycles older than (current cycle - this hour) will be cleaned 
 # CLEAN_OLDFCST_HRS
 #   the fv3lam forecast netcdf files forecast run directory from cycles older than (current cycle - this hour) will be cleaned 
+# CLEAN_OLDSTMP_HRS
+#   the postprd GRIB-2 files from cycles older than (current cycle - this hour) will be cleaned 
 #-----------------------------------------------------------------------
 #
 
@@ -1791,3 +1833,4 @@ CLEAN_OLDPROD_HRS="72"
 CLEAN_OLDLOG_HRS="48"
 CLEAN_OLDRUN_HRS="72"
 CLEAN_OLDFCST_HRS="24"
+CLEAN_OLDSTMPPOST_HRS="24"

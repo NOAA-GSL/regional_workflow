@@ -1,7 +1,11 @@
 MACHINE="jet"
 ACCOUNT="nrtrr"
 #RESERVATION="rrfsdet"
+<<<<<<< HEAD
 EXPT_BASEDIR="/mnt/lfs4/BMC/rtwbl/mhu/rrfs/dev2"
+=======
+EXPT_BASEDIR="YourOwnSpace"
+>>>>>>> upstream_gsl/feature/RRFS_dev1
 EXPT_SUBDIR="RRFS_13km"
 
 if [[ -n $RESERVATION ]] ; then
@@ -21,8 +25,44 @@ FIX_GSI=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_gsi
 FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
 OBSPATH_NSSLMOSIAC=/public/data/radar/nssl/mrms/conus
 
+<<<<<<< HEAD
 
 if [[ $MACHINE == "orion" ]] ; then
+=======
+RADARREFL_TIMELEVEL=(0 15 30 45)
+FH_DFI_RADAR="0.0,0.25,0.5"
+
+if [[ $MACHINE == "hera" ]] ; then
+  ACCOUNT="wrfruc"
+  PARTITION_DEFAULT=""
+  PARTITION_FCST=""
+  QUEUE_ANALYSIS="batch"
+
+  FIXLAM_NCO_BASEDIR=/scratch1/BMC/zrtrr/RRFS/fix/fix_lam.20210128
+  FIXgsm=/scratch1/BMC/zrtrr/RRFS/fix/fix_am.20210128
+  GWD_HRRRsuite_BASEDIR=/scratch1/BMC/zrtrr/RRFS/fix/fix_lam.20210128
+
+  FIX_GSI=/scratch1/BMC/zrtrr/RRFS/fix/fix_gsi
+  FIX_CRTM=/scratch1/BMC/zrtrr/RRFS/fix/CRTM_v2.3.0
+  AIRCRAFT_REJECT=${FIX_GSI}
+  SFCOBS_USELIST=${FIX_GSI}
+
+# for using RAP as boundary and initial
+# #  EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/public/data/grids/rap/full/wrfnat/grib2
+# #  EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/public/data/grids/rap/full/wrfnat/grib2
+# # for using GFS as boundary and initial
+   EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/public/data/grids/gfs/0p25deg/grib2
+   EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/public/data/grids/gfs/0p25deg/grib2
+# observations
+   OBSPATH=/scratch2/BMC/public/data/grids/rap/obs
+   OBSPATH_NSSLMOSIAC=/scratch2/BMC/public/data/radar/nssl/mrms/conus
+   LIGHTNING_ROOT=/scratch2/BMC/public/data/lightning
+   ENKF_FCST=/scratch1/NCEPDEV/rstprod/com/gfs/prod
+fi
+
+if [[ $MACHINE == "orion" ]] ; then
+  ACCOUNT=ztrr
+>>>>>>> upstream_gsl/feature/RRFS_dev1
   QUEUE_ANALYSIS="batch"
   FIXLAM_NCO_BASEDIR=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_lam.20210128
   FIXgsm=/work/noaa/wrfruc/mhu/rrfs/data/fix/fix_am.20210128
@@ -34,9 +74,12 @@ if [[ $MACHINE == "orion" ]] ; then
   SFCOBS_USELIST=${FIX_GSI}
 fi
 
+<<<<<<< HEAD
 RADARREFL_TIMELEVEL=(0 15 30 45)
 FH_DFI_RADAR="0.0,0.25,0.5"
 
+=======
+>>>>>>> upstream_gsl/feature/RRFS_dev1
 VERBOSE="TRUE"
 
 RUN_ENVIR="nco"
@@ -80,6 +123,18 @@ if [[ $DO_RETRO == "true" ]] ; then
     LIGHTNING_ROOT=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/lightning/vaisala/netcdf/
     ENKF_FCST=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/enkf/atm
   fi
+<<<<<<< HEAD
+=======
+  if [[ $MACHINE == "hera" ]] ; then
+    EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/zrtrr/rli/data/hrrr/conus/wrfnat/grib2
+    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/zrtrr/rli/data/rap/full/wrfnat/grib2
+#    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/zrtrr/rli/data/gfs/0p25deg/grib2
+    OBSPATH=/scratch2/BMC/zrtrr/rli/data/obs_rap
+    OBSPATH_NSSLMOSIAC=/scratch2/BMC/zrtrr/rli/data/reflectivity
+    LIGHTNING_ROOT=/scratch2/BMC/zrtrr/rli/data/lightning/vaisala/netcdf/
+    ENKF_FCST=/scratch2/BMC/zrtrr/rli/data/enkf/atm
+  fi
+>>>>>>> upstream_gsl/feature/RRFS_dev1
   if [[ $MACHINE == "orion" ]] ; then
     EXTRN_MDL_SOURCE_BASEDIR_ICS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
     EXTRN_MDL_SOURCE_BASEDIR_LBCS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
@@ -87,7 +142,10 @@ if [[ $DO_RETRO == "true" ]] ; then
     OBSPATH_NSSLMOSIAC=/work/noaa/wrfruc/mhu/rrfs/data/reflectivity
     LIGHTNING_ROOT=/work/noaa/wrfruc/mhu/rrfs/data/lightning/vaisala/netcdf/
   fi
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream_gsl/feature/RRFS_dev1
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     PREEXISTING_DIR_METHOD="rename"
     INITIAL_CYCLEDEF="00 03,15 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
@@ -177,8 +235,13 @@ MODEL="RRFS_13km"
 RUN="RRFS_13km"
 COMINgfs=""
 
+<<<<<<< HEAD
 STMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
 PTMP="/work/noaa/zrtrr/mhu/run"  # Path to directory STMP that mostly contains input files.
+=======
+STMP="YourOwnSpace"  # Path to directory STMP that mostly contains input files.
+PTMP="YourOwnSpace"  # Path to directory STMP that mostly contains input files.
+>>>>>>> upstream_gsl/feature/RRFS_dev1
 
 if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDPROD_HRS="240"

@@ -308,7 +308,8 @@ fi
      [ "${extrn_mdl_name}" = "HRRR" ] || \
      [ "${extrn_mdl_name}" = "NAM" ] || \
      [ "${extrn_mdl_name}" = "FV3GFS" -a "${MACHINE}" = "ORION" ] || \
-     [ "${extrn_mdl_name}" = "FV3GFS" -a "${MACHINE}" = "JET" ]; then
+     [ "${extrn_mdl_name}" = "FV3GFS" -a "${MACHINE}" = "JET" ] || \
+     [ "${extrn_mdl_name}" = "FV3GFS" -a "${MACHINE}" = "HERA" ]; then
 #
 # Get the Julian day-of-year of the starting date and time of the exter-
 # nal model forecast.
@@ -369,7 +370,7 @@ fi
         fns=( "${fns[@]/%/$suffix}" )
 
 # Set names of external files if searching on disk.
-        if [ "${MACHINE}" = "JET" ]; then
+        if [ "${MACHINE}" = "JET" ] || [ "${MACHINE}" = "HERA" ]; then
           prefix="${yy}${ddd}${hh}00.gfs.t${hh}z."
         else
           prefix="gfs.t${hh}z."
@@ -389,7 +390,7 @@ fi
 #        fns=( "gfs.t${hh}z.pgrb2.0p25.anl" )  # Get only 0.25 degree files for now.
 #        fns=( "gfs.t${hh}z.pgrb2.0p25.f000" )  # Get only 0.25 degree files for now.
 
-        if [ "${MACHINE}" = "JET" ] || [ "${MACHINE}" = "ORION" ]; then
+        if [ "${MACHINE}" = "JET" ] || [ "${MACHINE}" = "HERA" ] || [ "${MACHINE}" = "ORION" ]; then
           fns_on_disk=( "${yy}${ddd}${hh}0${fcst_mn}0${fcst_hh}" )
         else
           fns_on_disk=( "gfs.t${hh}z.pgrb2.0p25.f0${fcst_hh}" "gfs.t${hh}z.sfcf0${fcst_hh}.nc")  # use netcdf
@@ -461,7 +462,7 @@ and analysis or forecast (anl_or_fcst):
         suffix=".nemsio"
         fns=( "${fcst_hhh[@]/%/$suffix}" )
 
-        if [ "${MACHINE}" = "JET" ]; then
+        if [ "${MACHINE}" = "JET" ] || [ "${MACHINE}" = "HERA" ]; then
           prefix="${yy}${ddd}${hh}00.gfs.t${hh}z.atmf"
         else
           prefix="gfs.t${hh}z.atmf"
@@ -475,7 +476,7 @@ and analysis or forecast (anl_or_fcst):
 
         fcst_hhh=( $( printf "%03d " "${lbc_spec_fhrs[@]}" ) )
 
-        if [ "${MACHINE}" = "JET" ] || [ "${MACHINE}" = "ORION" ]; then
+        if [ "${MACHINE}" = "JET" ] ||  [ "${MACHINE}" = "HERA" ] || [ "${MACHINE}" = "ORION" ]; then
           prefix=( "${yy}${ddd}${hh}${fcst_mn}0" )
           fns_on_disk=( "${fcst_hhh[@]/#/$prefix}" )
         else
@@ -619,7 +620,7 @@ has not been specified for this external model and machine combination:
       sysdir="$sysbasedir/gfs.${yyyymmdd}/${hh}/atmos"
       ;;
     "HERA")
-      sysdir="$sysbasedir/gfs.${yyyymmdd}/${hh}"
+      sysdir="$sysbasedir"
       ;;
     "ORION")
       sysdir="$sysbasedir/gdas.${yyyymmdd}/${hh}/atmos"
@@ -824,9 +825,8 @@ has not been specified for this external model:
       arcv_fns="${arcv_fns}gfs_pgrb2"
 
     elif [ "${fv3gfs_file_fmt}" = "netcdf" ]; then
-
-      arcv_fns="${arcv_fns}gfs_pgrb2"
-
+# we don't know if there are archive for netcdf file. This is to fill in arcv_fns to avoid crash.
+      arcv_fns=""
     fi
 
     arcv_fmt="tar"

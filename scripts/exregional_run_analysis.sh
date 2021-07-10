@@ -105,6 +105,8 @@ case $MACHINE in
 "HERA")
   ulimit -s unlimited
   ulimit -a
+  export OMP_NUM_THREADS=1
+  export OMP_STACKSIZE=300M
   APRUN="srun"
   ;;
 #
@@ -120,7 +122,6 @@ case $MACHINE in
   ulimit -s unlimited
   ulimit -a
   APRUN="srun"
-  NCKS=ncks
   ;;
 #
 "ODIN")
@@ -186,7 +187,7 @@ stampcycle=$(date -d "${START_DATE}" +%s)
 minHourDiff=100
 loops="009"    # or 009s for GFSv15
 ens_type="nc"  # or nemsio for GFSv15
-foundens=false
+foundens="false"
 cat "no ens found" >> filelist03
 
 case $MACHINE in
@@ -213,12 +214,12 @@ case $MACHINE in
          enkfcstname=gdas.t${availtimehh}z.atmf${loop}
          eyyyymmdd=$(echo ${availtime} | cut -c1-8)
          ehh=$(echo ${availtime} | cut -c9-10)
-         foundens=true
+         foundens="true"
       fi
     done
   done
 
-  if [ ${foundens} ]
+  if [ ${foundens} = "true" ]
   then
     ls ${ENKF_FCST}/enkfgdas.${eyyyymmdd}/${ehh}/atmos/mem???/${enkfcstname}.nc > filelist03
   fi
@@ -248,13 +249,12 @@ case $MACHINE in
       if [[ ${hourDiff} -lt ${minHourDiff} ]]; then
          minHourDiff=${hourDiff}
          enkfcstname=${availtimeyy}${availtimejjj}${availtimehh}00.gdas.t${availtimehh}z.atmf${loop}
-         foundens=true
+         foundens="true"
       fi
     done
   done
 
-  if [ $foundens ]; then
-    enkfcstname=gdas
+  if [ $foundens = "true" ]; then
     ls ${ENKF_FCST}/${enkfcstname}.mem0??.${ens_type} >> filelist03
   fi
 
@@ -337,16 +337,19 @@ case $MACHINE in
    obsfileprefix=${obs_source}
    obspath_tmp=${OBSPATH}/${obs_source}.${YYYYMMDD}
   ;;
-"JET" )
+"JET" | "HERA")
    obsfileprefix=${YYYYMMDDHH}.${obs_source}
    obspath_tmp=${OBSPATH}
   ;;
 "ORION" )
    obs_source=rap
-   #obsfileprefix=${YYYYMMDDHH}.${obs_source}
-   obsfileprefix=rap.${YYYYMMDD}/${obs_source}
+   #obsfileprefix=${YYYYMMDDHH}.${obs_source}               # rap observation from JET.
+   obsfileprefix=${obs_source}.${YYYYMMDD}/${obs_source}    # observation from operation.
    obspath_tmp=${OBSPATH}
-
+  ;;
+*)
+   obsfileprefix=${obs_source}
+   obspath_tmp=${OBSPATH}
 esac
 
 
@@ -415,17 +418,31 @@ cp_vrfy $ATMS_BEAMWIDTH atms_beamwidth.txt
 cp_vrfy ${HYBENSINFO} hybens_info
 
 # Get aircraft reject list and surface uselist
-cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
-if [ -r "${SFCOBS_USELIST}/current_mesonet_uselist.txt" ]; then
-  cp_vrfy ${SFCOBS_USELIST}/current_mesonet_uselist.txt gsd_sfcobs_uselist.txt
+if [ -r ${AIRCRAFT_REJECT}/current_bad_aircraft.txt ]; then
+  cp_vrfy ${AIRCRAFT_REJECT}/current_bad_aircraft.txt current_bad_aircraft
 else
-  if [ -r "${SFCOBS_USELIST}/gsd_sfcobs_uselist.txt" ]; then
-    cp_vrfy ${SFCOBS_USELIST}/gsd_sfcobs_uselist.txt gsd_sfcobs_uselist.txt
-  else
-    print_info_msg "$VERBOSE" "Warning: gsd_sfcobs_uselist.txt  does not exist!"
-  fi
+  print_info_msg "$VERBOSE" "Warning: gsd aircraft reject list does not exist!" 
 fi
-cp_vrfy ${FIX_GSI}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
+
+if [ -r ${FIX_GSI}/gsd_sfcobs_provider.txt ]; then
+  cp_vrfy ${FIX_GSI}/gsd_sfcobs_provider.txt gsd_sfcobs_provider.txt
+else
+  print_info_msg "$VERBOSE" "Warning: gsd surface observation provider does not exist!" 
+fi
+
+gsd_sfcobs_uselist="gsd_sfcobs_uselist.txt"
+for use_list in "${SFCOBS_USELIST}/current_mesonet_uselist.txt" \
+                "${SFCOBS_USELIST}/gsd_sfcobs_uselist.txt"
+do 
+  if [ -r $use_list ] ; then
+    cp_vrfy $use_list  $gsd_sfcobs_uselist
+    print_info_msg "$VERBOSE" "Use surface obs uselist: $use_list "
+    break
+  fi
+done
+if [ ! -r $use_list ] ; then 
+  print_info_msg "$VERBOSE" "Warning: gsd surface observation uselist does not exist!" 
+fi
 
 #-----------------------------------------------------------------------
 #

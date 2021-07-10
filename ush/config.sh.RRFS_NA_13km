@@ -20,6 +20,34 @@ GWD_HRRRsuite_BASEDIR=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_lam.20210128
 FIX_GSI=/mnt/lfs4/BMC/nrtrr/RRFS/fix/fix_gsi
 FIX_CRTM=/home/rtrr/FIX_EXEC_MODULE/crtm/CRTM_v2.3.0
 
+if [[ $MACHINE == "hera" ]] ; then
+  ACCOUNT="wrfruc"
+  PARTITION_DEFAULT=""
+  PARTITION_FCST=""
+  QUEUE_ANALYSIS="batch"
+
+  FIXLAM_NCO_BASEDIR=/scratch1/BMC/zrtrr/RRFS/fix/fix_lam.20210128
+  FIXgsm=/scratch1/BMC/zrtrr/RRFS/fix/fix_am.20210128
+  GWD_HRRRsuite_BASEDIR=/scratch1/BMC/zrtrr/RRFS/fix/fix_lam.20210128
+
+  FIX_GSI=/scratch1/BMC/zrtrr/RRFS/fix/fix_gsi
+  FIX_CRTM=/scratch1/BMC/zrtrr/RRFS/fix/CRTM_v2.3.0
+  AIRCRAFT_REJECT=${FIX_GSI}
+  SFCOBS_USELIST=${FIX_GSI}
+
+# for using RAP as boundary and initial
+#  EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/public/data/grids/rap/full/wrfnat/grib2
+#  EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/public/data/grids/rap/full/wrfnat/grib2
+# for using GFS as boundary and initial
+  EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/public/data/grids/gfs/0p25deg/grib2
+  EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/public/data/grids/gfs/0p25deg/grib2
+# real-time observations on hera
+  OBSPATH=/scratch2/BMC/public/data/grids/rap/obs
+  OBSPATH_NSSLMOSIAC=/scratch2/BMC/public/data/radar/nssl/mrms/conus
+  LIGHTNING_ROOT=/scratch2/BMC/public/data/lightning
+  ENKF_FCST=/scratch1/NCEPDEV/rstprod/com/gfs/prod
+fi
+
 if [[ $MACHINE == "orion" ]] ; then
   ACCOUNT=ztrr
   QUEUE_ANALYSIS="batch"
@@ -66,6 +94,24 @@ CYCLEMONTH="5-7"
 
 if [[ $DO_RETRO == "true" ]] ; then
 
+  if [[ $MACHINE == "jet" ]] ; then
+    EXTRN_MDL_SOURCE_BASEDIR_ICS=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/hrrr/conus/wrfnat/grib2
+    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/rap/full/wrfnat/grib2
+#    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/gfs/0p25deg/grib2
+    OBSPATH=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/obs_rap
+    OBSPATH_NSSLMOSIAC=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/reflectivity
+    LIGHTNING_ROOT=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/lightning/vaisala/netcdf/
+    ENKF_FCST=/mnt/lfs4/BMC/wrfruc/Ruifang.Li/data/enkf/atm
+  fi
+  if [[ $MACHINE == "hera" ]] ; then
+    EXTRN_MDL_SOURCE_BASEDIR_ICS=/scratch2/BMC/zrtrr/rli/data/hrrr/conus/wrfnat/grib2
+    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/zrtrr/rli/data/rap/full/wrfnat/grib2
+#    EXTRN_MDL_SOURCE_BASEDIR_LBCS=/scratch2/BMC/zrtrr/rli/data/gfs/0p25deg/grib2
+    OBSPATH=/scratch2/BMC/zrtrr/rli/data/obs_rap
+    OBSPATH_NSSLMOSIAC=/scratch2/BMC/zrtrr/rli/data/reflectivity
+    LIGHTNING_ROOT=/scratch2/BMC/zrtrr/rli/data/lightning/vaisala/netcdf/
+    ENKF_FCST=/scratch2/BMC/zrtrr/rli/data/enkf/atm
+  fi
   if [[ $MACHINE == "orion" ]] ; then
     EXTRN_MDL_SOURCE_BASEDIR_ICS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
     EXTRN_MDL_SOURCE_BASEDIR_LBCS=/work/noaa/wrfruc/mhu/rrfs/data/gfs
@@ -94,7 +140,7 @@ else
   FORECAST_CYCLEDEF="00 00-23/01 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
   POSTPROC_CYCLEDEF="00 00-23/01 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
   POSTPROC_LONG_CYCLEDEF="00 03,09,15,21 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
-  ARCHIVE_CYCLEDEF="00 07 * * 2021 *"
+  ARCHIVE_CYCLEDEF="00 07 ${CYCLEDAY} ${CYCLEMONTH} 2021 *"
 fi
 
 FCST_LEN_HRS="21"
@@ -127,6 +173,7 @@ TAG="RRFS_dev1_NA_13km"
 
 USE_CUSTOM_POST_CONFIG_FILE="TRUE"
 CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-13km-NA-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
+CUSTOM_POST_PARAMS_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-ufs-srweather-app/src/EMC_post/parm/params_grib2_tbl_new"
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_na_13km_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/home/rtrr/RRFS/graphics"
@@ -153,6 +200,7 @@ if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDLOG_HRS="240"
   CLEAN_OLDRUN_HRS="6"
   CLEAN_OLDFCST_HRS="6"
+  CLEAN_OLDSTMPPOST_HRS="6"
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     CLEAN_OLDRUN_HRS="7777"
     CLEAN_OLDFCST_HRS="7777"

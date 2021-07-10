@@ -112,6 +112,10 @@ OBSPATH="/gpfs/hps/nco/ops/com/rap/prod"
 ENKF_FCST="/gpfs/dell1/nco/ops/com/gfs/prod"
 #USE_CUSTOM_POST_CONFIG_FILE="TRUE"
 #CUSTOM_POST_CONFIG_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-ufs-srweather-app/src/EMC_post/parm/postxconfig-NT-fv3lam_rrfs.txt"
+<<<<<<< HEAD
+=======
+#CUSTOM_POST_PARAMS_FP="/mnt/lfs4/BMC/nrtrr/RRFS/dev1-ufs-srweather-app/src/EMC_post/parm/params_grib2_tbl_new"
+>>>>>>> upstream_gsl/feature/RRFS_dev1
 ARCHIVEDIR="/5year/BMC/wrfruc/rrfs_dev1"
 NCARG_ROOT="/apps/ncl/6.5.0-CentOS6.10_64bit_nodap_gnu447"
 NCL_HOME="/gpfs/hps3/ptmp/Ming.Hu/ptmp"
@@ -138,6 +142,10 @@ if [[ $DO_RETRO == "true" ]] ; then
   CLEAN_OLDLOG_HRS="240"
   CLEAN_OLDRUN_HRS="6"
   CLEAN_OLDFCST_HRS="6"
+<<<<<<< HEAD
+=======
+  CLEAN_OLDSTMPPOST_HRS="6"
+>>>>>>> upstream_gsl/feature/RRFS_dev1
   if [[ $LBCS_ICS_ONLY == "true" ]]; then
     CLEAN_OLDRUN_HRS="7777"
     CLEAN_OLDFCST_HRS="7777"
