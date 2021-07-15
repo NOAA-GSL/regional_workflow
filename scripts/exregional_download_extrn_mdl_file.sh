@@ -108,7 +108,7 @@ esac
 
 last_hour=$(( FCST_LEN_HRS + EXTRN_MDL_LBCS_OFFSET_HRS ))
 last_hour=$(printf "%02d" $last_hour) 
-first_hour=$(( EXTRN_MDL_LBCS_OFFSET_HRS + LBC_SPEC_INTVL_HRS ))
+first_hour=$EXTRN_MDL_LBCS_OFFSET_HRS
 first_hour=$(printf "%02d" $first_hour) 
 
 extrn_mdl_fns=()

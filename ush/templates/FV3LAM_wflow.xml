@@ -396,7 +396,7 @@ MODULES_RUN_TASK_FP script.
 
     <task name="subset_and_ship_f#fhr#" maxtries="2">
 
-      &RSRV_SERVICE;
+      &RSRV_HPSS;
       <command>&LOAD_MODULES_RUN_TASK_FP; "&SUBSET_AND_SHIP_TN;" "&JOBSDIR;/JREGIONAL_SUBSET_AND_SHIP"</command>
       <nodes>1:ppn=1</nodes>
       <walltime>{{ wtime_upload }}</walltime>

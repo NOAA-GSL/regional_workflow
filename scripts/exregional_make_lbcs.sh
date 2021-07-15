@@ -380,7 +380,7 @@ fi
 #-----------------------------------------------------------------------
 #
 num_fhrs="${#EXTRN_MDL_LBC_SPEC_FHRS[@]}"
-for (( i=0; i<${num_fhrs}; i++ )); do
+for (( i=1; i<${num_fhrs}; i++ )); do
 #
 # Get the forecast hour of the external model.
 #
@@ -536,7 +536,8 @@ located in the following directory:
 # the forecast hour of the FV3-LAM (which is not necessarily the same as
 # that of the external model since their start times may be offset).
 #
-  fcst_hhh_FV3LAM=$( printf "%03d" "${LBC_SPEC_FCST_HRS[$i]}" )
+  (( lbc_spec_fcst_idx = $i - 1 ))
+  fcst_hhh_FV3LAM=$( printf "%03d" "${LBC_SPEC_FCST_HRS[$lbc_spec_fcst_idx]}" )
   mv_vrfy gfs.bndy.nc ${lbcs_dir}/gfs_bndy.tile7.${fcst_hhh_FV3LAM}.nc
 
 done
